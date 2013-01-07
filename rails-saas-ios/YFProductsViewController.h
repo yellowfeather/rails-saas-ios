@@ -1,5 +1,5 @@
 //
-//  YFViewController.h
+//  YFProductsViewController.h
 //  rails-saas-ios
 //
 //  Created by Chris Richards on 07/01/2013.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface YFViewController : UIViewController
+@interface YFProductsViewController : UITableViewController
 
 @end
