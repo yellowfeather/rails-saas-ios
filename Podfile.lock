@@ -1,0 +1,15 @@
+
+PODS:
+- AFNetworking (1.1.0)
+- AFOAuth2Client (0.1.0):
+  - AFNetworking (~> 1.0)
+
+DEPENDENCIES:
+- AFNetworking
+- AFOAuth2Client
+
+SPEC CHECKSUMS:
+  AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
+  AFOAuth2Client: 2d1a21039fcc086254b0564428677fbbee0a4972
+
+COCOAPODS: 0.16.0
