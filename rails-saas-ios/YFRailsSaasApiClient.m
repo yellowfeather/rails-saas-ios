@@ -36,6 +36,10 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
                                    scope:nil
                                  success:^(AFOAuthCredential *credential) {
                                      NSLog(@"Successfully received OAuth credentials %@", credential.accessToken);
+
+                                     [AFOAuthCredential storeCredential:credential
+                                                         withIdentifier:self.serviceProviderIdentifier];
+
                                      [self setAuthorizationHeaderWithCredential:credential];
                                      success(credential);
                                  }
@@ -55,10 +59,40 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
     
     [self setDefaultHeader:@"Accept" value:@"application/json"];
     
+    AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:self.serviceProviderIdentifier];
+    if (credential != nil) {
+        [self setAuthorizationHeaderWithCredential:credential];
+    }
+    
     return self;
 }
 
+- (void)refreshAccessToken {
+    AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:self.serviceProviderIdentifier];
+    if (credential == nil) {
+        NSLog(@"refreshAccessToken: credential not found");
+    }
+    else {
+        if (credential.isExpired) {
+            [self authenticateUsingOAuthWithPath:@"oauth/token"
+                                    refreshToken:credential.refreshToken
+                                         success:^(AFOAuthCredential *newCredential) {
+                                             NSLog(@"Successfully refreshed OAuth credentials %@", newCredential.accessToken);
+                                             [AFOAuthCredential storeCredential:newCredential
+                                                                 withIdentifier:self.serviceProviderIdentifier];
+                                             [self setAuthorizationHeaderWithCredential:newCredential];
+                                         }
+                                         failure:^(NSError *error) {
+                                             NSLog(@"Error: %@", error);
+                                         }];
+
+        }
+    }
+    
+}
+
 - (void)getProductsWithBlock:(void (^)(NSArray *products, NSError *error))block {
+    [self refreshAccessToken];
     [self getPath:@"api/1/products"
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id JSON) {

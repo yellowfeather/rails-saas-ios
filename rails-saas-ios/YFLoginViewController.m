@@ -53,8 +53,6 @@
     [client authenticateWithUsernameAndPassword:username
                                        password:password
                                         success:^(AFOAuthCredential *credential) {
-                                            [AFOAuthCredential storeCredential:credential
-                                                                withIdentifier:client.serviceProviderIdentifier];
                                             [self performSegueWithIdentifier:@"LoginSegue" sender:sender];
                                         }
                                         failure:^(NSError *error) {
