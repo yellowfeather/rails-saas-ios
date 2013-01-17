@@ -9,7 +9,7 @@
 #import "YFRailsSaasApiClient.h"
 #import "YFProduct.h"
 
-static NSString * const kClientBaseURL  = @"http://cheese.rails-saas.com/";
+static NSString * const kClientBaseURL  = @"http://cheese.rails-saas.dev/";
 static NSString * const kClientID       = @"eb6250c28c0a691aab3828b79e4b63c65fa16e5f16ae754cde2cf8aacca5bac0";
 static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd320953650780e47bb8e3e9e14a951992962c406";
 
@@ -67,53 +67,67 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
     return self;
 }
 
-- (void)refreshAccessToken {
+- (void)refreshAccessTokenWithBlock:(void (^)(void))success
+                            failure:(void (^)(NSError *error))failure {
     AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:self.serviceProviderIdentifier];
     if (credential == nil) {
         NSLog(@"refreshAccessToken: credential not found");
-    }
-    else {
-        if (credential.isExpired) {
-            [self authenticateUsingOAuthWithPath:@"oauth/token"
-                                    refreshToken:credential.refreshToken
-                                         success:^(AFOAuthCredential *newCredential) {
-                                             NSLog(@"Successfully refreshed OAuth credentials %@", newCredential.accessToken);
-                                             [AFOAuthCredential storeCredential:newCredential
-                                                                 withIdentifier:self.serviceProviderIdentifier];
-                                             [self setAuthorizationHeaderWithCredential:newCredential];
-                                         }
-                                         failure:^(NSError *error) {
-                                             NSLog(@"Error: %@", error);
-                                         }];
-
-        }
+        NSMutableDictionary *errorDetail = [NSMutableDictionary dictionary];
+        [errorDetail setValue:@"refreshAccessToken: credential not found" forKey:NSLocalizedDescriptionKey];
+        failure([NSError errorWithDomain:@"rails-saas" code:100 userInfo:errorDetail]);
+        return;
     }
     
+    if (!credential.isExpired) {
+        success();
+        return;
+    }
+    
+    [self authenticateUsingOAuthWithPath:@"oauth/token"
+                            refreshToken:credential.refreshToken
+                                 success:^(AFOAuthCredential *newCredential) {
+                                     NSLog(@"Successfully refreshed OAuth credentials %@", newCredential.accessToken);
+                                     [AFOAuthCredential storeCredential:newCredential
+                                                         withIdentifier:self.serviceProviderIdentifier];
+                                     [self setAuthorizationHeaderWithCredential:newCredential];
+                                     success();
+                                 }
+                                 failure:^(NSError *error) {
+                                     NSLog(@"Error: %@", error);
+                                     failure(error);
+                                 }];
 }
 
 - (void)getProductsWithBlock:(void (^)(NSArray *products, NSError *error))block {
-    [self refreshAccessToken];
-    [self getPath:@"api/1/products"
-       parameters:nil
-          success:^(AFHTTPRequestOperation *operation, id JSON) {
-              NSArray *productsFromResponse = [JSON valueForKeyPath:@"response"];
-              
-              NSMutableArray *mutableProducts = [NSMutableArray arrayWithCapacity:[productsFromResponse count]];
-              for (NSDictionary *attributes in productsFromResponse) {
-                  YFProduct *product = [[YFProduct alloc] initWithAttributes:attributes];
-                  [mutableProducts addObject:product];
-              }
-              
-              if (block) {
-                  block([NSArray arrayWithArray:mutableProducts], nil);
-              }
-          }
-          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              NSLog(@"Error: %@", error);
-              if (block) {
-                  block([NSArray array], error);
-              }
-          }];
+    [self refreshAccessTokenWithBlock:^() {
+                            [self getPath:@"api/1/products"
+                                   parameters:nil
+                                      success:^(AFHTTPRequestOperation *operation, id JSON) {
+                                          NSArray *productsFromResponse = [JSON valueForKeyPath:@"response"];
+                                          
+                                          NSMutableArray *mutableProducts = [NSMutableArray arrayWithCapacity:[productsFromResponse count]];
+                                          for (NSDictionary *attributes in productsFromResponse) {
+                                              YFProduct *product = [[YFProduct alloc] initWithAttributes:attributes];
+                                              [mutableProducts addObject:product];
+                                          }
+                                          
+                                          if (block) {
+                                              block([NSArray arrayWithArray:mutableProducts], nil);
+                                          }
+                                      }
+                                      failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                          NSLog(@"Error: %@", error);
+                                          if (block) {
+                                              block([NSArray array], error);
+                                          }
+                                      }];
+                            }
+                            failure:^(NSError *error) {
+                                  NSLog(@"Error: %@", error);
+                                if (block) {
+                                    block([NSArray array], error);
+                                }
+                              }];
 }
 
 

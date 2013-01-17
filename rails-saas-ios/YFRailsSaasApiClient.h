@@ -20,8 +20,11 @@
                                    password:(NSString *)password
                                     success:(void (^)(AFOAuthCredential *credential))success
                                     failure:(void (^)(NSError *error))failure;
-
-- (void)refreshAccessToken;
+/**
+ 
+ */
+- (void)refreshAccessTokenWithBlock:(void (^)(void))success
+                            failure:(void (^)(NSError *error))failure;
 
 /**
  
