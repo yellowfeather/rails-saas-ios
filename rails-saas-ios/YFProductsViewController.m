@@ -69,7 +69,7 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_activityIndicatorView];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)];
     
-    [self reload:nil];
+    // [self reload:nil];
 }
 
 - (void)viewDidUnload
@@ -112,6 +112,10 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (IBAction)logout:(id)sender {
+    // todo: logout
 }
 
 @end

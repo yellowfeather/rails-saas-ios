@@ -18,6 +18,15 @@
 //  Synthesize accessors
 @synthesize usernameField, passwordField;
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -53,7 +62,7 @@
     [client authenticateWithUsernameAndPassword:username
                                        password:password
                                         success:^(AFOAuthCredential *credential) {
-                                            [self performSegueWithIdentifier:@"LoginSegue" sender:sender];
+                                            [self dismissViewControllerAnimated:YES completion:nil];
                                         }
                                         failure:^(NSError *error) {
                                             [passwordField setText:@""];

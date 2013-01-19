@@ -26,29 +26,6 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
     return _sharedClient;
 }
 
-- (void)authenticateWithUsernameAndPassword:(NSString *)username
-                                   password:(NSString *)password
-                                    success:(void (^)(AFOAuthCredential *credential))success
-                                    failure:(void (^)(NSError *error))failure {
-    [self authenticateUsingOAuthWithPath:@"oauth/token"
-                                username:username
-                                password:password
-                                   scope:nil
-                                 success:^(AFOAuthCredential *credential) {
-                                     NSLog(@"Successfully received OAuth credentials %@", credential.accessToken);
-
-                                     [AFOAuthCredential storeCredential:credential
-                                                         withIdentifier:self.serviceProviderIdentifier];
-
-                                     [self setAuthorizationHeaderWithCredential:credential];
-                                     success(credential);
-                                 }
-                                 failure:^(NSError *error) {
-                                     NSLog(@"Error: %@", error);
-                                     failure(error);
-                                 }];
-}
-
 - (id)initWithBaseURL:(NSURL *)url
              clientID:(NSString *)clientID
                secret:(NSString *)secret {
@@ -67,19 +44,47 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
     return self;
 }
 
-- (void)refreshAccessTokenWithBlock:(void (^)(void))success
-                            failure:(void (^)(NSError *error))failure {
+- (void)authenticateWithUsernameAndPassword:(NSString *)username
+                                   password:(NSString *)password
+                                    success:(void (^)(AFOAuthCredential *credential))success
+                                    failure:(void (^)(NSError *error))failure {
+    [self authenticateUsingOAuthWithPath:@"oauth/token"
+                                username:username
+                                password:password
+                                   scope:nil
+                                 success:^(AFOAuthCredential *credential) {
+                                     NSLog(@"Successfully received OAuth credentials %@", credential.accessToken);
+                                     
+                                     [AFOAuthCredential storeCredential:credential
+                                                         withIdentifier:self.serviceProviderIdentifier];
+                                     
+                                     [self setAuthorizationHeaderWithCredential:credential];
+                                     success(credential);
+                                 }
+                                 failure:^(NSError *error) {
+                                     NSLog(@"Error: %@", error);
+                                     failure(error);
+                                 }];
+}
+
+- (BOOL)isLoginRequired {
+    AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:self.serviceProviderIdentifier];
+    if (credential == nil) {
+        return true;
+    }
+    
+    return credential.isExpired;
+}
+
+- (void)refreshAccessToken {
     AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:self.serviceProviderIdentifier];
     if (credential == nil) {
         NSLog(@"refreshAccessToken: credential not found");
-        NSMutableDictionary *errorDetail = [NSMutableDictionary dictionary];
-        [errorDetail setValue:@"refreshAccessToken: credential not found" forKey:NSLocalizedDescriptionKey];
-        failure([NSError errorWithDomain:@"rails-saas" code:100 userInfo:errorDetail]);
         return;
     }
     
     if (!credential.isExpired) {
-        success();
+        NSLog(@"refreshAccessToken: existing credential hasn't expired");
         return;
     }
     
@@ -90,44 +95,35 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
                                      [AFOAuthCredential storeCredential:newCredential
                                                          withIdentifier:self.serviceProviderIdentifier];
                                      [self setAuthorizationHeaderWithCredential:newCredential];
-                                     success();
                                  }
                                  failure:^(NSError *error) {
                                      NSLog(@"Error: %@", error);
-                                     failure(error);
                                  }];
 }
 
 - (void)getProductsWithBlock:(void (^)(NSArray *products, NSError *error))block {
-    [self refreshAccessTokenWithBlock:^() {
-                            [self getPath:@"api/1/products"
-                                   parameters:nil
-                                      success:^(AFHTTPRequestOperation *operation, id JSON) {
-                                          NSArray *productsFromResponse = [JSON valueForKeyPath:@"response"];
-                                          
-                                          NSMutableArray *mutableProducts = [NSMutableArray arrayWithCapacity:[productsFromResponse count]];
-                                          for (NSDictionary *attributes in productsFromResponse) {
-                                              YFProduct *product = [[YFProduct alloc] initWithAttributes:attributes];
-                                              [mutableProducts addObject:product];
-                                          }
-                                          
-                                          if (block) {
-                                              block([NSArray arrayWithArray:mutableProducts], nil);
-                                          }
-                                      }
-                                      failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                          NSLog(@"Error: %@", error);
-                                          if (block) {
-                                              block([NSArray array], error);
-                                          }
-                                      }];
-                            }
-                            failure:^(NSError *error) {
-                                  NSLog(@"Error: %@", error);
-                                if (block) {
-                                    block([NSArray array], error);
-                                }
-                              }];
+    [self getPath:@"api/1/products"
+       parameters:nil
+          success:^(AFHTTPRequestOperation *operation, id JSON) {
+              NSLog(@"getProductsWithBlock: success");
+              NSArray *productsFromResponse = [JSON valueForKeyPath:@"response"];
+              
+              NSMutableArray *mutableProducts = [NSMutableArray arrayWithCapacity:[productsFromResponse count]];
+              for (NSDictionary *attributes in productsFromResponse) {
+                  YFProduct *product = [[YFProduct alloc] initWithAttributes:attributes];
+                  [mutableProducts addObject:product];
+              }
+              
+              if (block) {
+                  block([NSArray arrayWithArray:mutableProducts], nil);
+              }
+          }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              NSLog(@"Error: %@", error);
+              if (block) {
+                  block([NSArray array], error);
+              }
+          }];
 }
 
 

@@ -7,8 +7,26 @@
 //
 
 #import "YFAppDelegate.h"
+#import "YFLoginViewController.h"
+#import "YFRailsSaasApiClient.h"
+
+@interface YFAppDelegate ()
+
+@property (strong, nonatomic) YFLoginViewController* loginViewController;
+
+@end
 
 @implementation YFAppDelegate
+
+@synthesize loginViewController = _loginViewController;
+
+- (void)showLoginView {
+    if (self.loginViewController == nil) {
+        self.loginViewController = [[YFLoginViewController alloc] initWithNibName:@"YFLoginView" bundle:nil];
+        UINavigationController *navController = (UINavigationController *)self.window.rootViewController;
+        [navController presentViewController:self.loginViewController animated:NO completion:nil];
+    }
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -36,6 +54,14 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+    BOOL isLoginRequired = [[YFRailsSaasApiClient sharedClient] isLoginRequired];
+    if (isLoginRequired) {
+        [self showLoginView];
+    }
+    else /* if has network access */ {
+        [[YFRailsSaasApiClient sharedClient] refreshAccessToken];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

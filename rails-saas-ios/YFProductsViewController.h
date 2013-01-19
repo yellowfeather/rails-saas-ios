@@ -10,4 +10,6 @@
 
 @interface YFProductsViewController : UITableViewController
 
+- (IBAction)logout:(id)sender;
+
 @end
