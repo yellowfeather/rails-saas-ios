@@ -59,9 +59,6 @@
     if (isLoginRequired) {
         [self showLoginView];
     }
-    else /* if has network access */ {
-        [[YFRailsSaasApiClient sharedClient] refreshAccessToken];
-    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

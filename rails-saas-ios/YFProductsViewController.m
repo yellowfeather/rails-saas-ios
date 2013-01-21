@@ -69,7 +69,7 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_activityIndicatorView];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)];
     
-    // [self reload:nil];
+    [self reload:nil];
 }
 
 - (void)viewDidUnload

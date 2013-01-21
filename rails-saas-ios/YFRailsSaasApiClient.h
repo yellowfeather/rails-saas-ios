@@ -29,11 +29,6 @@
 /**
  
  */
-- (void)refreshAccessToken;
-
-/**
- 
- */
 - (void)getProductsWithBlock:(void (^)(NSArray *products, NSError *error))block;
 
 @end
