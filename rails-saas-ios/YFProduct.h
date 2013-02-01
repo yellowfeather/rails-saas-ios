@@ -8,14 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-@interface YFProduct : NSObject
+@interface YFProduct : NSManagedObject
 
-@property (readonly, assign) NSUInteger productId;
-@property (readonly, strong) NSString *name;
-@property (readonly, strong) NSString *description;
-@property (readonly, strong) NSString *identifier;
-@property (readonly, assign) NSUInteger quantity;
+@property (strong) NSNumber *productId;
+@property (strong) NSString *name;
+@property (strong) NSString *desc;
+@property (strong) NSString *identifier;
+@property (strong) NSNumber *quantity;
 
 - (id)initWithAttributes:(NSDictionary *)attributes;
+
+- (void)updateWithAttributes:(NSDictionary *)attributes;
 
 @end

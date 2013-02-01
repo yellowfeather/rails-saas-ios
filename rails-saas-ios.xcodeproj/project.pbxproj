@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		13BE2ADD90D44380AAE84E12 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CB6C1756ABD46CE8552A85F /* libPods.a */; };
 		A13850E016AAACF500F56C90 /* YFLoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A13850DE16AAACF500F56C90 /* YFLoginView.xib */; };
+		A138510A16B09CED00F56C90 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A138510916B09CED00F56C90 /* CoreData.framework */; };
+		A138510D16B09DD400F56C90 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A138510B16B09DD400F56C90 /* Model.xcdatamodeld */; };
 		A1DB64B7169ADDB90004C8BF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1DB64B6169ADDB90004C8BF /* UIKit.framework */; };
 		A1DB64B9169ADDB90004C8BF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1DB64B8169ADDB90004C8BF /* Foundation.framework */; };
 		A1DB64BB169ADDB90004C8BF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1DB64BA169ADDB90004C8BF /* CoreGraphics.framework */; };
@@ -33,6 +35,8 @@
 		0CB6C1756ABD46CE8552A85F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		1523451F2498466390E475BE /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		A13850DE16AAACF500F56C90 /* YFLoginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YFLoginView.xib; sourceTree = "<group>"; };
+		A138510916B09CED00F56C90 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		A138510C16B09DD400F56C90 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		A1DB64B2169ADDB90004C8BF /* rails-saas-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "rails-saas-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1DB64B6169ADDB90004C8BF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A1DB64B8169ADDB90004C8BF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -67,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A138510A16B09CED00F56C90 /* CoreData.framework in Frameworks */,
 				A1DB650B169AEEA90004C8BF /* MobileCoreServices.framework in Frameworks */,
 				A1DB6509169AEEA00004C8BF /* SystemConfiguration.framework in Frameworks */,
 				A1DB64B7169ADDB90004C8BF /* UIKit.framework in Frameworks */,
@@ -82,6 +87,7 @@
 		A1DB64A7169ADDB90004C8BF = {
 			isa = PBXGroup;
 			children = (
+				A138510916B09CED00F56C90 /* CoreData.framework */,
 				A1DB64BC169ADDB90004C8BF /* rails-saas-ios */,
 				A1DB64B5169ADDB90004C8BF /* Frameworks */,
 				A1DB64B3169ADDB90004C8BF /* Products */,
@@ -129,6 +135,7 @@
 				A1DB6515169AF35E0004C8BF /* YFProductTableViewCell.m */,
 				A1DB6502169AECA60004C8BF /* YFRailsSaasApiClient.h */,
 				A1DB6503169AECA60004C8BF /* YFRailsSaasApiClient.m */,
+				A138510B16B09DD400F56C90 /* Model.xcdatamodeld */,
 			);
 			path = "rails-saas-ios";
 			sourceTree = "<group>";
@@ -241,6 +248,7 @@
 				A1DB6507169AED400004C8BF /* YFProduct.m in Sources */,
 				A1DB6513169AF14F0004C8BF /* YFProductsViewController.m in Sources */,
 				A1DB6516169AF35E0004C8BF /* YFProductTableViewCell.m in Sources */,
+				A138510D16B09DD400F56C90 /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,6 +382,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		A138510B16B09DD400F56C90 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A138510C16B09DD400F56C90 /* Model.xcdatamodel */,
+			);
+			currentVersion = A138510C16B09DD400F56C90 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = A1DB64A9169ADDB90004C8BF /* Project object */;
 }

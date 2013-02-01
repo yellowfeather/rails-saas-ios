@@ -10,11 +10,11 @@
 
 @implementation YFProduct
 
-@synthesize productId = _productId;
-@synthesize name = _name;
-@synthesize description = _description;
-@synthesize identifier = _identifier;
-@synthesize quantity = _quantity;
+@dynamic productId;
+@dynamic name;
+@dynamic desc;
+@dynamic identifier;
+@dynamic quantity;
 
 - (id)initWithAttributes:(NSDictionary *)attributes {
     self = [super init];
@@ -22,13 +22,23 @@
         return nil;
     }
     
-    _productId = [[attributes valueForKeyPath:@"id"] integerValue];
-    _name = [attributes valueForKeyPath:@"name"];
-    _description = [attributes valueForKeyPath:@"description"];
-    _identifier = [attributes valueForKeyPath:@"identifier"];
-    _quantity = [[attributes valueForKeyPath:@"quantity"] integerValue];
+    [self updateWithAttributes:attributes];
     
     return self;
+}
+
+- (void)updateWithAttributes:(NSDictionary *)attributes {
+    
+    [self setValue:[attributes valueForKeyPath:@"id"] forKey:@"productId"];
+    [self setValue:[attributes valueForKeyPath:@"name"] forKey:@"name"];
+    [self setValue:[attributes valueForKeyPath:@"description"] forKey:@"desc"];
+    [self setValue:[attributes valueForKeyPath:@"identifier"] forKey:@"identifier"];
+    [self setValue:[attributes valueForKeyPath:@"quantity"] forKey:@"quantity"];
+    
+//    NSEntityDescription *entity = [self entity];
+//    NSArray *attKeys = [[entity attributesByName] allKeys];
+//    NSDictionary *atttributesDict = [attributes dictionaryWithValuesForKeys:attKeys];
+//    [self setValuesForKeysWithDictionary:atttributesDict];
 }
 
 @end

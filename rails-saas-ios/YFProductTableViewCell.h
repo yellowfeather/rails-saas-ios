@@ -11,6 +11,6 @@
 
 @interface YFProductTableViewCell : UITableViewCell
 
-@property (nonatomic, strong) YFProduct *product;
+@property (nonatomic, weak) YFProduct *product;
 
 @end

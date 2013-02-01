@@ -7,11 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AFNetworking.h"
 #import "AFOAuth2Client.h"
+
+typedef void (^YFRailsSaasApiClientSuccess)(AFJSONRequestOperation *operation, id responseObject);
+typedef void (^YFRailsSaasApiClientFailure)(AFJSONRequestOperation *operation, NSError *error);
 
 @interface YFRailsSaasApiClient : AFOAuth2Client
 
 + (YFRailsSaasApiClient *)sharedClient;
+
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 /**
  
@@ -24,11 +30,16 @@
 /**
  
  */
-- (BOOL)isLoginRequired;
+- (bool)isLoginRequired;
 
 /**
  
  */
-- (void)getProductsWithBlock:(void (^)(NSArray *products, NSError *error))block;
+- (void)refreshAccessTokenWithFailure:(YFRailsSaasApiClientFailure)failure;
+
+/**
+ 
+ */
+- (void)getProductsWithSuccess:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure;
 
 @end
