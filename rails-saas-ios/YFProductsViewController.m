@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Yellow Feather Ltd. All rights reserved.
 //
 
+#import "YFAppDelegate.h"
 #import "YFProductsViewController.h"
 #import "YFProductTableViewCell.h"
 #import "YFRailsSaasApiClient.h"
@@ -84,7 +85,7 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
     
     self.title = NSLocalizedString(@"rails-saas iOS App", nil);
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_activityIndicatorView];
+    // self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_activityIndicatorView];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)];
     
     // [self reload:nil];
@@ -244,11 +245,11 @@ sectionIndexTitleForSectionName:(NSString*)sectionName
     [[self tableView] endUpdates];
 }
 
-
-
-
 - (IBAction)logout:(id)sender {
-    // todo: logout
+    [[YFRailsSaasApiClient sharedClient] logout];
+    
+    YFAppDelegate *appDelegate = (YFAppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate showLoginView];
 }
 
 @end

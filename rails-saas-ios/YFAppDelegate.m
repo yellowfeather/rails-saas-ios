@@ -29,9 +29,9 @@
 - (void)showLoginView {
     if (self.loginViewController == nil) {
         self.loginViewController = [[YFLoginViewController alloc] initWithNibName:@"YFLoginView" bundle:nil];
-        UINavigationController *navController = (UINavigationController *)self.window.rootViewController;
-        [navController presentViewController:self.loginViewController animated:NO completion:nil];
     }
+    UINavigationController *navController = (UINavigationController *)self.window.rootViewController;
+    [navController presentViewController:self.loginViewController animated:NO completion:nil];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

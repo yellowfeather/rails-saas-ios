@@ -91,6 +91,11 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
                                  }];
 }
 
+- (void)logout {
+    [AFOAuthCredential deleteCredentialWithIdentifier:self.serviceProviderIdentifier];
+    
+}
+
 - (bool)isLoginRequired {
     AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:self.serviceProviderIdentifier];
     if (credential == nil) {

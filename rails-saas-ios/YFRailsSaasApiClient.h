@@ -27,6 +27,8 @@ typedef void (^YFRailsSaasApiClientFailure)(AFJSONRequestOperation *operation, N
                                     success:(void (^)(AFOAuthCredential *credential))success
                                     failure:(void (^)(NSError *error))failure;
 
+- (void)logout;
+
 /**
  
  */
