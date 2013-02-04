@@ -12,8 +12,6 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
-- (void)showLoginView;
-
 - (void)saveContext;
 
 @end

@@ -10,6 +10,7 @@
 #import "YFProductsViewController.h"
 #import "YFProductTableViewCell.h"
 #import "YFRailsSaasApiClient.h"
+#import "YFSignInViewController.h"
 
 @interface YFProductsViewController ()
 - (void)reload:(id)sender;
@@ -39,6 +40,8 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 }
 
 - (void)reload:(id)sender {
+    [self _checkUser];
+    
     [_activityIndicatorView startAnimating];
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
@@ -97,10 +100,33 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
     [super viewDidUnload];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+		[self _checkUser];
+	}
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		[self _checkUser];
+	}
+}
+
+- (void)_checkUser {
+	if ([[YFRailsSaasApiClient sharedClient] isLoginRequired]) {
+		UIViewController *viewController = [[YFSignInViewController alloc] init];
+		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			[self.splitViewController presentViewController:navigationController animated:YES completion:nil];
+		} else {
+			[self.navigationController presentViewController:navigationController animated:NO completion:nil];
+		}
+		return;
+	}
 }
 
 #pragma mark - Table view data source
@@ -247,9 +273,7 @@ sectionIndexTitleForSectionName:(NSString*)sectionName
 
 - (IBAction)logout:(id)sender {
     [[YFRailsSaasApiClient sharedClient] logout];
-    
-    YFAppDelegate *appDelegate = (YFAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate showLoginView];
+    [self _checkUser];
 }
 
 @end

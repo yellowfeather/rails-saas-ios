@@ -8,9 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		13BE2ADD90D44380AAE84E12 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CB6C1756ABD46CE8552A85F /* libPods.a */; };
-		A13850E016AAACF500F56C90 /* YFLoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A13850DE16AAACF500F56C90 /* YFLoginView.xib */; };
 		A138510A16B09CED00F56C90 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A138510916B09CED00F56C90 /* CoreData.framework */; };
 		A138510D16B09DD400F56C90 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A138510B16B09DD400F56C90 /* Model.xcdatamodeld */; };
+		A175840316C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A175840216C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.m */; };
+		A175840616C05FAF006B3787 /* YFHUDView.m in Sources */ = {isa = PBXBuildFile; fileRef = A175840516C05FAF006B3787 /* YFHUDView.m */; };
+		A175840916C06035006B3787 /* UIFont+RailsSaasiOSAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A175840816C06035006B3787 /* UIFont+RailsSaasiOSAdditions.m */; };
+		A175841116C062B5006B3787 /* YFGroupedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A175841016C062B5006B3787 /* YFGroupedTableViewController.m */; };
+		A175841416C06380006B3787 /* YFPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A175841316C0637F006B3787 /* YFPickerViewController.m */; };
+		A175841716C06421006B3787 /* YFGroupedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A175841616C06421006B3787 /* YFGroupedTableViewCell.m */; };
+		A175841A16C06DF5006B3787 /* YFDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = A175841916C06DF5006B3787 /* YFDefines.m */; };
+		A175841D16C06EF9006B3787 /* YFSettingsFontPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A175841C16C06EF9006B3787 /* YFSettingsFontPickerViewController.m */; };
+		A175842016C06FCE006B3787 /* YFSettingsTextSizePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A175841F16C06FCE006B3787 /* YFSettingsTextSizePickerViewController.m */; };
 		A1DB64B7169ADDB90004C8BF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1DB64B6169ADDB90004C8BF /* UIKit.framework */; };
 		A1DB64B9169ADDB90004C8BF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1DB64B8169ADDB90004C8BF /* Foundation.framework */; };
 		A1DB64BB169ADDB90004C8BF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1DB64BA169ADDB90004C8BF /* CoreGraphics.framework */; };
@@ -22,7 +30,7 @@
 		A1DB64CD169ADDB90004C8BF /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1DB64CC169ADDB90004C8BF /* Default-568h@2x.png */; };
 		A1DB64D0169ADDB90004C8BF /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1DB64CE169ADDB90004C8BF /* MainStoryboard_iPhone.storyboard */; };
 		A1DB64D3169ADDB90004C8BF /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1DB64D1169ADDB90004C8BF /* MainStoryboard_iPad.storyboard */; };
-		A1DB64D6169ADDB90004C8BF /* YFLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1DB64D5169ADDB90004C8BF /* YFLoginViewController.m */; };
+		A1DB64D6169ADDB90004C8BF /* YFSignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1DB64D5169ADDB90004C8BF /* YFSignInViewController.m */; };
 		A1DB6504169AECA60004C8BF /* YFRailsSaasApiClient.m in Sources */ = {isa = PBXBuildFile; fileRef = A1DB6503169AECA60004C8BF /* YFRailsSaasApiClient.m */; };
 		A1DB6507169AED400004C8BF /* YFProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = A1DB6506169AED400004C8BF /* YFProduct.m */; };
 		A1DB6509169AEEA00004C8BF /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1DB6508169AEEA00004C8BF /* SystemConfiguration.framework */; };
@@ -34,9 +42,26 @@
 /* Begin PBXFileReference section */
 		0CB6C1756ABD46CE8552A85F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		1523451F2498466390E475BE /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
-		A13850DE16AAACF500F56C90 /* YFLoginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YFLoginView.xib; sourceTree = "<group>"; };
 		A138510916B09CED00F56C90 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		A138510C16B09DD400F56C90 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		A175840116C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+RailsSaasiOSAdditions.h"; sourceTree = "<group>"; };
+		A175840216C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+RailsSaasiOSAdditions.m"; sourceTree = "<group>"; };
+		A175840416C05FAF006B3787 /* YFHUDView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFHUDView.h; sourceTree = "<group>"; };
+		A175840516C05FAF006B3787 /* YFHUDView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFHUDView.m; sourceTree = "<group>"; };
+		A175840716C06035006B3787 /* UIFont+RailsSaasiOSAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+RailsSaasiOSAdditions.h"; sourceTree = "<group>"; };
+		A175840816C06035006B3787 /* UIFont+RailsSaasiOSAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+RailsSaasiOSAdditions.m"; sourceTree = "<group>"; };
+		A175840F16C062B5006B3787 /* YFGroupedTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFGroupedTableViewController.h; sourceTree = "<group>"; };
+		A175841016C062B5006B3787 /* YFGroupedTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFGroupedTableViewController.m; sourceTree = "<group>"; };
+		A175841216C0637F006B3787 /* YFPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFPickerViewController.h; sourceTree = "<group>"; };
+		A175841316C0637F006B3787 /* YFPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFPickerViewController.m; sourceTree = "<group>"; };
+		A175841516C06421006B3787 /* YFGroupedTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFGroupedTableViewCell.h; sourceTree = "<group>"; };
+		A175841616C06421006B3787 /* YFGroupedTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFGroupedTableViewCell.m; sourceTree = "<group>"; };
+		A175841816C06D45006B3787 /* YFDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YFDefines.h; sourceTree = "<group>"; };
+		A175841916C06DF5006B3787 /* YFDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFDefines.m; sourceTree = "<group>"; };
+		A175841B16C06EF9006B3787 /* YFSettingsFontPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFSettingsFontPickerViewController.h; sourceTree = "<group>"; };
+		A175841C16C06EF9006B3787 /* YFSettingsFontPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFSettingsFontPickerViewController.m; sourceTree = "<group>"; };
+		A175841E16C06FCE006B3787 /* YFSettingsTextSizePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFSettingsTextSizePickerViewController.h; sourceTree = "<group>"; };
+		A175841F16C06FCE006B3787 /* YFSettingsTextSizePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFSettingsTextSizePickerViewController.m; sourceTree = "<group>"; };
 		A1DB64B2169ADDB90004C8BF /* rails-saas-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "rails-saas-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1DB64B6169ADDB90004C8BF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A1DB64B8169ADDB90004C8BF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -52,8 +77,8 @@
 		A1DB64CC169ADDB90004C8BF /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		A1DB64CF169ADDB90004C8BF /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		A1DB64D2169ADDB90004C8BF /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
-		A1DB64D4169ADDB90004C8BF /* YFLoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YFLoginViewController.h; sourceTree = "<group>"; };
-		A1DB64D5169ADDB90004C8BF /* YFLoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YFLoginViewController.m; sourceTree = "<group>"; };
+		A1DB64D4169ADDB90004C8BF /* YFSignInViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YFSignInViewController.h; sourceTree = "<group>"; };
+		A1DB64D5169ADDB90004C8BF /* YFSignInViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YFSignInViewController.m; sourceTree = "<group>"; };
 		A1DB6502169AECA60004C8BF /* YFRailsSaasApiClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFRailsSaasApiClient.h; sourceTree = "<group>"; };
 		A1DB6503169AECA60004C8BF /* YFRailsSaasApiClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFRailsSaasApiClient.m; sourceTree = "<group>"; };
 		A1DB6505169AED400004C8BF /* YFProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFProduct.h; sourceTree = "<group>"; };
@@ -84,14 +109,128 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A17583FA16C053C0006B3787 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				A1DB64C5169ADDB90004C8BF /* YFAppDelegate.h */,
+				A1DB64C6169ADDB90004C8BF /* YFAppDelegate.m */,
+			);
+			name = Application;
+			sourceTree = "<group>";
+		};
+		A17583FB16C053F7006B3787 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A175840C16C06265006B3787 /* Abstract */,
+				A175840B16C06257006B3787 /* Products */,
+				A175840D16C0626D006B3787 /* Settings */,
+				A175840A16C06246006B3787 /* SignIn */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		A17583FC16C053FF006B3787 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A17583FF16C05767006B3787 /* Cells */,
+				A1DB64D1169ADDB90004C8BF /* MainStoryboard_iPad.storyboard */,
+				A1DB64CE169ADDB90004C8BF /* MainStoryboard_iPhone.storyboard */,
+				A175840416C05FAF006B3787 /* YFHUDView.h */,
+				A175840516C05FAF006B3787 /* YFHUDView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		A17583FD16C05405006B3787 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A138510B16B09DD400F56C90 /* Model.xcdatamodeld */,
+				A1DB6505169AED400004C8BF /* YFProduct.h */,
+				A1DB6506169AED400004C8BF /* YFProduct.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		A17583FE16C054AE006B3787 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				A1DB6502169AECA60004C8BF /* YFRailsSaasApiClient.h */,
+				A1DB6503169AECA60004C8BF /* YFRailsSaasApiClient.m */,
+			);
+			name = Network;
+			sourceTree = "<group>";
+		};
+		A17583FF16C05767006B3787 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				A1DB6514169AF35E0004C8BF /* YFProductTableViewCell.h */,
+				A1DB6515169AF35E0004C8BF /* YFProductTableViewCell.m */,
+				A175841516C06421006B3787 /* YFGroupedTableViewCell.h */,
+				A175841616C06421006B3787 /* YFGroupedTableViewCell.m */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		A175840016C05D9E006B3787 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				A175840116C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.h */,
+				A175840216C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.m */,
+				A175840716C06035006B3787 /* UIFont+RailsSaasiOSAdditions.h */,
+				A175840816C06035006B3787 /* UIFont+RailsSaasiOSAdditions.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		A175840A16C06246006B3787 /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				A1DB64D4169ADDB90004C8BF /* YFSignInViewController.h */,
+				A1DB64D5169ADDB90004C8BF /* YFSignInViewController.m */,
+			);
+			name = SignIn;
+			sourceTree = "<group>";
+		};
+		A175840B16C06257006B3787 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A1DB6511169AF14F0004C8BF /* YFProductsViewController.h */,
+				A1DB6512169AF14F0004C8BF /* YFProductsViewController.m */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A175840C16C06265006B3787 /* Abstract */ = {
+			isa = PBXGroup;
+			children = (
+				A175840F16C062B5006B3787 /* YFGroupedTableViewController.h */,
+				A175841016C062B5006B3787 /* YFGroupedTableViewController.m */,
+				A175841216C0637F006B3787 /* YFPickerViewController.h */,
+				A175841316C0637F006B3787 /* YFPickerViewController.m */,
+			);
+			name = Abstract;
+			sourceTree = "<group>";
+		};
+		A175840D16C0626D006B3787 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A175841B16C06EF9006B3787 /* YFSettingsFontPickerViewController.h */,
+				A175841C16C06EF9006B3787 /* YFSettingsFontPickerViewController.m */,
+				A175841E16C06FCE006B3787 /* YFSettingsTextSizePickerViewController.h */,
+				A175841F16C06FCE006B3787 /* YFSettingsTextSizePickerViewController.m */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
 		A1DB64A7169ADDB90004C8BF = {
 			isa = PBXGroup;
 			children = (
+				A1DB64BC169ADDB90004C8BF /* Classes */,
+				A1DB64BD169ADDB90004C8BF /* Supporting Files */,
 				A138510916B09CED00F56C90 /* CoreData.framework */,
-				A1DB64BC169ADDB90004C8BF /* rails-saas-ios */,
 				A1DB64B5169ADDB90004C8BF /* Frameworks */,
-				A1DB64B3169ADDB90004C8BF /* Products */,
 				1523451F2498466390E475BE /* Pods.xcconfig */,
+				A1DB64B3169ADDB90004C8BF /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -116,42 +255,35 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		A1DB64BC169ADDB90004C8BF /* rails-saas-ios */ = {
+		A1DB64BC169ADDB90004C8BF /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				A1DB64D1169ADDB90004C8BF /* MainStoryboard_iPad.storyboard */,
-				A1DB64CE169ADDB90004C8BF /* MainStoryboard_iPhone.storyboard */,
-				A1DB64BD169ADDB90004C8BF /* Supporting Files */,
-				A1DB64C5169ADDB90004C8BF /* YFAppDelegate.h */,
-				A1DB64C6169ADDB90004C8BF /* YFAppDelegate.m */,
-				A1DB64D4169ADDB90004C8BF /* YFLoginViewController.h */,
-				A1DB64D5169ADDB90004C8BF /* YFLoginViewController.m */,
-				A13850DE16AAACF500F56C90 /* YFLoginView.xib */,
-				A1DB6505169AED400004C8BF /* YFProduct.h */,
-				A1DB6506169AED400004C8BF /* YFProduct.m */,
-				A1DB6511169AF14F0004C8BF /* YFProductsViewController.h */,
-				A1DB6512169AF14F0004C8BF /* YFProductsViewController.m */,
-				A1DB6514169AF35E0004C8BF /* YFProductTableViewCell.h */,
-				A1DB6515169AF35E0004C8BF /* YFProductTableViewCell.m */,
-				A1DB6502169AECA60004C8BF /* YFRailsSaasApiClient.h */,
-				A1DB6503169AECA60004C8BF /* YFRailsSaasApiClient.m */,
-				A138510B16B09DD400F56C90 /* Model.xcdatamodeld */,
+				A17583FA16C053C0006B3787 /* Application */,
+				A175840016C05D9E006B3787 /* Categories */,
+				A17583FB16C053F7006B3787 /* Controllers */,
+				A17583FD16C05405006B3787 /* Model */,
+				A17583FE16C054AE006B3787 /* Network */,
+				A17583FC16C053FF006B3787 /* Views */,
 			);
+			name = Classes;
 			path = "rails-saas-ios";
 			sourceTree = "<group>";
 		};
 		A1DB64BD169ADDB90004C8BF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				A1DB64BE169ADDB90004C8BF /* rails-saas-ios-Info.plist */,
-				A1DB64BF169ADDB90004C8BF /* InfoPlist.strings */,
-				A1DB64C2169ADDB90004C8BF /* main.m */,
-				A1DB64C4169ADDB90004C8BF /* rails-saas-ios-Prefix.pch */,
+				A1DB64CC169ADDB90004C8BF /* Default-568h@2x.png */,
 				A1DB64C8169ADDB90004C8BF /* Default.png */,
 				A1DB64CA169ADDB90004C8BF /* Default@2x.png */,
-				A1DB64CC169ADDB90004C8BF /* Default-568h@2x.png */,
+				A1DB64BF169ADDB90004C8BF /* InfoPlist.strings */,
+				A1DB64C2169ADDB90004C8BF /* main.m */,
+				A1DB64BE169ADDB90004C8BF /* rails-saas-ios-Info.plist */,
+				A1DB64C4169ADDB90004C8BF /* rails-saas-ios-Prefix.pch */,
+				A175841816C06D45006B3787 /* YFDefines.h */,
+				A175841916C06DF5006B3787 /* YFDefines.m */,
 			);
 			name = "Supporting Files";
+			path = "rails-saas-ios";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -213,7 +345,6 @@
 				A1DB64CD169ADDB90004C8BF /* Default-568h@2x.png in Resources */,
 				A1DB64D0169ADDB90004C8BF /* MainStoryboard_iPhone.storyboard in Resources */,
 				A1DB64D3169ADDB90004C8BF /* MainStoryboard_iPad.storyboard in Resources */,
-				A13850E016AAACF500F56C90 /* YFLoginView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,12 +374,21 @@
 			files = (
 				A1DB64C3169ADDB90004C8BF /* main.m in Sources */,
 				A1DB64C7169ADDB90004C8BF /* YFAppDelegate.m in Sources */,
-				A1DB64D6169ADDB90004C8BF /* YFLoginViewController.m in Sources */,
+				A1DB64D6169ADDB90004C8BF /* YFSignInViewController.m in Sources */,
 				A1DB6504169AECA60004C8BF /* YFRailsSaasApiClient.m in Sources */,
 				A1DB6507169AED400004C8BF /* YFProduct.m in Sources */,
 				A1DB6513169AF14F0004C8BF /* YFProductsViewController.m in Sources */,
 				A1DB6516169AF35E0004C8BF /* YFProductTableViewCell.m in Sources */,
 				A138510D16B09DD400F56C90 /* Model.xcdatamodeld in Sources */,
+				A175840316C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.m in Sources */,
+				A175840616C05FAF006B3787 /* YFHUDView.m in Sources */,
+				A175840916C06035006B3787 /* UIFont+RailsSaasiOSAdditions.m in Sources */,
+				A175841116C062B5006B3787 /* YFGroupedTableViewController.m in Sources */,
+				A175841416C06380006B3787 /* YFPickerViewController.m in Sources */,
+				A175841716C06421006B3787 /* YFGroupedTableViewCell.m in Sources */,
+				A175841A16C06DF5006B3787 /* YFDefines.m in Sources */,
+				A175841D16C06EF9006B3787 /* YFSettingsFontPickerViewController.m in Sources */,
+				A175842016C06FCE006B3787 /* YFSettingsTextSizePickerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
