@@ -37,7 +37,7 @@ typedef void (^YFRailsSaasApiClientFailure)(AFJSONRequestOperation *operation, N
 /**
  
  */
-- (void)refreshAccessTokenWithFailure:(YFRailsSaasApiClientFailure)failure;
+- (void)refreshAccessTokenWithSuccess:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure;
 
 /**
  

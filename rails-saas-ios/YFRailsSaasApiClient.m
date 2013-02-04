@@ -6,17 +6,20 @@
 //  Copyright (c) 2013 Yellow Feather Ltd. All rights reserved.
 //
 
-#import "AFHTTPRequestOperation.h"
+#import "AFNetworking.h"
+#import "AFOAuth2Client.h"
 #import "YFRailsSaasApiClient.h"
 #import "YFProduct.h"
 
-static NSString * const kClientBaseURL  = @"http://cheese.rails-saas.com/";
+static NSString * const kClientBaseURL  = @"http://cheese.rails-saas.dev/";
 static NSString * const kClientID       = @"eb6250c28c0a691aab3828b79e4b63c65fa16e5f16ae754cde2cf8aacca5bac0";
 static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd320953650780e47bb8e3e9e14a951992962c406";
 
-@implementation YFRailsSaasApiClient {
-    dispatch_queue_t _callbackQueue;
-}
+@interface YFRailsSaasApiClient ()
+    @property (strong, nonatomic) AFOAuthCredential *credential;
+@end
+
+@implementation YFRailsSaasApiClient
 
 @synthesize managedObjectContext;
 
@@ -41,32 +44,13 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
     
     [self setDefaultHeader:@"Accept" value:@"application/json"];
     
-    AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:self.serviceProviderIdentifier];
-    if (credential != nil) {
-        [self setAuthorizationHeaderWithCredential:credential];
+    self.credential = [AFOAuthCredential retrieveCredentialWithIdentifier:self.serviceProviderIdentifier];
+    if (self.credential != nil) {
+        [self setAuthorizationHeaderWithCredential:self.credential];
     }
-
-    NSOperationQueue *queue = [self operationQueue];
-    [queue setMaxConcurrentOperationCount:1];
     
-    // _callbackQueue = dispatch_queue_create("com.rails-saas.network-callback-queue", 0);
-
     return self;
 }
-
-#pragma mark - AFHTTPClient
-
-//- (NSMutableURLRequest *)requestWithMethod:(NSString *)method path:(NSString *)path parameters:(NSDictionary *)parameters {
-//	NSMutableURLRequest *request = [super requestWithMethod:method path:path parameters:parameters];
-//    [request setCachePolicy:NSURLRequestReloadIgnoringCacheData];
-//	return request;
-//}
-//
-//- (void)enqueueHTTPRequestOperation:(AFHTTPRequestOperation *)operation {
-//	operation.successCallbackQueue = _callbackQueue;
-//	operation.failureCallbackQueue = _callbackQueue;
-//	[super enqueueHTTPRequestOperation:operation];
-//}
 
 #pragma mark - authentication
 
@@ -81,6 +65,7 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
                                  success:^(AFOAuthCredential *credential) {
                                      NSLog(@"Successfully received OAuth credentials %@", credential.accessToken);
                                      
+                                     self.credential = credential;
                                      [AFOAuthCredential storeCredential:credential
                                                          withIdentifier:self.serviceProviderIdentifier];
                                      success(credential);
@@ -92,79 +77,99 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
 }
 
 - (void)logout {
+    self.credential = nil;
     [AFOAuthCredential deleteCredentialWithIdentifier:self.serviceProviderIdentifier];
-    
 }
 
 - (bool)isLoginRequired {
-    AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:self.serviceProviderIdentifier];
-    if (credential == nil) {
+    if (self.credential == nil) {
         return true;
     }
     
     return false;
 }
 
-
-- (void)refreshAccessTokenWithFailure:(YFRailsSaasApiClientFailure)failure {
-    AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:self.serviceProviderIdentifier];
-    if (credential == nil) {
-        NSMutableDictionary *errorDetail = [NSMutableDictionary dictionary];
-        [errorDetail setValue:@"Failed to get credentials" forKey:NSLocalizedDescriptionKey];
-        NSError *error = [NSError errorWithDomain:@"world" code:200 userInfo:errorDetail];
-        failure(nil, error);
+- (void)refreshAccessTokenWithSuccess:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure {
+    NSLog(@"refreshAccessTokenWithSuccess");
+    
+    if (self.credential == nil) {
+        if (failure) {
+            NSMutableDictionary *errorDetail = [NSMutableDictionary dictionary];
+            [errorDetail setValue:@"Failed to get credentials" forKey:NSLocalizedDescriptionKey];
+            NSError *error = [NSError errorWithDomain:@"world" code:200 userInfo:errorDetail];
+            failure(nil, error);
+        }
         return;
     }
 
-    if (!credential.isExpired) {
+    if (!self.credential.isExpired) {
+        NSLog(@"refreshAccessTokenWithSuccess: credential has not expired");
+        
+        if (success) {
+            success(nil, nil);
+        }
         return;
     }
+
+    NSLog(@"refreshAccessTokenWithSuccess: refreshing credential");
 
     [self authenticateUsingOAuthWithPath:@"oauth/token"
-                            refreshToken:credential.refreshToken
+                            refreshToken:self.credential.refreshToken
                                  success:^(AFOAuthCredential *newCredential) {
                                      NSLog(@"Successfully refreshed OAuth credentials %@", newCredential.accessToken);
+                                     self.credential = newCredential;
                                      [AFOAuthCredential storeCredential:newCredential
                                                          withIdentifier:self.serviceProviderIdentifier];
+                                     
+                                     if (success) {
+                                         success(nil, nil);
+                                     }
                                  }
                                  failure:^(NSError *error) {
-                                     NSLog(@"Error: %@", error);
-                                     failure(nil, error);
+                                     NSLog(@"An error occurred refreshing credential: %@", error);
+                                     if (failure) {
+                                         failure(nil, error);
+                                     }
                                  }];
 }
 
 - (void)getProductsWithSuccess:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure {
-    [self refreshAccessTokenWithFailure:failure];
+    NSLog(@"getProductsWithSuccess");
 
-    [self getPath:@"api/1/products"
-       parameters:nil
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              NSLog(@"getProductsWithBlock: success");
-              NSArray *productsFromResponse = [responseObject valueForKeyPath:@"response"];
-              
-              YFProduct *productMO = nil;
-              for (NSDictionary *attributes in productsFromResponse) {
-                  if (attributes) {
-                      productMO = [NSEntityDescription insertNewObjectForEntityForName:@"Product"
-                                                                inManagedObjectContext:managedObjectContext];
-                      
-                      [productMO updateWithAttributes:attributes];
+    success = ^(AFJSONRequestOperation *operation, id responseObject) {
+        [self getPath:@"api/1/products"
+           parameters:nil
+              success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                  NSLog(@"getProductsWithSuccess: success");
+                  NSArray *productsFromResponse = [responseObject valueForKeyPath:@"response"];
+                  
+                  YFProduct *productMO = nil;
+                  for (NSDictionary *attributes in productsFromResponse) {
+                      if (attributes) {
+                          productMO = [NSEntityDescription insertNewObjectForEntityForName:@"Product"
+                                                                    inManagedObjectContext:managedObjectContext];
+                          
+                          [productMO updateWithAttributes:attributes];
+                      }
                   }
-              }
-
-              NSError *error;
-              ZAssert([managedObjectContext save:&error], @"Error saving moc: %@\n%@",
-                      [error localizedDescription],
-                      [error userInfo]);
-              
-              if (success) {
-                  success((AFJSONRequestOperation *)operation, responseObject);
-              }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              if (failure) {
-                  failure((AFJSONRequestOperation *)operation, error);
-              }
-          }];
+                  
+                  NSError *error;
+                  ZAssert([managedObjectContext save:&error], @"Error saving moc: %@\n%@",
+                          [error localizedDescription],
+                          [error userInfo]);
+                  
+                  if (success) {
+                      success((AFJSONRequestOperation *)operation, responseObject);
+                  }
+              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  NSLog(@"getProductsWithSuccess: failure");
+                  if (failure) {
+                      failure((AFJSONRequestOperation *)operation, error);
+                  }
+              }];
+    };
+    
+    [self refreshAccessTokenWithSuccess:success failure:failure];
 }
 
 @end
