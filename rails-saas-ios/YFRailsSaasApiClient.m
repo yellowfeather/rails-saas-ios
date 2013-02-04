@@ -11,7 +11,7 @@
 #import "YFRailsSaasApiClient.h"
 #import "YFProduct.h"
 
-static NSString * const kClientBaseURL  = @"http://cheese.rails-saas.dev/";
+static NSString * const kClientBaseURL  = @"http://cheese.rails-saas.com/";
 static NSString * const kClientID       = @"eb6250c28c0a691aab3828b79e4b63c65fa16e5f16ae754cde2cf8aacca5bac0";
 static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd320953650780e47bb8e3e9e14a951992962c406";
 
