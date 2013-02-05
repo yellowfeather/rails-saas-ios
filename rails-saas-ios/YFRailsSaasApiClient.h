@@ -22,17 +22,17 @@ typedef void (^YFRailsSaasApiClientFailure)(AFJSONRequestOperation *operation, N
 /**
  
  */
-- (void)authenticateWithUsernameAndPassword:(NSString *)username
-                                   password:(NSString *)password
-                                    success:(void (^)(AFOAuthCredential *credential))success
-                                    failure:(void (^)(NSError *error))failure;
+- (void)signInWithUsernameAndPassword:(NSString *)username
+                             password:(NSString *)password
+                              success:(void (^)(AFOAuthCredential *credential))success
+                              failure:(void (^)(NSError *error))failure;
 
-- (void)logout;
+- (void)signOut;
 
 /**
  
  */
-- (bool)isLoginRequired;
+- (bool)isSignInRequired;
 
 /**
  

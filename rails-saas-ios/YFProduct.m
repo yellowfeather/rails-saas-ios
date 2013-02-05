@@ -7,38 +7,84 @@
 //
 
 #import "YFProduct.h"
+#import "YFRailsSaasApiClient.h"
 
 @implementation YFProduct
 
-@dynamic productId;
 @dynamic name;
 @dynamic desc;
 @dynamic identifier;
 @dynamic quantity;
 
-- (id)initWithAttributes:(NSDictionary *)attributes {
-    self = [super init];
-    if (!self) {
-        return nil;
-    }
-    
-    [self updateWithAttributes:attributes];
-    
-    return self;
+#pragma mark - SSManagedObject
+
++ (NSString *)entityName {
+	return @"Product";
 }
 
-- (void)updateWithAttributes:(NSDictionary *)attributes {
-    
-    [self setValue:[attributes valueForKeyPath:@"id"] forKey:@"productId"];
-    [self setValue:[attributes valueForKeyPath:@"name"] forKey:@"name"];
-    [self setValue:[attributes valueForKeyPath:@"description"] forKey:@"desc"];
-    [self setValue:[attributes valueForKeyPath:@"identifier"] forKey:@"identifier"];
-    [self setValue:[attributes valueForKeyPath:@"quantity"] forKey:@"quantity"];
-    
-//    NSEntityDescription *entity = [self entity];
-//    NSArray *attKeys = [[entity attributesByName] allKeys];
-//    NSDictionary *atttributesDict = [attributes dictionaryWithValuesForKeys:attKeys];
-//    [self setValuesForKeysWithDictionary:atttributesDict];
++ (NSArray *)defaultSortDescriptors {
+	return [NSArray arrayWithObjects:
+			[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES],
+			nil];
 }
+
+
+#pragma mark - SSRemoteManagedObject
+
+- (void)unpackDictionary:(NSDictionary *)dictionary {
+	[super unpackDictionary:dictionary];
+	self.name = [dictionary objectForKey:@"name"];
+	self.desc = [dictionary objectForKey:@"desc"];
+	self.identifier = [dictionary objectForKey:@"identifier"];
+	self.quantity = [dictionary objectForKey:@"quantity"];
+}
+
+
+- (BOOL)shouldUnpackDictionary:(NSDictionary *)dictionary {
+	return YES;
+}
+
+
+#pragma mark - CDKRemoteManagedObject
+
+- (void)createWithSuccess:(void(^)(void))success failure:(void(^)(AFJSONRequestOperation *remoteOperation, NSError *error))failure {
+//	[[YFRailsSaasApiClient sharedClient] createProduct:self success:^(AFJSONRequestOperation *operation, id responseObject) {
+//		if (success) {
+//			success();
+//		}
+//	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
+//		if (failure) {
+//			failure(operation, error);
+//		}
+//	}];
+}
+
+
+- (void)updateWithSuccess:(void(^)(void))success failure:(void(^)(AFJSONRequestOperation *remoteOperation, NSError *error))failure {
+//	[[YFRailsSaasApiClient sharedClient] updateProduct:self success:^(AFJSONRequestOperation *operation, id responseObject) {
+//		if (success) {
+//			success();
+//		}
+//	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
+//		if (failure) {
+//			failure(operation, error);
+//		}
+//	}];
+}
+
+
++ (void)sortWithObjects:(NSArray *)objects success:(void(^)(void))success failure:(void(^)(AFJSONRequestOperation *remoteOperation, NSError *error))failure {
+//	[[YFRailsSaasApiClient sharedClient] sortProducts:objects success:^(AFJSONRequestOperation *operation, id responseObject) {
+//		if (success) {
+//			success();
+//		}
+//	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
+//		if (failure) {
+//			failure(operation, error);
+//		}
+//	}];
+}
+
+
 
 @end

@@ -8,10 +8,10 @@
 
 #import "YFPickerViewController.h"
 
-extern NSString *const kCDITextSizeDefaultsKey;
-extern NSString *const kCDITextSizeLargeKey;
-extern NSString *const kCDITextSizeMediumKey;
-extern NSString *const kCDITextSizeSmallKey;
+extern NSString *const kYFTextSizeDefaultsKey;
+extern NSString *const kYFTextSizeLargeKey;
+extern NSString *const kYFTextSizeMediumKey;
+extern NSString *const kYFTextSizeSmallKey;
 
 @interface YFSettingsTextSizePickerViewController : YFPickerViewController
 

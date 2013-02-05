@@ -6,47 +6,55 @@
 //  Copyright (c) 2013 Yellow Feather Ltd. All rights reserved.
 //
 
+#import "UIFont+RailsSaasiOSAdditions.h"
 #import "YFAppDelegate.h"
-#import "YFSignInViewController.h"
+#import "YFProductsViewController.h"
 #import "YFRailsSaasApiClient.h"
+#import "YFSettingsFontPickerViewController.h"
+#import "YFSettingsTextSizePickerViewController.h"
 
-@interface YFAppDelegate ()<UIAlertViewDelegate>
-
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-
-- (void)initializeCoreDataStack;
-- (void)contextInitialized;
-
-@end
 
 @implementation YFAppDelegate
 
-@synthesize managedObjectContext;
+@synthesize window = _window;
+
++ (YFAppDelegate *)sharedAppDelegate {
+	return (YFAppDelegate *)[[UIApplication sharedApplication] delegate];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [self initializeCoreDataStack];
+	// Default defaults
+	NSDictionary *defaults = @{
+                            // kYFTapActionDefaultsKey: kYFTapActionCompleteKey,
+                            kYFFontDefaultsKey: kYFFontGothamKey,
+                            kYFTextSizeDefaultsKey: kYFTextSizeMediumKey
+                            };
+	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
     
-    id controller = nil;
+	// Initialize the window
+	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	self.window.backgroundColor = [UIColor blackColor];
+	
+	[self applyStylesheet];
+	
+//	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//		self.window.rootViewController = [[CDISplitViewController alloc] init];
+//	} else {
+		UIViewController *viewController = [[YFProductsViewController alloc] init];
+		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		self.window.rootViewController = navigationController;
+//	}
+	
+	[self.window makeKeyAndVisible];
+	
+	// Defer some stuff to make launching faster
+	dispatch_async(dispatch_get_main_queue(), ^{
+		// Setup status bar network indicator
+		[AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+	});
     
-    UIUserInterfaceIdiom idiom = [[UIDevice currentDevice] userInterfaceIdiom];
-    if (idiom == UIUserInterfaceIdiomPad) {
-        id splitViewController = [[self window] rootViewController];
-        UINavigationController *navigationController = nil;
-        navigationController = [[splitViewController viewControllers] lastObject];
-        [splitViewController setDelegate:[navigationController topViewController]];
-        
-        UINavigationController *masterNC = nil;
-        masterNC = [[splitViewController viewControllers] objectAtIndex:0];
-        controller = [masterNC topViewController];
-    } else {
-        id navigationController = [[self window] rootViewController];
-        controller = [navigationController topViewController];
-    }
-    
-    [controller setManagedObjectContext:[self managedObjectContext]];
-    
-    return YES;
+	return YES;
 }
 
 
@@ -74,18 +82,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-}
-
-- (void)saveContext
-{
-    NSManagedObjectContext *moc = [self managedObjectContext];
-    
-    if (!moc) return;
-    if (![moc hasChanges]) return;
-    
-    NSError *error = nil;
-    ZAssert([moc save:&error], @"Error saving MOC: %@\n%@", [error localizedDescription], [error userInfo]);
+	[[SSManagedObject mainQueueContext] save:nil];
 }
 
 - (void)contextInitialized;
@@ -100,93 +97,60 @@
     exit(0);
 }
 
-#pragma mark - Core Data stack
+#pragma mark - Stylesheet
 
-- (void)initializeCoreDataStack
-{
-    NSURL *modelURL = nil;
-    modelURL = [[NSBundle mainBundle] URLForResource:@"Model"
-                                       withExtension:@"momd"];
-    ZAssert(modelURL, @"Failed to find model URL");
-    
-    NSManagedObjectModel *mom = nil;
-    mom = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-    ZAssert(mom, @"Failed to initialize model");
-    
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSURL *storeURL = [[fm URLsForDirectory:NSDocumentDirectory
-                                  inDomains:NSUserDomainMask] lastObject];
-    storeURL = [storeURL URLByAppendingPathComponent:@"Model.sqlite"];
-    
-    
-    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
-    ZAssert(psc, @"Failed to initialize persistent store coordinator");
-    
-    NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    [moc setPersistentStoreCoordinator:psc];
-    
-    [self setManagedObjectContext:moc];
-    
-    dispatch_queue_t queue = nil;
-    queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        
-        NSError *error = nil;
-        NSPersistentStoreCoordinator *coordinator = nil;
-        coordinator = [moc persistentStoreCoordinator];
-        
-        NSMutableDictionary *options = [NSMutableDictionary dictionary];
-        [options setValue:[NSNumber numberWithBool:YES]
-                   forKey:NSMigratePersistentStoresAutomaticallyOption];
-        [options setValue:[NSNumber numberWithBool:YES]
-                   forKey:NSInferMappingModelAutomaticallyOption];
-        
-        NSPersistentStore *store = nil;
-        store = [coordinator addPersistentStoreWithType:NSSQLiteStoreType
-                                          configuration:nil
-                                                    URL:storeURL
-                                                options:options
-                                                  error:&error];
-        if (!store) {
-            ALog(@"Error adding persistent store to coordinator %@\n%@",
-                 [error localizedDescription], [error userInfo]);
-            
-            NSString *msg = nil;
-            msg = [NSString stringWithFormat:@"The database %@%@%@\n%@\n%@",
-                   @"is either corrupt or was created by a newer ",
-                   @"version of this app.  Please contact ",
-                   @"support to assist with this error.",
-                   [error localizedDescription], [error userInfo]];
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                message:msg
-                                                               delegate:self
-                                                      cancelButtonTitle:@"Quit"
-                                                      otherButtonTitles:nil];
-            [alertView show];
-            return;
-        }
-        
-//        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Product"];
-//        
-//        [moc performBlockAndWait:^{
-//            NSError *error = nil;
-//            NSInteger count = [[self managedObjectContext] countForFetchRequest:request error:&error];
-//            ZAssert(count != NSNotFound || !error, @"Failed to count product: %@\n%@", [error localizedDescription], [error userInfo]);
-//            
-//            if (count) return;
-//            
-//            NSArray *products = [[[NSBundle mainBundle] infoDictionary] objectForKey:modelProduct];
-//            
-//            for (NSString *product in products) {
-//                NSManagedObject *productMO = [NSEntityDescription insertNewObjectForEntityForName:@"Product" inManagedObjectContext:moc];
-//                [productMO setValue:recipeType forKey:@"name"];
-//            }
-//            
-//            ZAssert([moc save:&error], @"Error saving moc: %@\n%@", [error localizedDescription], [error userInfo]);
-//        }];
-        
-        [self contextInitialized];
-    });
+- (void)applyStylesheet {
+	// Navigation bar
+	UINavigationBar *navigationBar = [UINavigationBar appearance];
+	[navigationBar setBackgroundImage:[UIImage imageNamed:@"nav-background"] forBarMetrics:UIBarMetricsDefault];
+	[navigationBar setTitleVerticalPositionAdjustment:-1.0f forBarMetrics:UIBarMetricsDefault];
+	[navigationBar setTitleTextAttributes:[[NSDictionary alloc] initWithObjectsAndKeys:
+										   [UIFont railsSaasInterfaceFontOfSize:20.0f], UITextAttributeFont,
+										   [UIColor colorWithWhite:0.0f alpha:0.2f], UITextAttributeTextShadowColor,
+										   [NSValue valueWithUIOffset:UIOffsetMake(0.0f, 1.0f)], UITextAttributeTextShadowOffset,
+										   [UIColor whiteColor], UITextAttributeTextColor,
+										   nil]];
+	
+	// Navigation bar mini
+	[navigationBar setTitleVerticalPositionAdjustment:-2.0f forBarMetrics:UIBarMetricsLandscapePhone];
+	[navigationBar setBackgroundImage:[UIImage imageNamed:@"nav-background-mini"] forBarMetrics:UIBarMetricsLandscapePhone];
+	
+	// Navigation button
+	NSDictionary *barButtonTitleTextAttributes = [[NSDictionary alloc] initWithObjectsAndKeys:
+												  [UIFont railsSaasInterfaceFontOfSize:14.0f], UITextAttributeFont,
+												  [UIColor colorWithWhite:0.0f alpha:0.2f], UITextAttributeTextShadowColor,
+												  [NSValue valueWithUIOffset:UIOffsetMake(0.0f, 1.0f)], UITextAttributeTextShadowOffset,
+												  nil];
+	UIBarButtonItem *barButton = [UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil];
+	//	[barButton setTitlePositionAdjustment:UIOffsetMake(0.0f, 1.0f) forBarMetrics:UIBarMetricsDefault];
+	[barButton setTitleTextAttributes:barButtonTitleTextAttributes forState:UIControlStateNormal];
+	[barButton setTitleTextAttributes:barButtonTitleTextAttributes forState:UIControlStateHighlighted];
+	[barButton setBackgroundImage:[[UIImage imageNamed:@"nav-button"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+	[barButton setBackgroundImage:[[UIImage imageNamed:@"nav-button-highlighted"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+	
+	// Navigation back button
+	[barButton setBackButtonTitlePositionAdjustment:UIOffsetMake(2.0f, -2.0f) forBarMetrics:UIBarMetricsDefault];
+	[barButton setBackButtonBackgroundImage:[[UIImage imageNamed:@"nav-back"] stretchableImageWithLeftCapWidth:13 topCapHeight:0] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+	[barButton setBackButtonBackgroundImage:[[UIImage imageNamed:@"nav-back-highlighted"] stretchableImageWithLeftCapWidth:13 topCapHeight:0] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+	
+	// Navigation button mini
+	//	[barButton setTitlePositionAdjustment:UIOffsetMake(0.0f, 1.0f) forBarMetrics:UIBarMetricsLandscapePhone];
+	[barButton setBackgroundImage:[[UIImage imageNamed:@"nav-button-mini"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+	[barButton setBackgroundImage:[[UIImage imageNamed:@"nav-button-mini-highlighted"] stretchableImageWithLeftCapWidth:6 topCapHeight:0] forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
+	
+	// Navigation back button mini
+	[barButton setBackButtonTitlePositionAdjustment:UIOffsetMake(2.0f, -2.0f) forBarMetrics:UIBarMetricsLandscapePhone];
+	[barButton setBackButtonBackgroundImage:[[UIImage imageNamed:@"nav-back-mini"] stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+	[barButton setBackButtonBackgroundImage:[[UIImage imageNamed:@"nav-back-mini-highlighted"] stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
+	
+	// Toolbar
+	UIToolbar *toolbar = [UIToolbar appearance];
+	[toolbar setBackgroundImage:[UIImage imageNamed:@"navigation-background"] forToolbarPosition:UIToolbarPositionTop barMetrics:UIBarMetricsDefault];
+	[toolbar setBackgroundImage:[UIImage imageNamed:@"toolbar-background"] forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
+	
+	// Toolbar mini
+	[toolbar setBackgroundImage:[UIImage imageNamed:@"navigation-background-mini"] forToolbarPosition:UIToolbarPositionTop barMetrics:UIBarMetricsLandscapePhone];
+	[toolbar setBackgroundImage:[UIImage imageNamed:@"toolbar-background-mini"] forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsLandscapePhone];
 }
 
 @end

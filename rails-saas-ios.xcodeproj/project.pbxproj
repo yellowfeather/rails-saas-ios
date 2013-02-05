@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		13BE2ADD90D44380AAE84E12 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CB6C1756ABD46CE8552A85F /* libPods.a */; };
+		A117F26E16C08818002DE8E4 /* YFRemoteManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A117F26D16C08818002DE8E4 /* YFRemoteManagedObject.m */; };
 		A138510A16B09CED00F56C90 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A138510916B09CED00F56C90 /* CoreData.framework */; };
 		A138510D16B09DD400F56C90 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A138510B16B09DD400F56C90 /* Model.xcdatamodeld */; };
 		A175840316C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A175840216C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.m */; };
@@ -19,6 +20,11 @@
 		A175841A16C06DF5006B3787 /* YFDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = A175841916C06DF5006B3787 /* YFDefines.m */; };
 		A175841D16C06EF9006B3787 /* YFSettingsFontPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A175841C16C06EF9006B3787 /* YFSettingsFontPickerViewController.m */; };
 		A175842016C06FCE006B3787 /* YFSettingsTextSizePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A175841F16C06FCE006B3787 /* YFSettingsTextSizePickerViewController.m */; };
+		A175842316C079F0006B3787 /* YFManagedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A175842216C079F0006B3787 /* YFManagedTableViewController.m */; };
+		A175842616C07B5C006B3787 /* YFPullToRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = A175842516C07B5B006B3787 /* YFPullToRefreshView.m */; };
+		A175842916C07BD5006B3787 /* YFPullToRefreshContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = A175842816C07BD5006B3787 /* YFPullToRefreshContentView.m */; };
+		A175842C16C07C90006B3787 /* YFLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = A175842B16C07C90006B3787 /* YFLoadingView.m */; };
+		A175842F16C07E2C006B3787 /* YFTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A175842E16C07E2C006B3787 /* YFTableViewCell.m */; };
 		A1DB64B7169ADDB90004C8BF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1DB64B6169ADDB90004C8BF /* UIKit.framework */; };
 		A1DB64B9169ADDB90004C8BF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1DB64B8169ADDB90004C8BF /* Foundation.framework */; };
 		A1DB64BB169ADDB90004C8BF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1DB64BA169ADDB90004C8BF /* CoreGraphics.framework */; };
@@ -28,8 +34,6 @@
 		A1DB64C9169ADDB90004C8BF /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = A1DB64C8169ADDB90004C8BF /* Default.png */; };
 		A1DB64CB169ADDB90004C8BF /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1DB64CA169ADDB90004C8BF /* Default@2x.png */; };
 		A1DB64CD169ADDB90004C8BF /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1DB64CC169ADDB90004C8BF /* Default-568h@2x.png */; };
-		A1DB64D0169ADDB90004C8BF /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1DB64CE169ADDB90004C8BF /* MainStoryboard_iPhone.storyboard */; };
-		A1DB64D3169ADDB90004C8BF /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1DB64D1169ADDB90004C8BF /* MainStoryboard_iPad.storyboard */; };
 		A1DB64D6169ADDB90004C8BF /* YFSignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1DB64D5169ADDB90004C8BF /* YFSignInViewController.m */; };
 		A1DB6504169AECA60004C8BF /* YFRailsSaasApiClient.m in Sources */ = {isa = PBXBuildFile; fileRef = A1DB6503169AECA60004C8BF /* YFRailsSaasApiClient.m */; };
 		A1DB6507169AED400004C8BF /* YFProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = A1DB6506169AED400004C8BF /* YFProduct.m */; };
@@ -42,6 +46,8 @@
 /* Begin PBXFileReference section */
 		0CB6C1756ABD46CE8552A85F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		1523451F2498466390E475BE /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		A117F26C16C08818002DE8E4 /* YFRemoteManagedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFRemoteManagedObject.h; sourceTree = "<group>"; };
+		A117F26D16C08818002DE8E4 /* YFRemoteManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFRemoteManagedObject.m; sourceTree = "<group>"; };
 		A138510916B09CED00F56C90 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		A138510C16B09DD400F56C90 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		A175840116C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+RailsSaasiOSAdditions.h"; sourceTree = "<group>"; };
@@ -62,6 +68,16 @@
 		A175841C16C06EF9006B3787 /* YFSettingsFontPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFSettingsFontPickerViewController.m; sourceTree = "<group>"; };
 		A175841E16C06FCE006B3787 /* YFSettingsTextSizePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFSettingsTextSizePickerViewController.h; sourceTree = "<group>"; };
 		A175841F16C06FCE006B3787 /* YFSettingsTextSizePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFSettingsTextSizePickerViewController.m; sourceTree = "<group>"; };
+		A175842116C079F0006B3787 /* YFManagedTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFManagedTableViewController.h; sourceTree = "<group>"; };
+		A175842216C079F0006B3787 /* YFManagedTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFManagedTableViewController.m; sourceTree = "<group>"; };
+		A175842416C07B5B006B3787 /* YFPullToRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFPullToRefreshView.h; sourceTree = "<group>"; };
+		A175842516C07B5B006B3787 /* YFPullToRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFPullToRefreshView.m; sourceTree = "<group>"; };
+		A175842716C07BD5006B3787 /* YFPullToRefreshContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFPullToRefreshContentView.h; sourceTree = "<group>"; };
+		A175842816C07BD5006B3787 /* YFPullToRefreshContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFPullToRefreshContentView.m; sourceTree = "<group>"; };
+		A175842A16C07C8F006B3787 /* YFLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFLoadingView.h; sourceTree = "<group>"; };
+		A175842B16C07C90006B3787 /* YFLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFLoadingView.m; sourceTree = "<group>"; };
+		A175842D16C07E2C006B3787 /* YFTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFTableViewCell.h; sourceTree = "<group>"; };
+		A175842E16C07E2C006B3787 /* YFTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFTableViewCell.m; sourceTree = "<group>"; };
 		A1DB64B2169ADDB90004C8BF /* rails-saas-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "rails-saas-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1DB64B6169ADDB90004C8BF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A1DB64B8169ADDB90004C8BF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -75,8 +91,6 @@
 		A1DB64C8169ADDB90004C8BF /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		A1DB64CA169ADDB90004C8BF /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		A1DB64CC169ADDB90004C8BF /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		A1DB64CF169ADDB90004C8BF /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
-		A1DB64D2169ADDB90004C8BF /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		A1DB64D4169ADDB90004C8BF /* YFSignInViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YFSignInViewController.h; sourceTree = "<group>"; };
 		A1DB64D5169ADDB90004C8BF /* YFSignInViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YFSignInViewController.m; sourceTree = "<group>"; };
 		A1DB6502169AECA60004C8BF /* YFRailsSaasApiClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFRailsSaasApiClient.h; sourceTree = "<group>"; };
@@ -133,10 +147,14 @@
 			isa = PBXGroup;
 			children = (
 				A17583FF16C05767006B3787 /* Cells */,
-				A1DB64D1169ADDB90004C8BF /* MainStoryboard_iPad.storyboard */,
-				A1DB64CE169ADDB90004C8BF /* MainStoryboard_iPhone.storyboard */,
 				A175840416C05FAF006B3787 /* YFHUDView.h */,
 				A175840516C05FAF006B3787 /* YFHUDView.m */,
+				A175842416C07B5B006B3787 /* YFPullToRefreshView.h */,
+				A175842516C07B5B006B3787 /* YFPullToRefreshView.m */,
+				A175842716C07BD5006B3787 /* YFPullToRefreshContentView.h */,
+				A175842816C07BD5006B3787 /* YFPullToRefreshContentView.m */,
+				A175842A16C07C8F006B3787 /* YFLoadingView.h */,
+				A175842B16C07C90006B3787 /* YFLoadingView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -147,6 +165,8 @@
 				A138510B16B09DD400F56C90 /* Model.xcdatamodeld */,
 				A1DB6505169AED400004C8BF /* YFProduct.h */,
 				A1DB6506169AED400004C8BF /* YFProduct.m */,
+				A117F26C16C08818002DE8E4 /* YFRemoteManagedObject.h */,
+				A117F26D16C08818002DE8E4 /* YFRemoteManagedObject.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -163,10 +183,12 @@
 		A17583FF16C05767006B3787 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				A1DB6514169AF35E0004C8BF /* YFProductTableViewCell.h */,
-				A1DB6515169AF35E0004C8BF /* YFProductTableViewCell.m */,
 				A175841516C06421006B3787 /* YFGroupedTableViewCell.h */,
 				A175841616C06421006B3787 /* YFGroupedTableViewCell.m */,
+				A1DB6514169AF35E0004C8BF /* YFProductTableViewCell.h */,
+				A1DB6515169AF35E0004C8BF /* YFProductTableViewCell.m */,
+				A175842D16C07E2C006B3787 /* YFTableViewCell.h */,
+				A175842E16C07E2C006B3787 /* YFTableViewCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -205,6 +227,8 @@
 			children = (
 				A175840F16C062B5006B3787 /* YFGroupedTableViewController.h */,
 				A175841016C062B5006B3787 /* YFGroupedTableViewController.m */,
+				A175842116C079F0006B3787 /* YFManagedTableViewController.h */,
+				A175842216C079F0006B3787 /* YFManagedTableViewController.m */,
 				A175841216C0637F006B3787 /* YFPickerViewController.h */,
 				A175841316C0637F006B3787 /* YFPickerViewController.m */,
 			);
@@ -227,9 +251,7 @@
 			children = (
 				A1DB64BC169ADDB90004C8BF /* Classes */,
 				A1DB64BD169ADDB90004C8BF /* Supporting Files */,
-				A138510916B09CED00F56C90 /* CoreData.framework */,
 				A1DB64B5169ADDB90004C8BF /* Frameworks */,
-				1523451F2498466390E475BE /* Pods.xcconfig */,
 				A1DB64B3169ADDB90004C8BF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -245,6 +267,7 @@
 		A1DB64B5169ADDB90004C8BF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A138510916B09CED00F56C90 /* CoreData.framework */,
 				A1DB64BA169ADDB90004C8BF /* CoreGraphics.framework */,
 				A1DB64B8169ADDB90004C8BF /* Foundation.framework */,
 				0CB6C1756ABD46CE8552A85F /* libPods.a */,
@@ -272,6 +295,7 @@
 		A1DB64BD169ADDB90004C8BF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1523451F2498466390E475BE /* Pods.xcconfig */,
 				A1DB64CC169ADDB90004C8BF /* Default-568h@2x.png */,
 				A1DB64C8169ADDB90004C8BF /* Default.png */,
 				A1DB64CA169ADDB90004C8BF /* Default@2x.png */,
@@ -343,8 +367,6 @@
 				A1DB64C9169ADDB90004C8BF /* Default.png in Resources */,
 				A1DB64CB169ADDB90004C8BF /* Default@2x.png in Resources */,
 				A1DB64CD169ADDB90004C8BF /* Default-568h@2x.png in Resources */,
-				A1DB64D0169ADDB90004C8BF /* MainStoryboard_iPhone.storyboard in Resources */,
-				A1DB64D3169ADDB90004C8BF /* MainStoryboard_iPad.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,6 +411,12 @@
 				A175841A16C06DF5006B3787 /* YFDefines.m in Sources */,
 				A175841D16C06EF9006B3787 /* YFSettingsFontPickerViewController.m in Sources */,
 				A175842016C06FCE006B3787 /* YFSettingsTextSizePickerViewController.m in Sources */,
+				A175842316C079F0006B3787 /* YFManagedTableViewController.m in Sources */,
+				A175842616C07B5C006B3787 /* YFPullToRefreshView.m in Sources */,
+				A175842916C07BD5006B3787 /* YFPullToRefreshContentView.m in Sources */,
+				A175842C16C07C90006B3787 /* YFLoadingView.m in Sources */,
+				A175842F16C07E2C006B3787 /* YFTableViewCell.m in Sources */,
+				A117F26E16C08818002DE8E4 /* YFRemoteManagedObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -401,22 +429,6 @@
 				A1DB64C0169ADDB90004C8BF /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		A1DB64CE169ADDB90004C8BF /* MainStoryboard_iPhone.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A1DB64CF169ADDB90004C8BF /* en */,
-			);
-			name = MainStoryboard_iPhone.storyboard;
-			sourceTree = "<group>";
-		};
-		A1DB64D1169ADDB90004C8BF /* MainStoryboard_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A1DB64D2169ADDB90004C8BF /* en */,
-			);
-			name = MainStoryboard_iPad.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

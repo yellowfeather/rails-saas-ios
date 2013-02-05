@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
-- (void)saveContext;
++ (YFAppDelegate *)sharedAppDelegate;
+- (void)applyStylesheet;
 
 @end

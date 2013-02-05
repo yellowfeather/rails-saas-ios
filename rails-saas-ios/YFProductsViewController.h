@@ -6,13 +6,10 @@
 //  Copyright (c) 2013 Yellow Feather Ltd. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "YFManagedTableViewController.h"
 
-@interface YFProductsViewController : UITableViewController<NSFetchedResultsControllerDelegate>
+@interface YFProductsViewController : YFManagedTableViewController
 
-@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-
-- (IBAction)logout:(id)sender;
+- (IBAction)signOut:(id)sender;
 
 @end

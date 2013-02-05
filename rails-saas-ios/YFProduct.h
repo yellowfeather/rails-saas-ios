@@ -6,18 +6,13 @@
 //  Copyright (c) 2013 Yellow Feather Ltd. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <YFRemoteManagedObject.h>
 
-@interface YFProduct : NSManagedObject
+@interface YFProduct : YFRemoteManagedObject
 
-@property (strong) NSNumber *productId;
-@property (strong) NSString *name;
-@property (strong) NSString *desc;
-@property (strong) NSString *identifier;
-@property (strong) NSNumber *quantity;
-
-- (id)initWithAttributes:(NSDictionary *)attributes;
-
-- (void)updateWithAttributes:(NSDictionary *)attributes;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *desc;
+@property (nonatomic, strong) NSString *identifier;
+@property (nonatomic, strong) NSNumber *quantity;
 
 @end

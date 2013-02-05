@@ -129,7 +129,7 @@
 	[hud show];
     
     YFRailsSaasApiClient *client = [YFRailsSaasApiClient sharedClient];
-    [client authenticateWithUsernameAndPassword:self.emailTextField.text
+    [client signInWithUsernameAndPassword:self.emailTextField.text
                                        password:self.passwordTextField.text
                                         success:^(AFOAuthCredential *credential) {
                                             dispatch_async(dispatch_get_main_queue(), ^{

@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Yellow Feather Ltd. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "YFProduct.h"
+#import "YFTableViewCell.h"
 
-@interface YFProductTableViewCell : UITableViewCell
+@interface YFProductTableViewCell : YFTableViewCell
 
 @property (nonatomic, weak) YFProduct *product;
 

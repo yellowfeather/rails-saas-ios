@@ -54,10 +54,10 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
 
 #pragma mark - authentication
 
-- (void)authenticateWithUsernameAndPassword:(NSString *)username
-                                   password:(NSString *)password
-                                    success:(void (^)(AFOAuthCredential *credential))success
-                                    failure:(void (^)(NSError *error))failure {
+- (void)signInWithUsernameAndPassword:(NSString *)username
+                             password:(NSString *)password
+                              success:(void (^)(AFOAuthCredential *credential))success
+                              failure:(void (^)(NSError *error))failure {
     [self authenticateUsingOAuthWithPath:@"oauth/token"
                                 username:username
                                 password:password
@@ -76,12 +76,12 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
                                  }];
 }
 
-- (void)logout {
+- (void)signOut {
     self.credential = nil;
     [AFOAuthCredential deleteCredentialWithIdentifier:self.serviceProviderIdentifier];
 }
 
-- (bool)isLoginRequired {
+- (bool)isSignInRequired {
     if (self.credential == nil) {
         return true;
     }
@@ -141,22 +141,14 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
            parameters:nil
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
                   NSLog(@"getProductsWithSuccess: success");
-                  NSArray *productsFromResponse = [responseObject valueForKeyPath:@"response"];
-                  
-                  YFProduct *productMO = nil;
-                  for (NSDictionary *attributes in productsFromResponse) {
-                      if (attributes) {
-                          productMO = [NSEntityDescription insertNewObjectForEntityForName:@"Product"
-                                                                    inManagedObjectContext:managedObjectContext];
-                          
-                          [productMO updateWithAttributes:attributes];
+                  __weak NSManagedObjectContext *context = [YFProduct mainQueueContext];
+                  [context performBlockAndWait:^{
+                      NSArray *productsFromResponse = [responseObject valueForKeyPath:@"response"];                      
+                      for (NSDictionary *dictionary in productsFromResponse) {
+                          [YFProduct objectWithDictionary:dictionary];
                       }
-                  }
-                  
-                  NSError *error;
-                  ZAssert([managedObjectContext save:&error], @"Error saving moc: %@\n%@",
-                          [error localizedDescription],
-                          [error userInfo]);
+                      [context save:nil];
+                  }];
                   
                   if (success) {
                       success((AFJSONRequestOperation *)operation, responseObject);

@@ -30,6 +30,7 @@
     #import <SystemConfiguration/SystemConfiguration.h>
     #import <MobileCoreServices/MobileCoreServices.h>
     #import <CoreData/CoreData.h>
+    #import <SSDatakit/SSDataKit.h>
     #import <SSToolkit/SSToolkit.h>
     #import "YFDefines.h"
 #endif
