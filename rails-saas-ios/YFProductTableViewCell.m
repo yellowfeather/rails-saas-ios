@@ -14,7 +14,7 @@
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (!self) {
         return nil;
     }
@@ -22,7 +22,7 @@
     self.textLabel.adjustsFontSizeToFitWidth = YES;
     self.textLabel.textColor = [UIColor darkGrayColor];
     self.detailTextLabel.font = [UIFont systemFontOfSize:12.0f];
-    self.detailTextLabel.numberOfLines = 0;
+    self.detailTextLabel.numberOfLines = 1;
     self.selectionStyle = UITableViewCellSelectionStyleGray;
     
     return self;

@@ -119,7 +119,27 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 	return cell;
 }
 
+- (void)deleteAllProducts {
+    NSManagedObjectContext *context = [YFProduct mainQueueContext];
+
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Product" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSError *error;
+    NSArray *items = [context executeFetchRequest:fetchRequest error:&error];
+    
+    for (NSManagedObject *managedObject in items) {
+    	[context deleteObject:managedObject];
+    }
+    
+    if (![context save:&error]) {
+    	NSLog(@"Error deleting product - error:%@",error);
+    }
+}
+
 - (void)signOut:(id)sender {
+    [self deleteAllProducts];
     [[YFRailsSaasApiClient sharedClient] signOut];
     [self _checkUser];
 }

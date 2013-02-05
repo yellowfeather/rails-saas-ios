@@ -34,7 +34,7 @@
 - (void)unpackDictionary:(NSDictionary *)dictionary {
 	[super unpackDictionary:dictionary];
 	self.name = [dictionary objectForKey:@"name"];
-	self.desc = [dictionary objectForKey:@"desc"];
+	self.desc = [dictionary objectForKey:@"description"];
 	self.identifier = [dictionary objectForKey:@"identifier"];
 	self.quantity = [dictionary objectForKey:@"quantity"];
 }
