@@ -10,6 +10,6 @@
 
 @interface YFProductsViewController : YFManagedTableViewController
 
-- (IBAction)signOut:(id)sender;
+- (void)signOut:(id)sender;
 
 @end

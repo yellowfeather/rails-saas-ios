@@ -31,7 +31,8 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
     title.accessibilityLabel = @"Rails SaaS";
 	title.frame = CGRectMake(0.0f, 0.0f, 116.0f, 21.0f);
 	self.navigationItem.titleView = title;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Sign out" style:UIBarButtonItemStyleBordered target:self action:@selector(signOut)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
+        initWithTitle:@"Sign out" style:UIBarButtonItemStyleBordered target:self action:@selector(signOut:)];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -118,7 +119,7 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 	return cell;
 }
 
-- (IBAction)signOut:(id)sender {
+- (void)signOut:(id)sender {
     [[YFRailsSaasApiClient sharedClient] signOut];
     [self _checkUser];
 }
