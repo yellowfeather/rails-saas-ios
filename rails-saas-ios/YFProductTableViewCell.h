@@ -7,9 +7,8 @@
 //
 
 #import "YFProduct.h"
-#import "YFTableViewCell.h"
 
-@interface YFProductTableViewCell : YFTableViewCell
+@interface YFProductTableViewCell : SSBadgeTableViewCell
 
 @property (nonatomic, weak) YFProduct *product;
 

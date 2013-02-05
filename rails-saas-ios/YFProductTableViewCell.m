@@ -33,6 +33,14 @@
     
     self.textLabel.text = _product.name;
     self.detailTextLabel.text = _product.desc;
+    self.badgeView.textLabel.text = [_product.quantity stringValue];
+    
+    if ([_product.quantity intValue] >= 10) {
+        self.badgeView.badgeColor = UIColorFromRGB(0xe74019);
+    }
+    else if ([_product.quantity intValue] >= 5) {
+        self.badgeView.badgeColor = UIColorFromRGB(0xf6b003);
+    }
     
     [self setNeedsLayout];
 }

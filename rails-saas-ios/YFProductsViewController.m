@@ -111,7 +111,7 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 	YFProductTableViewCell *cell = (YFProductTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (!cell) {
 		cell = [[YFProductTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-    	[cell setEditingAction:@selector(_beginEditingWithGesture:) forTarget:self];
+    	// [cell setEditingAction:@selector(_beginEditingWithGesture:) forTarget:self];
 	}
 	
 	cell.product = [self objectForViewIndexPath:indexPath];
