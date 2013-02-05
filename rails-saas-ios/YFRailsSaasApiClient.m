@@ -164,4 +164,61 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
     [self refreshAccessTokenWithSuccess:success failure:failure];
 }
 
+- (void)createProduct:(YFProduct *)product success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure
+{
+	NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+							product.identifier, @"product[identifier]",
+							product.name, @"product[name]",
+							product.desc, @"product[description]",
+							product.quantity, @"product[quantity]",
+							nil];
+	
+	__weak NSManagedObjectContext *context = [YFProduct mainQueueContext];
+	[self postPath:@"api/1/products" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+		[context performBlockAndWait:^{
+			[product unpackDictionary:responseObject];
+			[product save];
+		}];
+		
+		if (success) {
+			success((AFJSONRequestOperation *)operation, responseObject);
+		}
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		[context performBlockAndWait:^{
+			[product delete];
+		}];
+		
+		if (failure) {
+			failure((AFJSONRequestOperation *)operation, error);
+		}
+	}];
+}
+
+- (void)updateProduct:(YFProduct *)product success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure
+{
+	NSString *path = [NSString stringWithFormat:@"api/1/products/%@", product.remoteID];
+	NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:
+							product.identifier, @"product[identifier]",
+							product.name, @"product[name]",
+							product.desc, @"product[description]",
+							product.quantity, @"product[quantity]",
+							nil];
+	
+	[self putPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+		__weak NSManagedObjectContext *context = [YFProduct mainQueueContext];
+		[context performBlockAndWait:^{
+			[product unpackDictionary:responseObject];
+			[product save];
+		}];
+		
+		if (success) {
+			success((AFJSONRequestOperation *)operation, responseObject);
+		}
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		if (failure) {
+			failure((AFJSONRequestOperation *)operation, error);
+		}
+	}];
+}
+
 @end

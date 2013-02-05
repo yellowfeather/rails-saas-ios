@@ -45,46 +45,31 @@
 }
 
 
-#pragma mark - CDKRemoteManagedObject
+#pragma mark - YFRemoteManagedObject
 
 - (void)createWithSuccess:(void(^)(void))success failure:(void(^)(AFJSONRequestOperation *remoteOperation, NSError *error))failure {
-//	[[YFRailsSaasApiClient sharedClient] createProduct:self success:^(AFJSONRequestOperation *operation, id responseObject) {
-//		if (success) {
-//			success();
-//		}
-//	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
-//		if (failure) {
-//			failure(operation, error);
-//		}
-//	}];
+	[[YFRailsSaasApiClient sharedClient] createProduct:self success:^(AFJSONRequestOperation *operation, id responseObject) {
+		if (success) {
+			success();
+		}
+	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
+		if (failure) {
+			failure(operation, error);
+		}
+	}];
 }
 
 
 - (void)updateWithSuccess:(void(^)(void))success failure:(void(^)(AFJSONRequestOperation *remoteOperation, NSError *error))failure {
-//	[[YFRailsSaasApiClient sharedClient] updateProduct:self success:^(AFJSONRequestOperation *operation, id responseObject) {
-//		if (success) {
-//			success();
-//		}
-//	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
-//		if (failure) {
-//			failure(operation, error);
-//		}
-//	}];
+	[[YFRailsSaasApiClient sharedClient] updateProduct:self success:^(AFJSONRequestOperation *operation, id responseObject) {
+		if (success) {
+			success();
+		}
+	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
+		if (failure) {
+			failure(operation, error);
+		}
+	}];
 }
-
-
-+ (void)sortWithObjects:(NSArray *)objects success:(void(^)(void))success failure:(void(^)(AFJSONRequestOperation *remoteOperation, NSError *error))failure {
-//	[[YFRailsSaasApiClient sharedClient] sortProducts:objects success:^(AFJSONRequestOperation *operation, id responseObject) {
-//		if (success) {
-//			success();
-//		}
-//	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
-//		if (failure) {
-//			failure(operation, error);
-//		}
-//	}];
-}
-
-
 
 @end

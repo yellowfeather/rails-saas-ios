@@ -7,6 +7,7 @@
 //
 
 #import "YFAppDelegate.h"
+#import "YFEditProductViewController.h"
 #import "YFProductsViewController.h"
 #import "YFProductTableViewCell.h"
 #import "YFRailsSaasApiClient.h"
@@ -31,8 +32,12 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
     title.accessibilityLabel = @"Rails SaaS";
 	title.frame = CGRectMake(0.0f, 0.0f, 116.0f, 21.0f);
 	self.navigationItem.titleView = title;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
-        initWithTitle:@"Sign out" style:UIBarButtonItemStyleBordered target:self action:@selector(signOut:)];
+
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Sign out"
+        style:UIBarButtonItemStyleBordered target:self action:@selector(signOut:)];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"plus"]
+        style:UIBarButtonItemStyleBordered target:self action:@selector(createProduct:)];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -87,6 +92,12 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 	}];
 }
 
+- (void)createProduct:(id)sender {
+	YFEditProductViewController *viewController = [[YFEditProductViewController alloc] init];
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+	navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+	[self.navigationController presentViewController:navigationController animated:YES completion:nil];
+}
 
 - (void)_checkUser {
 	if ([[YFRailsSaasApiClient sharedClient] isSignInRequired]) {

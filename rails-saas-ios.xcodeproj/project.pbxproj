@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		13BE2ADD90D44380AAE84E12 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CB6C1756ABD46CE8552A85F /* libPods.a */; };
 		A117F26E16C08818002DE8E4 /* YFRemoteManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A117F26D16C08818002DE8E4 /* YFRemoteManagedObject.m */; };
+		A117F27116C1434A002DE8E4 /* YFEditProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A117F27016C1434A002DE8E4 /* YFEditProductViewController.m */; };
+		A117F27816C15BF9002DE8E4 /* nav-title.png in Resources */ = {isa = PBXBuildFile; fileRef = A117F27416C15BF9002DE8E4 /* nav-title.png */; };
+		A117F27916C15BF9002DE8E4 /* nav-title@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A117F27516C15BF9002DE8E4 /* nav-title@2x.png */; };
+		A117F27A16C15BF9002DE8E4 /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = A117F27616C15BF9002DE8E4 /* plus.png */; };
+		A117F27B16C15BF9002DE8E4 /* plus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A117F27716C15BF9002DE8E4 /* plus@2x.png */; };
 		A138510A16B09CED00F56C90 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A138510916B09CED00F56C90 /* CoreData.framework */; };
 		A138510D16B09DD400F56C90 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A138510B16B09DD400F56C90 /* Model.xcdatamodeld */; };
 		A175840316C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A175840216C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.m */; };
@@ -48,6 +53,12 @@
 		1523451F2498466390E475BE /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		A117F26C16C08818002DE8E4 /* YFRemoteManagedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFRemoteManagedObject.h; sourceTree = "<group>"; };
 		A117F26D16C08818002DE8E4 /* YFRemoteManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFRemoteManagedObject.m; sourceTree = "<group>"; };
+		A117F26F16C1434A002DE8E4 /* YFEditProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFEditProductViewController.h; sourceTree = "<group>"; };
+		A117F27016C1434A002DE8E4 /* YFEditProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFEditProductViewController.m; sourceTree = "<group>"; };
+		A117F27416C15BF9002DE8E4 /* nav-title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav-title.png"; sourceTree = "<group>"; };
+		A117F27516C15BF9002DE8E4 /* nav-title@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav-title@2x.png"; sourceTree = "<group>"; };
+		A117F27616C15BF9002DE8E4 /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
+		A117F27716C15BF9002DE8E4 /* plus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus@2x.png"; sourceTree = "<group>"; };
 		A138510916B09CED00F56C90 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		A138510C16B09DD400F56C90 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		A175840116C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+RailsSaasiOSAdditions.h"; sourceTree = "<group>"; };
@@ -123,6 +134,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A117F27216C15BC1002DE8E4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A117F27316C15BCA002DE8E4 /* Images */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		A117F27316C15BCA002DE8E4 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				A117F27416C15BF9002DE8E4 /* nav-title.png */,
+				A117F27516C15BF9002DE8E4 /* nav-title@2x.png */,
+				A117F27616C15BF9002DE8E4 /* plus.png */,
+				A117F27716C15BF9002DE8E4 /* plus@2x.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		A17583FA16C053C0006B3787 /* Application */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,6 +248,8 @@
 			children = (
 				A1DB6511169AF14F0004C8BF /* YFProductsViewController.h */,
 				A1DB6512169AF14F0004C8BF /* YFProductsViewController.m */,
+				A117F26F16C1434A002DE8E4 /* YFEditProductViewController.h */,
+				A117F27016C1434A002DE8E4 /* YFEditProductViewController.m */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -250,9 +282,10 @@
 			isa = PBXGroup;
 			children = (
 				A1DB64BC169ADDB90004C8BF /* Classes */,
-				A1DB64BD169ADDB90004C8BF /* Supporting Files */,
 				A1DB64B5169ADDB90004C8BF /* Frameworks */,
 				A1DB64B3169ADDB90004C8BF /* Products */,
+				A117F27216C15BC1002DE8E4 /* Resources */,
+				A1DB64BD169ADDB90004C8BF /* Supporting Files */,
 			);
 			sourceTree = "<group>";
 		};
@@ -367,6 +400,10 @@
 				A1DB64C9169ADDB90004C8BF /* Default.png in Resources */,
 				A1DB64CB169ADDB90004C8BF /* Default@2x.png in Resources */,
 				A1DB64CD169ADDB90004C8BF /* Default-568h@2x.png in Resources */,
+				A117F27816C15BF9002DE8E4 /* nav-title.png in Resources */,
+				A117F27916C15BF9002DE8E4 /* nav-title@2x.png in Resources */,
+				A117F27A16C15BF9002DE8E4 /* plus.png in Resources */,
+				A117F27B16C15BF9002DE8E4 /* plus@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -417,6 +454,7 @@
 				A175842C16C07C90006B3787 /* YFLoadingView.m in Sources */,
 				A175842F16C07E2C006B3787 /* YFTableViewCell.m in Sources */,
 				A117F26E16C08818002DE8E4 /* YFRemoteManagedObject.m in Sources */,
+				A117F27116C1434A002DE8E4 /* YFEditProductViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
