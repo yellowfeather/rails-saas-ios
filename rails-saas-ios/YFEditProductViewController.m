@@ -159,7 +159,7 @@
 	YFHUDView *hud = [[YFHUDView alloc] initWithTitle:@"Creating..." loading:YES];
 	[hud show];
 	
-	YFProduct *product = [[YFProduct alloc] init];
+	YFProduct *product = [[YFProduct alloc] initWithContext:[YFProduct privateQueueContext]];
     product.identifier = self.identifierTextField.text;
     product.name = self.nameTextField.text;
     product.desc = self.descriptionTextField.text;
