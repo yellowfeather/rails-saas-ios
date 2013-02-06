@@ -43,7 +43,7 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
     }
     
     [self setDefaultHeader:@"Accept" value:@"application/json"];
-    
+
     self.credential = [AFOAuthCredential retrieveCredentialWithIdentifier:self.serviceProviderIdentifier];
     if (self.credential != nil) {
         [self setAuthorizationHeaderWithCredential:self.credential];
@@ -173,7 +173,7 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
 							product.quantity, @"product[quantity]",
 							nil];
 	
-	__weak NSManagedObjectContext *context = [YFProduct privateQueueContext];
+	__weak NSManagedObjectContext *context = [YFProduct mainQueueContext];
 	[self postPath:@"api/1/products" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		[context performBlockAndWait:^{
 			[product unpackDictionary:responseObject];

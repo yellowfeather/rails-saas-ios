@@ -159,12 +159,12 @@
 	YFHUDView *hud = [[YFHUDView alloc] initWithTitle:@"Creating..." loading:YES];
 	[hud show];
 	
-	YFProduct *product = [[YFProduct alloc] initWithContext:[YFProduct privateQueueContext]];
+	YFProduct *product = [[YFProduct alloc] init];
     product.identifier = self.identifierTextField.text;
     product.name = self.nameTextField.text;
     product.desc = self.descriptionTextField.text;
     product.quantity = self._getQuantity;
-	
+
 	[product createWithSuccess:^{
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[hud completeAndDismissWithTitle:@"Created!"];

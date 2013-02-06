@@ -33,6 +33,8 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 	title.frame = CGRectMake(0.0f, 0.0f, 116.0f, 21.0f);
 	self.navigationItem.titleView = title;
 
+    [super setEditing:NO animated:NO];
+    
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Sign out"
         style:UIBarButtonItemStyleBordered target:self action:@selector(signOut:)];
     
