@@ -8,26 +8,24 @@
 
 #import "YFPullToRefreshView.h"
 
-@interface YFManagedTableViewController : SSManagedTableViewController <SSPullToRefreshViewDelegate, UITextFieldDelegate>
+@interface YFManagedTableViewController : UITableViewController <NSFetchedResultsControllerDelegate, SSPullToRefreshViewDelegate>
 
 @property (nonatomic, strong, readonly) YFPullToRefreshView *pullToRefreshView;
-@property (nonatomic, strong, readonly) NSIndexPath *editingIndexPath;
-@property (nonatomic, assign, readonly) CGRect keyboardRect;
-@property (nonatomic, strong) UIView *coverView;
+@property (nonatomic, strong) UIView *loadingView;
+@property (nonatomic, assign, getter=isLoading) BOOL loading;
+
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+
+- (NSString *)entityName;
+- (NSManagedObjectContext *)managedObjectContext;
+
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 
 - (void)refresh:(id)sender;
-- (void)toggleEditMode:(id)sender;
-- (void)endCellTextEditing;
-- (void)editRow:(UIGestureRecognizer *)editingGestureRecognizer;
 
-- (void)updateTableViewOffsets;
-- (void)keyboardDidShow:(NSNotification *)notification;
-- (void)keyboardDidHide:(NSNotification *)notification;
-- (void)reachabilityChanged:(NSNotification *)notification;
-
-- (void)showCoverView;
-- (BOOL)showingCoverView;
-- (void)hideCoverView;
-- (void)coverViewTapped:(id)sender;
+- (void)setLoading:(BOOL)loading animated:(BOOL)animated;
+- (void)showLoadingView:(BOOL)animated;
+- (void)hideLoadingView:(BOOL)animated;
 
 @end

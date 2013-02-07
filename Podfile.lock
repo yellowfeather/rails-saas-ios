@@ -3,24 +3,24 @@ PODS:
 - AFNetworking (1.1.0)
 - AFOAuth2Client (0.1.0):
   - AFNetworking (~> 1.0)
+- MagicalRecord (2.1)
 - Reachability (3.1.0)
-- SSDataKit (0.1.0)
 - SSPullToRefresh (1.1.1)
 - SSToolkit (1.0.2)
 
 DEPENDENCIES:
 - AFNetworking
 - AFOAuth2Client
+- MagicalRecord
 - Reachability
-- SSDataKit
 - SSPullToRefresh
 - SSToolkit
 
 SPEC CHECKSUMS:
   AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
   AFOAuth2Client: 2d1a21039fcc086254b0564428677fbbee0a4972
+  MagicalRecord: aedbebe987d02d1215718a904c93d7965e48e398
   Reachability: 1c8584c5f26fa776695efef95caaa50402c94cfb
-  SSDataKit: df74fc5c0296db9536f2e76d66b9c66b6db6381f
   SSPullToRefresh: a0ff1db3adb47b8ad60c2e71ed4d60f4199224b1
   SSToolkit: 9751b7ec0d068dc1dc46c8121dfeff808f9e3d35
 

@@ -12,38 +12,34 @@
 #import "YFLoadingView.h"
 #import "YFTableViewCell.h"
 
+
 @implementation YFManagedTableViewController {
 	UITapGestureRecognizer *_tableViewTapGestureRecognizer;
 	BOOL _allowScrolling;
 }
 
+@synthesize fetchedResultsController = _fetchedResultsController;
+@synthesize loading = _loading;
+@synthesize loadingView = _loadingView;
 @synthesize pullToRefreshView = _pullToRefreshView;
-@synthesize editingIndexPath = _editingIndexPath;
-@synthesize keyboardRect = _keyboardRect;
-@synthesize coverView = _coverView;
 
-
-- (UIView *)coverView {
-	if (!_coverView) {
-		CGRect frame = self.tableView.bounds;
-		frame.origin.y += [YFTableViewCell cellHeight];
-		frame.size.height -= [YFTableViewCell cellHeight];
-		_coverView = [[UIView alloc] initWithFrame:frame];
-		_coverView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
-		_coverView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.9f];
-		_coverView.alpha = 0.0f;
-		
-		[_coverView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(coverViewTapped:)]];
-		[self.tableView addSubview:_coverView];
-	}
-	return _coverView;
+- (NSString *)entityName {
+	// Subclasses should override this method
+    return nil;
 }
 
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+	// Subclasses should override this method
+}
+
+- (void)setLoading:(BOOL)loading {
+	[self setLoading:loading animated:YES];
+}
 
 #pragma mark - NSObject
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    _fetchedResultsController = nil;
     
 	_pullToRefreshView.delegate = nil;
 	[_pullToRefreshView removeFromSuperview];
@@ -80,21 +76,6 @@
     
 	self.loadingView = [[YFLoadingView alloc] initWithFrame:self.view.bounds];
 	self.loadingView.userInteractionEnabled = NO;
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh:) name:UIApplicationDidBecomeActiveNotification object:nil];
-	// [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh:) name:kCDKCurrentUserChangedNotificationName object:nil];
-	// [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
-}
-
-
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-	[super setEditing:editing animated:animated];
-	_tableViewTapGestureRecognizer.enabled = editing;
-	if (!editing) {
-		[self endCellTextEditing];
-	}
 }
 
 
@@ -116,8 +97,6 @@
 #pragma mark - SSManagedViewController
 
 - (void)setLoading:(BOOL)loading animated:(BOOL)animated {
-	[super setLoading:loading animated:animated];
-	
 	if (self.loading) {
 		[self.pullToRefreshView startLoading];
 	} else {
@@ -147,156 +126,31 @@
 	}
 }
 
-
-- (void)showNoContentView:(BOOL)animated {
-	if (!self.noContentView || self.noContentView.superview) {
+- (void)hideLoadingView:(BOOL)animated {
+	if (!self.loadingView || !self.loadingView.superview) {
 		return;
 	}
     
-	self.noContentView.alpha = 0.0f;
-	self.noContentView.frame = self.view.bounds;
-	[self.tableView addSubview:self.noContentView];
-	
 	void (^change)(void) = ^{
-		self.noContentView.alpha = 1.0f;
+		self.loadingView.alpha = 0.0f;
 	};
-	
-	
+    
+	void (^completion)(BOOL finished) = ^(BOOL finished) {
+		[self.loadingView removeFromSuperview];
+	};
+    
 	if (animated) {
-		[UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionAllowUserInteraction animations:change completion:nil];
+		[UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionAllowUserInteraction animations:change completion:completion];
 	} else {
 		change();
+		completion(YES);
 	}
 }
-
 
 #pragma mark - Actions
 
 - (void)refresh:(id)sender {
 	// Subclasses should override this
-}
-
-
-#pragma mark - Editing
-
-- (void)toggleEditMode:(id)sender {
-	[self setEditing:!self.editing animated:YES];
-}
-
-
-- (void)editRow:(UIGestureRecognizer *)editingGestureRecognizer {
-	YFTableViewCell *cell = (YFTableViewCell *)[self.tableView cellForRowAtIndexPath:_editingIndexPath];
-	cell.editingText = NO;
-	cell.textField.delegate = nil;
-	
-	cell = (YFTableViewCell *)editingGestureRecognizer.view;
-	cell.editingText = YES;
-	cell.textField.delegate = self;
-    
-	_editingIndexPath = [self.tableView indexPathForCell:cell];
-}
-
-
-#pragma mark - Keyboard
-
-- (void)updateTableViewOffsets {
-	CGFloat offset = self.tableView.contentOffset.y;
-	CGFloat top = fminf(0.0f, offset);
-	CGFloat bottom = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? self.keyboardRect.size.height : 0.0f;
-	self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(top, 0.0f, bottom, 0.0f);
-	self.pullToRefreshView.defaultContentInset = UIEdgeInsetsMake(0.0f, 0.0f, bottom, 0.0f);
-}
-
-
-- (void)keyboardDidShow:(NSNotification *)notification {
-	NSDictionary *userInfo = [notification userInfo];
-	_keyboardRect = [self.view convertRect:[[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue] fromView:nil];
-	
-	_allowScrolling = YES;
-	CGFloat duration = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-	[UIView animateWithDuration:duration delay:0.0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
-		[self updateTableViewOffsets];
-        
-		// TODO: Once there are flexible row heights, change this to use better calculations
-		if (_editingIndexPath && _editingIndexPath.row > 2) {
-			CGRect cellRect = [self.tableView rectForRowAtIndexPath:_editingIndexPath];
-			CGPoint offset = cellRect.origin;
-			offset.y -= 51.0f;
-			[self.tableView setContentOffset:offset animated:NO];
-		}
-	} completion:^(BOOL finished) {
-		_allowScrolling = NO;
-	}];
-}
-
-
-- (void)keyboardDidHide:(NSNotification *)notification {
-	NSDictionary *userInfo = [notification userInfo];
-	_keyboardRect = CGRectZero;
-	
-	[UIView beginAnimations:@"hideKeyboard" context:NULL];
-	[UIView setAnimationDuration:[[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]];
-	[UIView setAnimationCurve:[[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue]];
-	[self updateTableViewOffsets];
-	[UIView commitAnimations];
-}
-
-
-- (void)reachabilityChanged:(NSNotification *)notification {
-	if ([notification.object isReachable]) {
-		[self refresh:nil];
-	}
-}
-
-
-#pragma mark - Private
-
-- (void)endCellTextEditing {
-	YFTableViewCell *cell = (YFTableViewCell *)[self.tableView cellForRowAtIndexPath:_editingIndexPath];
-	cell.editingText = NO;
-	cell.textField.delegate = nil;
-	_editingIndexPath = nil;
-}
-
-
-- (void)showCoverView {
-	UIView *coverView = self.coverView;
-	[UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction animations:^{
-		coverView.alpha = 1.0f;
-	} completion:nil];
-}
-
-
-- (BOOL)showingCoverView {
-	return _coverView != nil;
-}
-
-
-- (void)hideCoverView {
-	[UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction animations:^{
-		_coverView.alpha = 0.0f;
-	} completion:^(BOOL finished) {
-		[_coverView removeFromSuperview];
-		_coverView = nil;
-	}];
-}
-
-
-- (void)coverViewTapped:(id)sender {
-	// Subclasses should override this method
-}
-
-
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	[self updateTableViewOffsets];
-	
-	if (_allowScrolling) {
-		return;
-	}
-	
-	[self endCellTextEditing];
 }
 
 
@@ -306,22 +160,107 @@
 	[self refresh:view];
 }
 
+#pragma mark - Table View
 
-#pragma mark - UITextFieldDelegate
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	return NO;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return [[[self fetchedResultsController] sections] count];
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
+    return [sectionInfo numberOfObjects];
+}
 
-#pragma mark - NSFetchedResultsControllerDelegate
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
 
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-	[super controllerDidChangeContent:controller];
-	
-	if (self.editing && !self.hasContent) {
-		[self setEditing:NO animated:YES];
-	}
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle != UITableViewCellEditingStyleDelete) return;
+    
+    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    [context deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NO;
+}
+
+#pragma mark - Fetched results controller
+
+- (NSFetchedResultsController *)fetchedResultsController
+{
+    if (_fetchedResultsController != nil) {
+        return _fetchedResultsController;
+    }
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:self.entityName];
+    [fetchRequest setFetchBatchSize:20];
+    
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES]]];
+    
+    [self setFetchedResultsController:[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:[self managedObjectContext] sectionNameKeyPath:nil cacheName:@"Master"]];
+    [[self fetchedResultsController] setDelegate:self];
+    
+	NSError *error = nil;
+	ZAssert([_fetchedResultsController performFetch:&error], @"Unresolved error %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return _fetchedResultsController;
+}
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+    [[self tableView] beginUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+           atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
+{
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            [[self tableView] insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [[self tableView] deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            [[self tableView] insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [[self tableView] deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeUpdate:
+            [self configureCell:[[self tableView] cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            break;
+            
+        case NSFetchedResultsChangeMove:
+            [[self tableView] deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [[self tableView] insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    [[self tableView] endUpdates];
 }
 
 @end

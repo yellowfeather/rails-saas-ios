@@ -13,10 +13,20 @@
 #import "YFSettingsFontPickerViewController.h"
 #import "YFSettingsTextSizePickerViewController.h"
 
+@interface YFAppDelegate()
+
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+
+- (void)initializeCoreDataStack;
+- (void)contextInitialized;
+
+@end
 
 @implementation YFAppDelegate
 
 @synthesize window = _window;
+@synthesize managedObjectContext;
+
 
 + (YFAppDelegate *)sharedAppDelegate {
 	return (YFAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -24,6 +34,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [self initializeCoreDataStack];
+    
 	// Default defaults
 	NSDictionary *defaults = @{
                             // kYFTapActionDefaultsKey: kYFTapActionCompleteKey,
@@ -41,10 +53,12 @@
 //	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 //		self.window.rootViewController = [[CDISplitViewController alloc] init];
 //	} else {
-		UIViewController *viewController = [[YFProductsViewController alloc] init];
+		YFProductsViewController *viewController = [[YFProductsViewController alloc] init];
 		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 		self.window.rootViewController = navigationController;
 //	}
+    
+    [viewController setManagedObjectContext:[self managedObjectContext]];
 	
 	[self.window makeKeyAndVisible];
 	
@@ -82,7 +96,6 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-	[[SSManagedObject mainQueueContext] save:nil];
 }
 
 - (void)contextInitialized;
@@ -151,6 +164,66 @@
 	// Toolbar mini
 	[toolbar setBackgroundImage:[UIImage imageNamed:@"navigation-background-mini"] forToolbarPosition:UIToolbarPositionTop barMetrics:UIBarMetricsLandscapePhone];
 	[toolbar setBackgroundImage:[UIImage imageNamed:@"toolbar-background-mini"] forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsLandscapePhone];
+}
+
+- (void)saveContext
+{
+    NSManagedObjectContext *moc = [self managedObjectContext];
+    
+    if (!moc) return;
+    if (![moc hasChanges]) return;
+    
+    NSError *error = nil;
+    ZAssert([moc save:&error], @"Error saving MOC: %@\n%@", [error localizedDescription], [error userInfo]);
+}
+
+#pragma mark - Core Data stack
+
+- (void)initializeCoreDataStack
+{
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Model" withExtension:@"momd"];
+    ZAssert(modelURL, @"Failed to find model URL");
+    
+    NSManagedObjectModel *mom = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    ZAssert(mom, @"Failed to initialize model");
+    
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
+    ZAssert(psc, @"Failed to initialize persistent store coordinator");
+    
+    NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    [moc setPersistentStoreCoordinator:psc];
+    
+    [self setManagedObjectContext:moc];
+    
+    dispatch_queue_t queue = NULL;
+    queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSArray *directoryArray = [fileManager URLsForDirectory:NSDocumentDirectory
+                                                      inDomains:NSUserDomainMask];
+        
+        NSURL *storeURL = nil;
+        storeURL = [directoryArray lastObject];
+        storeURL = [storeURL URLByAppendingPathComponent:@"Model.sqlite"];
+        
+        NSError *error = nil;
+        NSPersistentStore *store = nil;
+        
+        store = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                                  configuration:nil
+                                            URL:storeURL
+                                        options:nil
+                                          error:&error];
+        if (!store) {
+            ALog(@"Error adding persistent store to coordinator %@\n%@",
+                 [error localizedDescription], [error userInfo]);
+            //Present a user facing error
+        }
+        
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self contextInitialized];
+        });
+    });
 }
 
 @end

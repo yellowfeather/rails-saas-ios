@@ -12,6 +12,10 @@
 
 // @property (nonatomic, strong) YFProduct *product;
 
+// hack
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+
+
 @property (nonatomic, strong, readonly) UITextField *identifierTextField;
 @property (nonatomic, strong, readonly) UITextField *nameTextField;
 @property (nonatomic, strong, readonly) UITextField *descriptionTextField;

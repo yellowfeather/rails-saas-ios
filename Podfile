@@ -4,7 +4,7 @@ xcodeproj 'rails-saas-ios.xcodeproj'
 
 pod 'AFNetworking'
 pod 'AFOAuth2Client'
+pod 'MagicalRecord'
 pod 'Reachability'
-pod 'SSDataKit'
 pod 'SSToolkit'
 pod 'SSPullToRefresh'

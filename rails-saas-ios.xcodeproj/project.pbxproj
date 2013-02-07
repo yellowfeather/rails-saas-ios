@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		13BE2ADD90D44380AAE84E12 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CB6C1756ABD46CE8552A85F /* libPods.a */; };
-		A117F26E16C08818002DE8E4 /* YFRemoteManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A117F26D16C08818002DE8E4 /* YFRemoteManagedObject.m */; };
 		A117F27116C1434A002DE8E4 /* YFEditProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A117F27016C1434A002DE8E4 /* YFEditProductViewController.m */; };
 		A117F27816C15BF9002DE8E4 /* nav-title.png in Resources */ = {isa = PBXBuildFile; fileRef = A117F27416C15BF9002DE8E4 /* nav-title.png */; };
 		A117F27916C15BF9002DE8E4 /* nav-title@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A117F27516C15BF9002DE8E4 /* nav-title@2x.png */; };
@@ -51,8 +50,6 @@
 /* Begin PBXFileReference section */
 		0CB6C1756ABD46CE8552A85F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		1523451F2498466390E475BE /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
-		A117F26C16C08818002DE8E4 /* YFRemoteManagedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFRemoteManagedObject.h; sourceTree = "<group>"; };
-		A117F26D16C08818002DE8E4 /* YFRemoteManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFRemoteManagedObject.m; sourceTree = "<group>"; };
 		A117F26F16C1434A002DE8E4 /* YFEditProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFEditProductViewController.h; sourceTree = "<group>"; };
 		A117F27016C1434A002DE8E4 /* YFEditProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFEditProductViewController.m; sourceTree = "<group>"; };
 		A117F27416C15BF9002DE8E4 /* nav-title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav-title.png"; sourceTree = "<group>"; };
@@ -195,8 +192,6 @@
 				A138510B16B09DD400F56C90 /* Model.xcdatamodeld */,
 				A1DB6505169AED400004C8BF /* YFProduct.h */,
 				A1DB6506169AED400004C8BF /* YFProduct.m */,
-				A117F26C16C08818002DE8E4 /* YFRemoteManagedObject.h */,
-				A117F26D16C08818002DE8E4 /* YFRemoteManagedObject.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -453,7 +448,6 @@
 				A175842916C07BD5006B3787 /* YFPullToRefreshContentView.m in Sources */,
 				A175842C16C07C90006B3787 /* YFLoadingView.m in Sources */,
 				A175842F16C07E2C006B3787 /* YFTableViewCell.m in Sources */,
-				A117F26E16C08818002DE8E4 /* YFRemoteManagedObject.m in Sources */,
 				A117F27116C1434A002DE8E4 /* YFEditProductViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
