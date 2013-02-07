@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Yellow Feather Ltd. All rights reserved.
 //
 
-#import "YFProduct.h"
+#import "Product.h"
 
-@implementation YFProduct
+@implementation Product
 
 @synthesize productId;
 @synthesize name;

@@ -31,5 +31,9 @@
     #import <MobileCoreServices/MobileCoreServices.h>
     #import <CoreData/CoreData.h>
     #import <SSToolkit/SSToolkit.h>
+
+    #define MR_SHORTHAND
+    #import "CoreData+MagicalRecord.h"
+
     #import "YFDefines.h"
 #endif

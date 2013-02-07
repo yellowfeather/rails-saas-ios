@@ -11,7 +11,7 @@
 #import "UIColor+RailsSaasiOSAdditions.h"
 #import "YFLoadingView.h"
 #import "YFTableViewCell.h"
-
+#import "Product.h"
 
 @implementation YFManagedTableViewController {
 	UITapGestureRecognizer *_tableViewTapGestureRecognizer;
@@ -51,8 +51,8 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	
-	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	self.tableView.rowHeight = [YFTableViewCell cellHeight];
 	
 	UIView *background = [[UIView alloc] initWithFrame:CGRectZero];
@@ -80,7 +80,6 @@
 
 
 - (void)viewWillAppear:(BOOL)animated {
-	[self refresh:nil];
 	[super viewWillAppear:animated];
 }
 
@@ -164,12 +163,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[[self fetchedResultsController] sections] count];
+    return [[_fetchedResultsController sections] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[_fetchedResultsController sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
 }
 
@@ -182,8 +181,8 @@
 {
     if (editingStyle != UITableViewCellEditingStyleDelete) return;
     
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    [context deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
+    NSManagedObjectContext *context = [_fetchedResultsController managedObjectContext];
+    [context deleteObject:[_fetchedResultsController objectAtIndexPath:indexPath]];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
@@ -199,17 +198,8 @@
         return _fetchedResultsController;
     }
     
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:self.entityName];
-    [fetchRequest setFetchBatchSize:20];
-    
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES]]];
-    
-    [self setFetchedResultsController:[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:[self managedObjectContext] sectionNameKeyPath:nil cacheName:@"Master"]];
-    [[self fetchedResultsController] setDelegate:self];
-    
-	NSError *error = nil;
-	ZAssert([_fetchedResultsController performFetch:&error], @"Unresolved error %@\n%@", [error localizedDescription], [error userInfo]);
-    
+    _fetchedResultsController = [Product fetchAllGroupedBy:nil withPredicate:nil sortedBy:@"name" ascending:YES delegate:self];
+
     return _fetchedResultsController;
 }
 

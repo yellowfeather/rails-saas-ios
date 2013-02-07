@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Yellow Feather Ltd. All rights reserved.
 //
 
-#import "YFProduct.h"
+#import "Product.h"
 
 @interface YFProductTableViewCell : SSBadgeTableViewCell
 
-@property (nonatomic, weak) YFProduct *product;
+@property (nonatomic, weak) Product *product;
 
 @end

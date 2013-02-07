@@ -10,7 +10,7 @@
 
 @implementation YFProductTableViewCell {
 @private
-    __weak YFProduct *_product;
+    __weak Product *_product;
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -28,7 +28,7 @@
     return self;
 }
 
-- (void)setProduct:(YFProduct *)product {
+- (void)setProduct:(Product *)product {
     _product = product;
     
     self.textLabel.text = _product.name;

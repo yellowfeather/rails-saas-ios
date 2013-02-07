@@ -18,6 +18,4 @@
 
 - (void)signOut:(id)sender;
 
-- (YFProduct *)_findProductWithId:(NSNumber *)productId;
-
 @end

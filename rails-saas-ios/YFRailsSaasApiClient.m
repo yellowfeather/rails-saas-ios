@@ -9,7 +9,7 @@
 #import "AFNetworking.h"
 #import "AFOAuth2Client.h"
 #import "YFRailsSaasApiClient.h"
-#import "YFProduct.h"
+#import "Product.h"
 
 static NSString * const kClientBaseURL  = @"http://cheese.rails-saas.com/";
 static NSString * const kClientID       = @"eb6250c28c0a691aab3828b79e4b63c65fa16e5f16ae754cde2cf8aacca5bac0";
@@ -155,7 +155,7 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
     [self refreshAccessTokenWithSuccess:success failure:failure];
 }
 
-- (void)createProduct:(YFProduct *)product success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure
+- (void)createProduct:(Product *)product success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure
 {
 	NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
 							product.identifier, @"product[identifier]",
@@ -185,7 +185,7 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
 	}];
 }
 
-- (void)updateProduct:(YFProduct *)product success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure
+- (void)updateProduct:(Product *)product success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure
 {
 	NSString *path = [NSString stringWithFormat:@"api/1/products/%@", product.productId];
 	NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:

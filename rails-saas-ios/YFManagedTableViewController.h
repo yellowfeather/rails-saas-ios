@@ -15,10 +15,6 @@
 @property (nonatomic, assign, getter=isLoading) BOOL loading;
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-
-- (NSString *)entityName;
-- (NSManagedObjectContext *)managedObjectContext;
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 

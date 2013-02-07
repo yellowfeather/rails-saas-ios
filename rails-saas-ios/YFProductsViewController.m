@@ -42,6 +42,9 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+    
+    [self.fetchedResultsController managedObjectContext];
+    
 	UIImageView *title = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]];
     title.accessibilityLabel = @"Rails SaaS";
 	title.frame = CGRectMake(0.0f, 0.0f, 116.0f, 21.0f);
@@ -84,37 +87,29 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 
 	self.loading = YES;
 	[client getProductsWithSuccess:^(AFJSONRequestOperation *operation, id responseObject) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			self.loading = NO;
-
-            [self.managedObjectContext performBlockAndWait:^{
+        self.loading = NO;
+        [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
                 NSArray *productsFromResponse = [responseObject valueForKeyPath:@"response"];
         
                 for (NSDictionary *dictionary in productsFromResponse) {
 
                     NSNumber *productId = dictionary[@"id"];
+                    Product *product = [Product findFirstByAttribute:@"productId" withValue:productId inContext:localContext];
                     
-                    NSFetchRequest *fetchRequest = [[self fetchedResultsController] fetchRequest];
-                    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"productId = %@", productId];
-                    fetchRequest.fetchLimit = 1;
-                    
-                    // Execute the fetch request
-                    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
-                    
-                    // If the object is not found, return nil
-                    if (results.count == 0) {
+                    if (product == nil) {
                         NSLog(@"Inserting product: %@", productId);
-                        YFProduct *product = [NSEntityDescription insertNewObjectForEntityForName:@"Product"
-                                                                           inManagedObjectContext:self.managedObjectContext];
-                        [product unpackDictionary:dictionary];
-                        [self.managedObjectContext save:nil];
+                        product = [Product createInContext:localContext];
+                        product.productId = [dictionary objectForKey:@"id"];
+                        product.name = [dictionary objectForKey:@"name"];
+                        product.desc = [dictionary objectForKey:@"description"];
+                        product.identifier = [dictionary objectForKey:@"identifier"];
+                        product.quantity = [dictionary objectForKey:@"quantity"];
                     }
                     else {
                         NSLog(@"Skip product: %@", productId);
                     }
                 }
-            }];
-		});
+		}];
 	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[SSRateLimit resetLimitForName:@"refresh-products"];
@@ -125,8 +120,6 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 
 - (void)createProduct:(id)sender {
 	YFEditProductViewController *viewController = [[YFEditProductViewController alloc] init];
-    viewController.managedObjectContext = self.managedObjectContext;
-    
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 	navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 	[self.navigationController presentViewController:navigationController animated:YES completion:nil];
@@ -155,24 +148,6 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 	}
 }
 
-- (YFProduct *)_findProductWithId:(NSNumber *)productId
-{
-    // Create the fetch request for the ID
-    NSFetchRequest *fetchRequest = [[self fetchedResultsController] fetchRequest];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"productId = %@", productId];
-    fetchRequest.fetchLimit = 1;
-    
-    // Execute the fetch request
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
-    
-    // If the object is not found, return nil
-    if (results.count == 0) {
-        return nil;
-    }
-
-	return [results objectAtIndex:0];
-}
-
 #pragma mark - Table View
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -187,7 +162,7 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
     	// [cell setEditingAction:@selector(_beginEditingWithGesture:) forTarget:self];
 	}
 	
-    YFProduct *product = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    Product *product = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	cell.product = product;
 
     return cell;
@@ -195,10 +170,16 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([[UIDevice currentDevice] userInterfaceIdiom] != UIUserInterfaceIdiomPad) return;
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) return;
     
-    // id object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-    // [[self editViewController] setProduct:object];
+    id object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    
+	YFEditProductViewController *viewController = [[YFEditProductViewController alloc] init];
+    viewController.product = object;
+    
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+	navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+	[self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark - Fetched results controller
@@ -206,27 +187,16 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 - (void)configureCell:(UITableViewCell *)cell
           atIndexPath:(NSIndexPath *)indexPath
 {
-	YFProduct *product = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+	Product *product = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 	[(YFProductTableViewCell *)cell setProduct:product];
 }
 
 #pragma mark
 
 - (void)deleteAllProducts {
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Product" inManagedObjectContext:self.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    
-    NSError *error;
-    NSArray *items = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    
-    for (NSManagedObject *managedObject in items) {
-    	[self.managedObjectContext deleteObject:managedObject];
-    }
-    
-    if (![self.managedObjectContext save:&error]) {
-    	NSLog(@"Error deleting product - error:%@",error);
-    }
+    [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+        [Product truncateAllInContext:localContext];
+    }];
 }
 
 @end

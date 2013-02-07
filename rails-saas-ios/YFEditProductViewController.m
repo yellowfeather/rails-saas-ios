@@ -10,7 +10,7 @@
 #import "UIFont+RailsSaasiOSAdditions.h"
 #import "YFEditProductViewController.h"
 #import "YFHUDView.h"
-#import "YFProduct.h"
+#import "Product.h"
 
 @interface YFEditProductViewController ()
 
@@ -18,10 +18,7 @@
 
 @implementation YFEditProductViewController
 
-// @synthesize product = _product;
-@synthesize managedObjectContext;
-
-
+@synthesize product;
 @synthesize identifierTextField = _identifierTextField;
 @synthesize nameTextField = _nameTextField;
 @synthesize descriptionTextField = _descriptionTextField;
@@ -91,6 +88,17 @@
 	return _quantityTextField;
 }
 
+- (void)configureView
+{
+    if (![self product]) {
+        return;
+    }
+
+    self.identifierTextField.text = product.identifier;
+    self.nameTextField.text = product.name;
+    self.descriptionTextField.text = product.desc;
+    self.quantityTextField.text = [product.quantity stringValue];
+}
 
 #pragma mark - Class Methods
 
@@ -107,15 +115,16 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-//	if (self.product) {
-//		self.title = @"Edit Product";
-//	} else {
+    [self configureView];
+
+	if (self.product) {
+		self.title = @"Edit Product";
+	} else {
 		self.title = @"New Product";
-//	}
+	}
 	
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
-//	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:(self.product ? @"Save" : @"Create") style:UIBarButtonItemStyleDone target:self action:@selector(create:)];
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Create" style:UIBarButtonItemStyleDone target:self action:@selector(create:)];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:(self.product ? @"Save" : @"Create") style:UIBarButtonItemStyleDone target:self action:@selector(create:)];
 	
 	UIView *background = [[UIView alloc] initWithFrame:CGRectZero];
 	background.backgroundColor = [UIColor railsSaasArchesColor];
@@ -144,54 +153,29 @@
     
 	self.identifierTextField.enabled = NO;
     
-	// Update product
-//	if (self.product) {
-//		self.product.identifier = self.identifierTextField.text;
-//        self.product.name = self.nameTextField.text;
-//        self.product.desc = self.descriptionTextField.text;
-//        self.product.quantity = self._getQuantity;
-//        
-//		[self.product save];
-//		[self.product update];
-//		[self.navigationController dismissViewControllerAnimated:YES completion:nil];
-//		return;
-//	}
-    
-	// Create product
-	YFHUDView *hud = [[YFHUDView alloc] initWithTitle:@"Creating..." loading:YES];
+	YFHUDView *hud = [[YFHUDView alloc] initWithTitle:(self.product ? @"Saving..." : @"Creating...") loading:YES];
 	[hud show];
-	
-    YFProduct *product = [NSEntityDescription insertNewObjectForEntityForName:@"Product"
-                                                       inManagedObjectContext:self.managedObjectContext];
     
-    product.identifier = self.identifierTextField.text;
-    product.name = self.nameTextField.text;
-    product.desc = self.descriptionTextField.text;
-    product.quantity = self._getQuantity;
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSError *error = nil;
-        ZAssert([self.managedObjectContext save:&error], @"Error saving moc: %@\n%@",
-                [error localizedDescription], [error userInfo]);
-        
-        [hud completeAndDismissWithTitle:@"Created!"];
+    [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+        Product *newProduct;
+        if (self.product) {
+            newProduct = (Product *)[localContext existingObjectWithID:self.product.objectID error:nil];
+        }
+        else {
+            newProduct = [Product createInContext:localContext];
+        }
+        newProduct.identifier = self.identifierTextField.text;
+        newProduct.name = self.nameTextField.text;
+        newProduct.desc = self.descriptionTextField.text;
+        newProduct.quantity = self._getQuantity;
+    }
+    completion:^(BOOL success, NSError *error) {
+        if (!success) {
+            NSLog(@"Error: %@", error);
+        }
+        [hud completeAndDismissWithTitle:success ? (self.product ? @"Saved" : @"Created!") : @"Failed"];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    });
-    
-    // [product save];
-
-//	[product createWithSuccess:^{
-//		dispatch_async(dispatch_get_main_queue(), ^{
-//			[hud completeAndDismissWithTitle:@"Created!"];
-//			[self.navigationController dismissViewControllerAnimated:YES completion:nil];
-//		});
-//	} failure:^(AFJSONRequestOperation *remoteOperation, NSError *error) {
-//		dispatch_async(dispatch_get_main_queue(), ^{
-//			self.identifierTextField.enabled = YES;
-//			
-//            [hud failAndDismissWithTitle:@"Failed"];
-//		});
-//	}];
+    }];
 }
 
 

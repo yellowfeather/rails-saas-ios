@@ -6,15 +6,11 @@
 //  Copyright (c) 2013 Yellow Feather Ltd. All rights reserved.
 //
 
-@class YFProduct;
+@class Product;
 
 @interface YFEditProductViewController : UITableViewController<UITextFieldDelegate>
 
-// @property (nonatomic, strong) YFProduct *product;
-
-// hack
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-
+@property (strong, nonatomic) Product *product;
 
 @property (nonatomic, strong, readonly) UITextField *identifierTextField;
 @property (nonatomic, strong, readonly) UITextField *nameTextField;
