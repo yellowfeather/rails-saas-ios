@@ -11,7 +11,6 @@
 #import "UIColor+RailsSaasiOSAdditions.h"
 #import "YFLoadingView.h"
 #import "YFTableViewCell.h"
-#import "Product.h"
 
 @implementation YFManagedTableViewController {
 	UITapGestureRecognizer *_tableViewTapGestureRecognizer;
@@ -148,6 +147,11 @@
 
 #pragma mark - Actions
 
+- (Class)entityClass {
+	// Subclasses should override this
+    return nil;
+}
+
 - (void)refresh:(id)sender {
 	// Subclasses should override this
 }
@@ -198,7 +202,7 @@
         return _fetchedResultsController;
     }
     
-    _fetchedResultsController = [Product fetchAllGroupedBy:nil withPredicate:nil sortedBy:@"name" ascending:YES delegate:self];
+    _fetchedResultsController = [self.entityClass fetchAllGroupedBy:nil withPredicate:nil sortedBy:@"name" ascending:YES delegate:self];
 
     return _fetchedResultsController;
 }

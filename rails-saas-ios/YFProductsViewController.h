@@ -14,6 +14,8 @@
 
 @property (strong, nonatomic) YFEditProductViewController *editViewController;
 
+- (Class)entityClass;
+
 - (void)refresh:(id)sender;
 
 - (void)signOut:(id)sender;

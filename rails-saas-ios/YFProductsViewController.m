@@ -79,6 +79,10 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 
 #pragma mark - Actions
 
+- (Class)entityClass {
+    return [Product class];
+}
+
 - (void)refresh:(id)sender {
     YFRailsSaasApiClient *client = [YFRailsSaasApiClient sharedClient];
 	if ([client isSignInRequired]) {
@@ -87,29 +91,34 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 
 	self.loading = YES;
 	[client getProductsWithSuccess:^(AFJSONRequestOperation *operation, id responseObject) {
-        self.loading = NO;
         [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
-                NSArray *productsFromResponse = [responseObject valueForKeyPath:@"response"];
-        
-                for (NSDictionary *dictionary in productsFromResponse) {
-
-                    NSNumber *productId = dictionary[@"id"];
-                    Product *product = [Product findFirstByAttribute:@"productId" withValue:productId inContext:localContext];
-                    
-                    if (product == nil) {
-                        NSLog(@"Inserting product: %@", productId);
-                        product = [Product createInContext:localContext];
-                        product.productId = [dictionary objectForKey:@"id"];
-                        product.name = [dictionary objectForKey:@"name"];
-                        product.desc = [dictionary objectForKey:@"description"];
-                        product.identifier = [dictionary objectForKey:@"identifier"];
-                        product.quantity = [dictionary objectForKey:@"quantity"];
-                    }
-                    else {
-                        NSLog(@"Skip product: %@", productId);
-                    }
+            NSArray *productsFromResponse = [responseObject valueForKeyPath:@"response"];
+            
+            for (NSDictionary *dictionary in productsFromResponse) {
+                
+                NSNumber *productId = dictionary[@"id"];
+                Product *product = [Product findFirstByAttribute:@"productId" withValue:productId inContext:localContext];
+                
+                if (product == nil) {
+                    NSLog(@"Inserting product: %@", productId);
+                    product = [Product createInContext:localContext];
+                    product.productId = [dictionary objectForKey:@"id"];
+                    product.name = [dictionary objectForKey:@"name"];
+                    product.desc = [dictionary objectForKey:@"description"];
+                    product.identifier = [dictionary objectForKey:@"identifier"];
+                    product.quantity = [dictionary objectForKey:@"quantity"];
                 }
-		}];
+                else {
+                    NSLog(@"Skip product: %@", productId);
+                }
+            }
+		}
+        completion:^(BOOL success, NSError *error) {
+             self.loading = NO;
+             if (!success) {
+                 NSLog(@"Error %@", error);
+             }
+         }];
 	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[SSRateLimit resetLimitForName:@"refresh-products"];

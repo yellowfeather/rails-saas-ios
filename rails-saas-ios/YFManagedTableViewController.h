@@ -18,6 +18,7 @@
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 
+- (Class)entityClass;
 - (void)refresh:(id)sender;
 
 - (void)setLoading:(BOOL)loading animated:(BOOL)animated;
