@@ -13,6 +13,7 @@
 		A117F27916C15BF9002DE8E4 /* nav-title@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A117F27516C15BF9002DE8E4 /* nav-title@2x.png */; };
 		A117F27A16C15BF9002DE8E4 /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = A117F27616C15BF9002DE8E4 /* plus.png */; };
 		A117F27B16C15BF9002DE8E4 /* plus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A117F27716C15BF9002DE8E4 /* plus@2x.png */; };
+		A130B5FB16C56D8000E2AAEF /* YFSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A130B5FA16C56D8000E2AAEF /* YFSyncManager.m */; };
 		A138510A16B09CED00F56C90 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A138510916B09CED00F56C90 /* CoreData.framework */; };
 		A138510D16B09DD400F56C90 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A138510B16B09DD400F56C90 /* Model.xcdatamodeld */; };
 		A175840316C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A175840216C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.m */; };
@@ -56,6 +57,8 @@
 		A117F27516C15BF9002DE8E4 /* nav-title@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav-title@2x.png"; sourceTree = "<group>"; };
 		A117F27616C15BF9002DE8E4 /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
 		A117F27716C15BF9002DE8E4 /* plus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus@2x.png"; sourceTree = "<group>"; };
+		A130B5F916C56D8000E2AAEF /* YFSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFSyncManager.h; sourceTree = "<group>"; };
+		A130B5FA16C56D8000E2AAEF /* YFSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFSyncManager.m; sourceTree = "<group>"; };
 		A138510916B09CED00F56C90 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		A138510C16B09DD400F56C90 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		A175840116C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+RailsSaasiOSAdditions.h"; sourceTree = "<group>"; };
@@ -196,13 +199,15 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
-		A17583FE16C054AE006B3787 /* Network */ = {
+		A17583FE16C054AE006B3787 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
 				A1DB6502169AECA60004C8BF /* YFRailsSaasApiClient.h */,
 				A1DB6503169AECA60004C8BF /* YFRailsSaasApiClient.m */,
+				A130B5F916C56D8000E2AAEF /* YFSyncManager.h */,
+				A130B5FA16C56D8000E2AAEF /* YFSyncManager.m */,
 			);
-			name = Network;
+			name = Networking;
 			sourceTree = "<group>";
 		};
 		A17583FF16C05767006B3787 /* Cells */ = {
@@ -313,7 +318,7 @@
 				A175840016C05D9E006B3787 /* Categories */,
 				A17583FB16C053F7006B3787 /* Controllers */,
 				A17583FD16C05405006B3787 /* Model */,
-				A17583FE16C054AE006B3787 /* Network */,
+				A17583FE16C054AE006B3787 /* Networking */,
 				A17583FC16C053FF006B3787 /* Views */,
 			);
 			name = Classes;
@@ -449,6 +454,7 @@
 				A175842C16C07C90006B3787 /* YFLoadingView.m in Sources */,
 				A175842F16C07E2C006B3787 /* YFTableViewCell.m in Sources */,
 				A117F27116C1434A002DE8E4 /* YFEditProductViewController.m in Sources */,
+				A130B5FB16C56D8000E2AAEF /* YFSyncManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

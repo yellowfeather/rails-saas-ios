@@ -12,6 +12,7 @@
 #import "YFProductTableViewCell.h"
 #import "YFRailsSaasApiClient.h"
 #import "YFSignInViewController.h"
+#import "YFSyncManager.h"
 
 @interface YFProductsViewController ()
 
@@ -32,10 +33,6 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
         // Custom initialization
     }
     return self;
-}
-
-- (NSString *)entityName {
-    return @"Product";
 }
 
 #pragma mark - NSObject
@@ -77,54 +74,20 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 	} name:@"refresh-products" limit:30.0];
 }
 
-#pragma mark - Actions
+#pragma mark - YFManagedTableViewController
 
-- (Class)entityClass {
-    return [Product class];
+- (NSFetchedResultsController *)createFetchedResultsController
+{
+    return [Product fetchAllGroupedBy:nil withPredicate:nil sortedBy:@"name" ascending:YES delegate:self];
 }
 
-- (void)refresh:(id)sender {
-    YFRailsSaasApiClient *client = [YFRailsSaasApiClient sharedClient];
-	if ([client isSignInRequired]) {
-		return;
-	}
+#pragma mark - Actions
 
+- (void)refresh:(id)sender {
 	self.loading = YES;
-	[client getProductsWithSuccess:^(AFJSONRequestOperation *operation, id responseObject) {
-        [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
-            NSArray *productsFromResponse = [responseObject valueForKeyPath:@"response"];
-            
-            for (NSDictionary *dictionary in productsFromResponse) {
-                
-                NSNumber *productId = dictionary[@"id"];
-                Product *product = [Product findFirstByAttribute:@"productId" withValue:productId inContext:localContext];
-                
-                if (product == nil) {
-                    NSLog(@"Inserting product: %@", productId);
-                    product = [Product createInContext:localContext];
-                    product.productId = [dictionary objectForKey:@"id"];
-                    product.name = [dictionary objectForKey:@"name"];
-                    product.desc = [dictionary objectForKey:@"description"];
-                    product.identifier = [dictionary objectForKey:@"identifier"];
-                    product.quantity = [dictionary objectForKey:@"quantity"];
-                }
-                else {
-                    NSLog(@"Skip product: %@", productId);
-                }
-            }
-		}
-        completion:^(BOOL success, NSError *error) {
-             self.loading = NO;
-             if (!success) {
-                 NSLog(@"Error %@", error);
-             }
-         }];
-	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[SSRateLimit resetLimitForName:@"refresh-products"];
-			self.loading = NO;
-		});
-	}];
+    [[YFSyncManager shared] syncProductsWithBlock:^(BOOL success, NSError *error) {
+        self.loading = NO;
+    }];
 }
 
 - (void)createProduct:(id)sender {

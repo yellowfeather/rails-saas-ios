@@ -14,11 +14,12 @@
 @property (nonatomic, strong) UIView *loadingView;
 @property (nonatomic, assign, getter=isLoading) BOOL loading;
 
+- (NSFetchedResultsController *)createFetchedResultsController;
+
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 
-- (Class)entityClass;
 - (void)refresh:(id)sender;
 
 - (void)setLoading:(BOOL)loading animated:(BOOL)animated;

@@ -50,6 +50,8 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+    
+    _fetchedResultsController = self.createFetchedResultsController;
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	self.tableView.rowHeight = [YFTableViewCell cellHeight];
@@ -147,15 +149,15 @@
 
 #pragma mark - Actions
 
-- (Class)entityClass {
-	// Subclasses should override this
-    return nil;
-}
-
 - (void)refresh:(id)sender {
 	// Subclasses should override this
 }
 
+- (NSFetchedResultsController *)createFetchedResultsController
+{
+    // subclasses should override this
+    return nil;
+}
 
 #pragma mark - SSPullToRefreshViewDelegate
 
@@ -202,7 +204,7 @@
         return _fetchedResultsController;
     }
     
-    _fetchedResultsController = [self.entityClass fetchAllGroupedBy:nil withPredicate:nil sortedBy:@"name" ascending:YES delegate:self];
+    _fetchedResultsController = self.createFetchedResultsController;
 
     return _fetchedResultsController;
 }
