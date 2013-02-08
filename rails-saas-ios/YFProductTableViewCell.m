@@ -41,6 +41,9 @@
     else if ([_product.quantity intValue] >= 5) {
         self.badgeView.badgeColor = UIColorFromRGB(0xf6b003);
     }
+    else {
+        self.badgeView.badgeColor = [SSBadgeView defaultBadgeColor];
+    }
     
     [self setNeedsLayout];
 }
