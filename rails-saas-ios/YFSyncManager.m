@@ -26,6 +26,9 @@
 {
     YFRailsSaasApiClient *client = [YFRailsSaasApiClient sharedClient];
 	if ([client isSignInRequired]) {
+        if (completion) {
+            completion(YES, nil);
+        }
 		return;
 	}
     
@@ -53,16 +56,24 @@
             }
 		}
         completion:^(BOOL success, NSError *error) {
-            // note: success will be NO if no changes have been saved
+            // note: success will be NO if there no changes to save
             
             if (error) {
                 NSLog(@"Error %@", error);
+            }
+            
+            if (completion) {
+                completion(success, error);
             }
         }];
 	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[SSRateLimit resetLimitForName:@"refresh-products"];
 		});
+        
+        if (completion) {
+            completion(NO, error);
+        }
 	}];
 }
 

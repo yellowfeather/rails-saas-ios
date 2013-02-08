@@ -40,8 +40,6 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 - (void)viewDidLoad {
 	[super viewDidLoad];
     
-    [self.fetchedResultsController managedObjectContext];
-    
 	UIImageView *title = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]];
     title.accessibilityLabel = @"Rails SaaS";
 	title.frame = CGRectMake(0.0f, 0.0f, 116.0f, 21.0f);
@@ -68,10 +66,6 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self _checkUser];
 	}
-
-	[SSRateLimit executeBlock:^{
-		[self refresh:nil];
-	} name:@"refresh-products" limit:30.0];
 }
 
 #pragma mark - YFManagedTableViewController
@@ -152,6 +146,34 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 	navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 	[self.navigationController presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
+    [super controller:controller didChangeObject:anObject atIndexPath:indexPath forChangeType:type newIndexPath:newIndexPath];
+    
+    if (self.loading == YES) {
+        return;
+    }
+
+    switch(type) {
+        case NSFetchedResultsChangeInsert: {
+            // [[YFRailsSaasApiClient sharedClient] createProduct:anObject success:nil failure:nil];
+            break;
+        }
+        case NSFetchedResultsChangeDelete: {
+            [[YFRailsSaasApiClient sharedClient] deleteProduct:anObject success:nil failure:nil];
+            break;
+        }
+        case NSFetchedResultsChangeUpdate: {
+            // [[YFRailsSaasApiClient sharedClient] updateProduct:anObject success:nil failure:nil];
+            break;
+        }
+    }
 }
 
 #pragma mark - Fetched results controller

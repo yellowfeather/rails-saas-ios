@@ -136,7 +136,7 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
 - (void)getProductsWithSuccess:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure {
     NSLog(@"getProductsWithSuccess");
 
-    success = ^(AFJSONRequestOperation *operation, id responseObject) {
+    YFRailsSaasApiClientSuccess nestedSuccess = ^(AFJSONRequestOperation *operation, id responseObject) {
         [self getPath:@"api/1/products"
            parameters:nil
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -152,7 +152,7 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
               }];
     };
     
-    [self refreshAccessTokenWithSuccess:success failure:failure];
+    [self refreshAccessTokenWithSuccess:nestedSuccess failure:failure];
 }
 
 - (void)createProduct:(Product *)product success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure
@@ -163,26 +163,27 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
 							product.desc, @"product[description]",
 							product.quantity, @"product[quantity]",
 							nil];
-	
-	// __weak NSManagedObjectContext *context = [YFProduct mainQueueContext];
-	[self postPath:@"api/1/products" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-		// [context performBlockAndWait:^{
-			// [product unpackDictionary:responseObject];
-			// [product save];
-		// }];
-		
-		if (success) {
-			success((AFJSONRequestOperation *)operation, responseObject);
-		}
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		// [context performBlockAndWait:^{
-			// [product delete];
-		// }];
-		
-		if (failure) {
-			failure((AFJSONRequestOperation *)operation, error);
-		}
-	}];
+    
+    YFRailsSaasApiClientSuccess nestedSuccess  = ^(AFJSONRequestOperation *operation, id responseObject) {
+        [self postPath:@"api/1/products" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+                NSDictionary *dictionary = [responseObject valueForKeyPath:@"response"];
+                Product *updatedProduct = (Product *)[localContext existingObjectWithID:product.objectID error:nil];
+                updatedProduct.productId = [dictionary objectForKey:@"id"];
+            }];
+
+            if (success) {
+                success((AFJSONRequestOperation *)operation, responseObject);
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            if (failure) {
+                failure((AFJSONRequestOperation *)operation, error);
+            }
+        }];
+    };
+    
+    [self refreshAccessTokenWithSuccess:nestedSuccess failure:failure];
 }
 
 - (void)updateProduct:(Product *)product success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure
@@ -194,22 +195,37 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
 							product.desc, @"product[description]",
 							product.quantity, @"product[quantity]",
 							nil];
-	
-	[self putPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//		__weak NSManagedObjectContext *context = [YFProduct mainQueueContext];
-//		[context performBlockAndWait:^{
-//			[product unpackDictionary:responseObject];
-//			[product save];
-//		}];
-		
-		if (success) {
-			success((AFJSONRequestOperation *)operation, responseObject);
-		}
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		if (failure) {
-			failure((AFJSONRequestOperation *)operation, error);
-		}
-	}];
+    YFRailsSaasApiClientSuccess nestedSuccess  = ^(AFJSONRequestOperation *operation, id responseObject) {
+        [self putPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            if (success) {
+                success((AFJSONRequestOperation *)operation, responseObject);
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            if (failure) {
+                failure((AFJSONRequestOperation *)operation, error);
+            }
+        }];
+    };
+    
+    [self refreshAccessTokenWithSuccess:nestedSuccess failure:failure];
+}
+
+- (void)deleteProduct:(Product *)product success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure
+{
+	NSString *path = [NSString stringWithFormat:@"api/1/products/%@", product.productId];
+    YFRailsSaasApiClientSuccess nestedSuccess  = ^(AFJSONRequestOperation *operation, id responseObject) {
+        [self deletePath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            if (success) {
+                success((AFJSONRequestOperation *)operation, responseObject);
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            if (failure) {
+                failure((AFJSONRequestOperation *)operation, error);
+            }
+        }];
+    };
+    
+    [self refreshAccessTokenWithSuccess:nestedSuccess failure:failure];
 }
 
 @end

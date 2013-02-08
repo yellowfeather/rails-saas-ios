@@ -10,7 +10,7 @@
 #import "AFNetworking.h"
 #import "AFOAuth2Client.h"
 
-@class YFProduct;
+@class Product;
 
 typedef void (^YFRailsSaasApiClientSuccess)(AFJSONRequestOperation *operation, id responseObject);
 typedef void (^YFRailsSaasApiClientFailure)(AFJSONRequestOperation *operation, NSError *error);
@@ -32,7 +32,8 @@ typedef void (^YFRailsSaasApiClientFailure)(AFJSONRequestOperation *operation, N
 
 // products
 - (void)getProductsWithSuccess:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure;
-- (void)createProduct:(YFProduct *)list success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure;
-- (void)updateProduct:(YFProduct *)list success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure;
+- (void)createProduct:(Product *)list success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure;
+- (void)updateProduct:(Product *)list success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure;
+- (void)deleteProduct:(Product *)product success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure;
 
 @end

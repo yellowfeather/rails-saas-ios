@@ -10,6 +10,8 @@
 #import "UIFont+RailsSaasiOSAdditions.h"
 #import "YFEditProductViewController.h"
 #import "YFHUDView.h"
+#import "YFRailsSaasApiClient.h"
+
 #import "Product.h"
 
 @interface YFEditProductViewController ()
@@ -157,6 +159,8 @@
 	[hud show];
     
     [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+        bool isEditing = (self.product);
+
         Product *newProduct;
         if (self.product) {
             newProduct = (Product *)[localContext existingObjectWithID:self.product.objectID error:nil];
@@ -168,11 +172,19 @@
         newProduct.name = self.nameTextField.text;
         newProduct.desc = self.descriptionTextField.text;
         newProduct.quantity = self._getQuantity;
+        
+        if (isEditing) {
+            [[YFRailsSaasApiClient sharedClient] updateProduct:newProduct success:nil failure:nil];
+        }
+        else {
+            [[YFRailsSaasApiClient sharedClient] createProduct:newProduct success:nil failure:nil];
+        }
     }
     completion:^(BOOL success, NSError *error) {
         if (!success) {
             NSLog(@"Error: %@", error);
         }
+
         [hud completeAndDismissWithTitle:success ? (self.product ? @"Saved" : @"Created!") : @"Failed"];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }];
