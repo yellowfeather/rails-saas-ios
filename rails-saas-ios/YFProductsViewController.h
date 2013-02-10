@@ -12,8 +12,6 @@
 
 @interface YFProductsViewController : YFManagedTableViewController
 
-@property (strong, nonatomic) YFEditProductViewController *editViewController;
-
 - (void)refresh:(id)sender;
 
 - (void)signOut:(id)sender;

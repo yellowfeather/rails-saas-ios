@@ -24,8 +24,6 @@
 __strong UIActivityIndicatorView *_activityIndicatorView;
 }
 
-@synthesize editViewController;
-
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
