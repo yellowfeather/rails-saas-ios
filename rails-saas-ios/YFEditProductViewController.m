@@ -11,6 +11,7 @@
 #import "YFEditProductViewController.h"
 #import "YFHUDView.h"
 #import "YFRailsSaasApiClient.h"
+#import "YFSyncManager.h"
 
 #import "Product.h"
 
@@ -157,37 +158,28 @@
     
 	YFHUDView *hud = [[YFHUDView alloc] initWithTitle:(self.product ? @"Saving..." : @"Creating...") loading:YES];
 	[hud show];
-    
-    [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
-        bool isEditing = (self.product);
 
-        Product *newProduct;
-        if (self.product) {
-            newProduct = (Product *)[localContext existingObjectWithID:self.product.objectID error:nil];
-        }
-        else {
-            newProduct = [Product createInContext:localContext];
-        }
-        newProduct.identifier = self.identifierTextField.text;
-        newProduct.name = self.nameTextField.text;
-        newProduct.desc = self.descriptionTextField.text;
-        newProduct.quantity = self._getQuantity;
-        
-        if (isEditing) {
-            [[YFRailsSaasApiClient sharedClient] updateProduct:newProduct success:nil failure:nil];
-        }
-        else {
-            [[YFRailsSaasApiClient sharedClient] createProduct:newProduct success:nil failure:nil];
-        }
-    }
-    completion:^(BOOL success, NSError *error) {
-        if (!success) {
+    self.product.identifier = self.identifierTextField.text;
+    self.product.name = self.nameTextField.text;
+    self.product.desc = self.descriptionTextField.text;
+    self.product.quantity = self._getQuantity;
+
+    YFSyncManagerCompletionBlock completionBlock = ^(BOOL success, NSError *error)
+    {
+        if (error) {
             NSLog(@"Error: %@", error);
         }
-
-        [hud completeAndDismissWithTitle:success ? (self.product ? @"Saved" : @"Created!") : @"Failed"];
+        
+        [hud completeAndDismissWithTitle:error ? @"Failed" : (self.product.objectID ? @"Saved" : @"Created!")];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    }];
+    };
+    
+    if (self.product.objectID == nil) {
+        [[YFSyncManager shared] createProductWithBlock:self.product block:completionBlock];
+    }
+    else {
+        [[YFSyncManager shared] updateProductWithBlock:self.product block:completionBlock];
+    }
 }
 
 

@@ -79,13 +79,15 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 
 - (void)refresh:(id)sender {
 	self.loading = YES;
-    [[YFSyncManager shared] syncProductsWithBlock:^(BOOL success, NSError *error) {
+    [[YFSyncManager shared] getProductsWithBlock:^(BOOL success, NSError *error) {
         self.loading = NO;
     }];
 }
 
 - (void)createProduct:(id)sender {
 	YFEditProductViewController *viewController = [[YFEditProductViewController alloc] init];
+    viewController.product = [Product createInContext:nil];
+    
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 	navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 	[self.navigationController presentViewController:navigationController animated:YES completion:nil];
@@ -161,16 +163,8 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
     }
 
     switch(type) {
-        case NSFetchedResultsChangeInsert: {
-            // [[YFRailsSaasApiClient sharedClient] createProduct:anObject success:nil failure:nil];
-            break;
-        }
         case NSFetchedResultsChangeDelete: {
-            [[YFRailsSaasApiClient sharedClient] deleteProduct:anObject success:nil failure:nil];
-            break;
-        }
-        case NSFetchedResultsChangeUpdate: {
-            // [[YFRailsSaasApiClient sharedClient] updateProduct:anObject success:nil failure:nil];
+            [[YFSyncManager shared] deleteProductWithBlock:anObject block:nil];
             break;
         }
     }

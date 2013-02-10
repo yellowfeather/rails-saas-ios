@@ -22,12 +22,12 @@
     return _shared;
 }
 
-- (void)syncProductsWithBlock:(YFSyncManagerCompletionBlock)completion
+- (void)getProductsWithBlock:(YFSyncManagerCompletionBlock)block
 {
     YFRailsSaasApiClient *client = [YFRailsSaasApiClient sharedClient];
 	if ([client isSignInRequired]) {
-        if (completion) {
-            completion(YES, nil);
+        if (block) {
+            block(YES, nil);
         }
 		return;
 	}
@@ -62,8 +62,8 @@
                 NSLog(@"Error %@", error);
             }
             
-            if (completion) {
-                completion(success, error);
+            if (block) {
+                block(success, error);
             }
         }];
 	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
@@ -71,10 +71,51 @@
 			[SSRateLimit resetLimitForName:@"refresh-products"];
 		});
         
-        if (completion) {
-            completion(NO, error);
+        if (block) {
+            block(NO, error);
         }
 	}];
+}
+
+- (void)createProductWithBlock:(Product *)product block:(YFSyncManagerCompletionBlock)block
+{
+    [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+        Product *newProduct = [Product createInContext:localContext];
+        newProduct.identifier = product.identifier;
+        newProduct.name = product.name;
+        newProduct.desc = product.desc;
+        newProduct.quantity = product.quantity;
+        
+        [[YFRailsSaasApiClient sharedClient] createProduct:newProduct success:nil failure:nil];
+    }
+    completion:^(BOOL success, NSError *error) {
+        if (block) {
+            block(success, error);
+        }
+    }];
+}
+
+- (void)updateProductWithBlock:(Product *)product block:(YFSyncManagerCompletionBlock)block
+{
+    [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+        Product *existingProduct = (Product *)[localContext existingObjectWithID:product.objectID error:nil];
+        existingProduct.identifier = product.identifier;
+        existingProduct.name = product.name;
+        existingProduct.desc = product.desc;
+        existingProduct.quantity = product.quantity;
+        
+        [[YFRailsSaasApiClient sharedClient] updateProduct:existingProduct success:nil failure:nil];
+    }
+    completion:^(BOOL success, NSError *error) {
+        if (block) {
+            block(success, error);
+        }
+    }];
+}
+
+- (void)deleteProductWithBlock:(Product *)product block:(YFSyncManagerCompletionBlock)block
+{
+    [[YFRailsSaasApiClient sharedClient] deleteProduct:product success:nil failure:nil];
 }
 
 @end

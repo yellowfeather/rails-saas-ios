@@ -15,6 +15,9 @@ typedef void (^YFSyncManagerCompletionBlock)(BOOL success, NSError *error);
 
 + (YFSyncManager *)shared;
 
-- (void)syncProductsWithBlock:(YFSyncManagerCompletionBlock)completion;
+- (void)getProductsWithBlock:(YFSyncManagerCompletionBlock)block;
+- (void)createProductWithBlock:(Product *)product block:(YFSyncManagerCompletionBlock)block;
+- (void)updateProductWithBlock:(Product *)product block:(YFSyncManagerCompletionBlock)block;
+- (void)deleteProductWithBlock:(Product *)product block:(YFSyncManagerCompletionBlock)block;
 
 @end
