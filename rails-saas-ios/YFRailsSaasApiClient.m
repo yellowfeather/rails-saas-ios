@@ -11,7 +11,7 @@
 #import "YFRailsSaasApiClient.h"
 #import "Product.h"
 
-static NSString * const kClientBaseURL  = @"http://cheese.rails-saas.com/";
+static NSString * const kClientBaseURL  = @"http://cheese.rails-saas.dev/";
 static NSString * const kClientID       = @"eb6250c28c0a691aab3828b79e4b63c65fa16e5f16ae754cde2cf8aacca5bac0";
 static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd320953650780e47bb8e3e9e14a951992962c406";
 
@@ -131,6 +131,31 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
                                          failure(nil, error);
                                      }
                                  }];
+}
+
+- (void)getSyncChangeSet:(NSDate*)lastSynced success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure
+{
+    NSLog(@"getSyncChangeSet");
+    
+    YFRailsSaasApiClientSuccess nestedSuccess = ^(AFJSONRequestOperation *operation, id responseObject) {
+        NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:lastSynced, @"last_synced", nil];
+        
+        [self getPath:@"api/1/sync"
+           parameters:parameters
+              success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                  NSLog(@"getSyncChangeSet: success");
+                  if (success) {
+                      success((AFJSONRequestOperation *)operation, responseObject);
+                  }
+              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  NSLog(@"getSyncChangeSet: failure");
+                  if (failure) {
+                      failure((AFJSONRequestOperation *)operation, error);
+                  }
+              }];
+    };
+    
+    [self refreshAccessTokenWithSuccess:nestedSuccess failure:failure];
 }
 
 - (void)getProductsWithSuccess:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure {

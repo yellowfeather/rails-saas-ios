@@ -156,9 +156,16 @@
     
 	self.identifierTextField.enabled = NO;
     
-	YFHUDView *hud = [[YFHUDView alloc] initWithTitle:(self.product ? @"Saving..." : @"Creating...") loading:YES];
+    BOOL isCreating = self.product == nil;
+    
+	YFHUDView *hud = [[YFHUDView alloc] initWithTitle:(isCreating ? @"Creating..." : @"Saving...") loading:YES];
 	[hud show];
 
+    NSManagedObjectContext *tempContext = [NSManagedObjectContext context];
+    if (isCreating) {
+        self.product = [Product createInContext:tempContext];
+    }
+    
     self.product.identifier = self.identifierTextField.text;
     self.product.name = self.nameTextField.text;
     self.product.desc = self.descriptionTextField.text;
@@ -170,11 +177,11 @@
             NSLog(@"Error: %@", error);
         }
         
-        [hud completeAndDismissWithTitle:error ? @"Failed" : (self.product.objectID ? @"Saved" : @"Created!")];
+        [hud completeAndDismissWithTitle:error ? @"Failed" : (isCreating ? @"Created!" : @"Saved")];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     };
     
-    if (self.product.objectID == nil) {
+    if (isCreating) {
         [[YFSyncManager shared] createProductWithBlock:self.product block:completionBlock];
     }
     else {

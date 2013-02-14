@@ -15,6 +15,10 @@ typedef void (^YFSyncManagerCompletionBlock)(BOOL success, NSError *error);
 
 + (YFSyncManager *)shared;
 
+@property (strong) NSDate *lastSynced;
+
+-(void)syncWithBlock:(YFSyncManagerCompletionBlock)block;
+
 - (void)getProductsWithBlock:(YFSyncManagerCompletionBlock)block;
 - (void)createProductWithBlock:(Product *)product block:(YFSyncManagerCompletionBlock)block;
 - (void)updateProductWithBlock:(Product *)product block:(YFSyncManagerCompletionBlock)block;

@@ -30,6 +30,9 @@ typedef void (^YFRailsSaasApiClientFailure)(AFJSONRequestOperation *operation, N
 - (bool)isSignInRequired;
 - (void)refreshAccessTokenWithSuccess:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure;
 
+// sync
+- (void)getSyncChangeSet:(NSDate*)lastSynced success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure;
+
 // products
 - (void)getProductsWithSuccess:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure;
 - (void)createProduct:(Product *)list success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure;

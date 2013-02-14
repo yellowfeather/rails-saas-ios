@@ -50,6 +50,8 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"plus"]
         style:UIBarButtonItemStyleBordered target:self action:@selector(createProduct:)];
+    
+    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -77,15 +79,13 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 
 - (void)refresh:(id)sender {
 	self.loading = YES;
-    [[YFSyncManager shared] getProductsWithBlock:^(BOOL success, NSError *error) {
+    [[YFSyncManager shared] syncWithBlock:^(BOOL success, NSError *error) {
         self.loading = NO;
     }];
 }
 
 - (void)createProduct:(id)sender {
 	YFEditProductViewController *viewController = [[YFEditProductViewController alloc] init];
-    viewController.product = [Product createInContext:nil];
-    
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 	navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 	[self.navigationController presentViewController:navigationController animated:YES completion:nil];
@@ -94,6 +94,7 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 - (void)signOut:(id)sender {
     [self deleteAllProducts];
     [[YFRailsSaasApiClient sharedClient] signOut];
+    [[YFSyncManager shared] setLastSynced:nil];
     [self _checkUser];
 }
 

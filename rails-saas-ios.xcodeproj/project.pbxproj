@@ -16,6 +16,7 @@
 		A130B5FB16C56D8000E2AAEF /* YFSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A130B5FA16C56D8000E2AAEF /* YFSyncManager.m */; };
 		A138510A16B09CED00F56C90 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A138510916B09CED00F56C90 /* CoreData.framework */; };
 		A138510D16B09DD400F56C90 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A138510B16B09DD400F56C90 /* Model.xcdatamodeld */; };
+		A138C53D16CD3DCA00F72731 /* Product.m in Sources */ = {isa = PBXBuildFile; fileRef = A138C53C16CD3DCA00F72731 /* Product.m */; };
 		A175840316C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A175840216C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.m */; };
 		A175840616C05FAF006B3787 /* YFHUDView.m in Sources */ = {isa = PBXBuildFile; fileRef = A175840516C05FAF006B3787 /* YFHUDView.m */; };
 		A175840916C06035006B3787 /* UIFont+RailsSaasiOSAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A175840816C06035006B3787 /* UIFont+RailsSaasiOSAdditions.m */; };
@@ -41,7 +42,6 @@
 		A1DB64CD169ADDB90004C8BF /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1DB64CC169ADDB90004C8BF /* Default-568h@2x.png */; };
 		A1DB64D6169ADDB90004C8BF /* YFSignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1DB64D5169ADDB90004C8BF /* YFSignInViewController.m */; };
 		A1DB6504169AECA60004C8BF /* YFRailsSaasApiClient.m in Sources */ = {isa = PBXBuildFile; fileRef = A1DB6503169AECA60004C8BF /* YFRailsSaasApiClient.m */; };
-		A1DB6507169AED400004C8BF /* Product.m in Sources */ = {isa = PBXBuildFile; fileRef = A1DB6506169AED400004C8BF /* Product.m */; };
 		A1DB6509169AEEA00004C8BF /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1DB6508169AEEA00004C8BF /* SystemConfiguration.framework */; };
 		A1DB650B169AEEA90004C8BF /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1DB650A169AEEA90004C8BF /* MobileCoreServices.framework */; };
 		A1DB6513169AF14F0004C8BF /* YFProductsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1DB6512169AF14F0004C8BF /* YFProductsViewController.m */; };
@@ -61,6 +61,8 @@
 		A130B5FA16C56D8000E2AAEF /* YFSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFSyncManager.m; sourceTree = "<group>"; };
 		A138510916B09CED00F56C90 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		A138510C16B09DD400F56C90 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		A138C53B16CD3DCA00F72731 /* Product.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Product.h; sourceTree = "<group>"; };
+		A138C53C16CD3DCA00F72731 /* Product.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Product.m; sourceTree = "<group>"; };
 		A175840116C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+RailsSaasiOSAdditions.h"; sourceTree = "<group>"; };
 		A175840216C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+RailsSaasiOSAdditions.m"; sourceTree = "<group>"; };
 		A175840416C05FAF006B3787 /* YFHUDView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFHUDView.h; sourceTree = "<group>"; };
@@ -106,8 +108,6 @@
 		A1DB64D5169ADDB90004C8BF /* YFSignInViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YFSignInViewController.m; sourceTree = "<group>"; };
 		A1DB6502169AECA60004C8BF /* YFRailsSaasApiClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFRailsSaasApiClient.h; sourceTree = "<group>"; };
 		A1DB6503169AECA60004C8BF /* YFRailsSaasApiClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFRailsSaasApiClient.m; sourceTree = "<group>"; };
-		A1DB6505169AED400004C8BF /* Product.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Product.h; sourceTree = "<group>"; };
-		A1DB6506169AED400004C8BF /* Product.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Product.m; sourceTree = "<group>"; };
 		A1DB6508169AEEA00004C8BF /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A1DB650A169AEEA90004C8BF /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		A1DB6511169AF14F0004C8BF /* YFProductsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFProductsViewController.h; sourceTree = "<group>"; };
@@ -193,8 +193,8 @@
 			isa = PBXGroup;
 			children = (
 				A138510B16B09DD400F56C90 /* Model.xcdatamodeld */,
-				A1DB6505169AED400004C8BF /* Product.h */,
-				A1DB6506169AED400004C8BF /* Product.m */,
+				A138C53B16CD3DCA00F72731 /* Product.h */,
+				A138C53C16CD3DCA00F72731 /* Product.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -435,7 +435,6 @@
 				A1DB64C7169ADDB90004C8BF /* YFAppDelegate.m in Sources */,
 				A1DB64D6169ADDB90004C8BF /* YFSignInViewController.m in Sources */,
 				A1DB6504169AECA60004C8BF /* YFRailsSaasApiClient.m in Sources */,
-				A1DB6507169AED400004C8BF /* Product.m in Sources */,
 				A1DB6513169AF14F0004C8BF /* YFProductsViewController.m in Sources */,
 				A1DB6516169AF35E0004C8BF /* YFProductTableViewCell.m in Sources */,
 				A138510D16B09DD400F56C90 /* Model.xcdatamodeld in Sources */,
@@ -455,6 +454,7 @@
 				A175842F16C07E2C006B3787 /* YFTableViewCell.m in Sources */,
 				A117F27116C1434A002DE8E4 /* YFEditProductViewController.m in Sources */,
 				A130B5FB16C56D8000E2AAEF /* YFSyncManager.m in Sources */,
+				A138C53D16CD3DCA00F72731 /* Product.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
