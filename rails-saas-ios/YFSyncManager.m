@@ -167,7 +167,12 @@
         NSArray *products = [entities valueForKeyPath:@"products"];
         
         for (NSDictionary *dictionary in products) {
-            Product *product = [Product createInContext:localContext];
+            NSNumber *productId = dictionary[@"id"];
+            Product *product = [Product findFirstByAttribute:@"productId" withValue:productId inContext:localContext];
+            if (product == nil) {
+                product = [Product createInContext:localContext];
+            }
+
             product.productId = [dictionary objectForKey:@"id"];
             product.syncId = [dictionary objectForKey:@"sync_id"];
             product.name = [dictionary objectForKey:@"name"];
