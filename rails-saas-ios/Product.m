@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Yellow Feather Ltd. All rights reserved.
 //
 
-#import "NSString+SSToolkitAdditions.h"
 #import "Product.h"
 
 
@@ -17,14 +16,5 @@
 @dynamic name;
 @dynamic productId;
 @dynamic quantity;
-@dynamic syncId;
-@dynamic createdAt;
-@dynamic updatedAt;
-
-- (void) awakeFromInsert
-{
-    [super awakeFromInsert];
-    [self setSyncId:[NSString stringWithUUID]];
-}
 
 @end

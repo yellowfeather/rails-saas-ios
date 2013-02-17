@@ -10,7 +10,6 @@
 
 typedef void (^YFSyncManagerCompletionBlock)(BOOL success, NSError *error);
 
-
 @interface YFSyncManager : NSObject
 
 + (YFSyncManager *)shared;
