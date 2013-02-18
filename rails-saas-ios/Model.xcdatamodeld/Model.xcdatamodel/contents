@@ -13,8 +13,14 @@
         <attribute name="syncStatus" optional="YES" attributeType="Integer 16" defaultValueString="1" indexed="YES" syncable="YES"/>
         <attribute name="updatedAt" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
+    <entity name="Tombstone" representedClassName="Tombstone" syncable="YES">
+        <attribute name="createdAt" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="klass" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="syncId" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+    </entity>
     <elements>
-        <element name="Product" positionX="160" positionY="192" width="128" height="120"/>
-        <element name="RemoteEntity" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="Product" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="RemoteEntity" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="Tombstone" positionX="0" positionY="0" width="128" height="90"/>
     </elements>
 </model>

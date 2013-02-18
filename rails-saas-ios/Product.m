@@ -17,4 +17,8 @@
 @dynamic productId;
 @dynamic quantity;
 
++ (NSString *)entityName {
+	return @"product";
+}
+
 @end
