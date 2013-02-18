@@ -161,32 +161,32 @@
 	YFHUDView *hud = [[YFHUDView alloc] initWithTitle:(isCreating ? @"Creating..." : @"Saving...") loading:YES];
 	[hud show];
 
-    NSManagedObjectContext *tempContext = [NSManagedObjectContext context];
-    if (isCreating) {
-        self.product = [Product createInContext:tempContext];
-    }
-    
-    self.product.identifier = self.identifierTextField.text;
-    self.product.name = self.nameTextField.text;
-    self.product.desc = self.descriptionTextField.text;
-    self.product.quantity = self._getQuantity;
+    [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+        if (isCreating) {
+            self.product = [Product createInContext:localContext];
+            self.product.syncStatus = RemoteEntitySyncStatusCreated;
+        }
+        else {
+            self.product = (Product *)[localContext existingObjectWithID:product.objectID error:nil];
+            if (self.product.syncStatus != RemoteEntitySyncStatusCreated) {
+                self.product.syncStatus = RemoteEntitySyncStatusModified;
+            }
+        }
 
-    YFSyncManagerCompletionBlock completionBlock = ^(BOOL success, NSError *error)
+        self.product.identifier = self.identifierTextField.text;
+        self.product.name = self.nameTextField.text;
+        self.product.desc = self.descriptionTextField.text;
+        self.product.quantity = self._getQuantity;
+    }
+    completion:^(BOOL success, NSError *error)
     {
         if (error) {
             NSLog(@"Error: %@", error);
         }
-        
+         
         [hud completeAndDismissWithTitle:error ? @"Failed" : (isCreating ? @"Created!" : @"Saved")];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    };
-    
-    if (isCreating) {
-        [[YFSyncManager shared] createProductWithBlock:self.product block:completionBlock];
-    }
-    else {
-        [[YFSyncManager shared] updateProductWithBlock:self.product block:completionBlock];
-    }
+    }];
 }
 
 

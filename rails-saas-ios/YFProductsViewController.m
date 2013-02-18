@@ -149,26 +149,6 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 	[self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
-- (void)controller:(NSFetchedResultsController *)controller
-   didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath *)indexPath
-     forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath
-{
-    [super controller:controller didChangeObject:anObject atIndexPath:indexPath forChangeType:type newIndexPath:newIndexPath];
-    
-    if (self.loading == YES) {
-        return;
-    }
-
-    switch(type) {
-        case NSFetchedResultsChangeDelete: {
-            [[YFSyncManager shared] deleteProductWithBlock:anObject block:nil];
-            break;
-        }
-    }
-}
-
 #pragma mark - Fetched results controller
 
 - (void)configureCell:(UITableViewCell *)cell

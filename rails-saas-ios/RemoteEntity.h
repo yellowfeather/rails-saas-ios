@@ -18,7 +18,7 @@ typedef enum RemoteEntitySyncStatusTypeEnum : int16_t {
 @interface RemoteEntity : NSManagedObject
 
 @property (nonatomic, retain) NSString * syncId;
-@property (nonatomic) RemoteEntitySyncStatusType *syncStatus;
+@property (nonatomic) RemoteEntitySyncStatusType syncStatus;
 @property (nonatomic, retain) NSDate * createdAt;
 @property (nonatomic, retain) NSDate * updatedAt;
 

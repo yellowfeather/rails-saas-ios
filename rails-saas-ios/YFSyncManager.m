@@ -41,120 +41,116 @@
         }
 
     } failure:^(AFJSONRequestOperation *operation, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [SSRateLimit resetLimitForName:@"refresh-products"];
-        });
-         
         if (block) {
             block(NO, error);
         }
     }];
 }
 
-- (void)getProductsWithBlock:(YFSyncManagerCompletionBlock)block
-{
-    YFRailsSaasApiClient *client = [YFRailsSaasApiClient sharedClient];
-	if ([client isSignInRequired]) {
-        if (block) {
-            block(YES, nil);
-        }
-		return;
-	}
-    
-	[client getProductsWithSuccess:^(AFJSONRequestOperation *operation, id responseObject) {
-        [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
-            NSArray *productsFromResponse = [responseObject valueForKeyPath:@"response"];
-            
-            for (NSDictionary *dictionary in productsFromResponse) {
-                
-                NSNumber *productId = dictionary[@"id"];
-                Product *product = [Product findFirstByAttribute:@"productId" withValue:productId inContext:localContext];
-                
-                if (product == nil) {
-                    NSLog(@"Inserting product: %@", productId);
-                    product = [Product createInContext:localContext];
-                    product.productId = [dictionary objectForKey:@"id"];
-                    product.syncId = [dictionary objectForKey:@"sync_id"];
-                    product.name = [dictionary objectForKey:@"name"];
-                    product.desc = [dictionary objectForKey:@"description"];
-                    product.identifier = [dictionary objectForKey:@"identifier"];
-                    product.quantity = [dictionary objectForKey:@"quantity"];
-                    product.createdAt = [self parseDate:[dictionary objectForKey:@"created_at"]];
-                    product.updatedAt = [self parseDate:[dictionary objectForKey:@"updated_at"]];
-                }
-                else {
-                    NSLog(@"Skip product: %@", productId);
-                }
-            }
-		}
-        completion:^(BOOL success, NSError *error) {
-            // note: success will be NO if there no changes to save
-            
-            if (error) {
-                NSLog(@"Error %@", error);
-            }
-            
-            if (block) {
-                block(success, error);
-            }
-        }];
-	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[SSRateLimit resetLimitForName:@"refresh-products"];
-		});
-        
-        if (block) {
-            block(NO, error);
-        }
-	}];
-}
-
-- (void)createProductWithBlock:(Product *)product block:(YFSyncManagerCompletionBlock)block
-{
-    [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
-        Product *newProduct = [Product createInContext:localContext];
-        newProduct.syncId = product.syncId;
-        newProduct.identifier = product.identifier;
-        newProduct.name = product.name;
-        newProduct.desc = product.desc;
-        newProduct.quantity = product.quantity;
-        newProduct.createdAt = product.createdAt;
-        newProduct.updatedAt = product.updatedAt;
-        
-        [[YFRailsSaasApiClient sharedClient] createProduct:newProduct success:nil failure:nil];
-    }
-    completion:^(BOOL success, NSError *error) {
-        if (block) {
-            block(success, error);
-        }
-    }];
-}
-
-- (void)updateProductWithBlock:(Product *)product block:(YFSyncManagerCompletionBlock)block
-{
-    [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
-        Product *existingProduct = (Product *)[localContext existingObjectWithID:product.objectID error:nil];
-        existingProduct.syncId = product.syncId;
-        existingProduct.identifier = product.identifier;
-        existingProduct.name = product.name;
-        existingProduct.desc = product.desc;
-        existingProduct.quantity = product.quantity;
-        existingProduct.createdAt = product.createdAt;
-        existingProduct.updatedAt = product.updatedAt;
-        
-        [[YFRailsSaasApiClient sharedClient] updateProduct:existingProduct success:nil failure:nil];
-    }
-    completion:^(BOOL success, NSError *error) {
-        if (block) {
-            block(success, error);
-        }
-    }];
-}
-
-- (void)deleteProductWithBlock:(Product *)product block:(YFSyncManagerCompletionBlock)block
-{
-    [[YFRailsSaasApiClient sharedClient] deleteProduct:product success:nil failure:nil];
-}
+//- (void)getProductsWithBlock:(YFSyncManagerCompletionBlock)block
+//{
+//    YFRailsSaasApiClient *client = [YFRailsSaasApiClient sharedClient];
+//	if ([client isSignInRequired]) {
+//        if (block) {
+//            block(YES, nil);
+//        }
+//		return;
+//	}
+//    
+//	[client getProductsWithSuccess:^(AFJSONRequestOperation *operation, id responseObject) {
+//        [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+//            NSArray *productsFromResponse = [responseObject valueForKeyPath:@"response"];
+//            
+//            for (NSDictionary *dictionary in productsFromResponse) {
+//                
+//                NSNumber *productId = dictionary[@"id"];
+//                Product *product = [Product findFirstByAttribute:@"productId" withValue:productId inContext:localContext];
+//                
+//                if (product == nil) {
+//                    NSLog(@"Inserting product: %@", productId);
+//                    product = [Product createInContext:localContext];
+//                    product.productId = [dictionary objectForKey:@"id"];
+//                    product.syncId = [dictionary objectForKey:@"sync_id"];
+//                    product.name = [dictionary objectForKey:@"name"];
+//                    product.desc = [dictionary objectForKey:@"description"];
+//                    product.identifier = [dictionary objectForKey:@"identifier"];
+//                    product.quantity = [dictionary objectForKey:@"quantity"];
+//                    product.createdAt = [self parseDate:[dictionary objectForKey:@"created_at"]];
+//                    product.updatedAt = [self parseDate:[dictionary objectForKey:@"updated_at"]];
+//                }
+//                else {
+//                    NSLog(@"Skip product: %@", productId);
+//                }
+//            }
+//		}
+//        completion:^(BOOL success, NSError *error) {
+//            // note: success will be NO if there no changes to save
+//            
+//            if (error) {
+//                NSLog(@"Error %@", error);
+//            }
+//            
+//            if (block) {
+//                block(success, error);
+//            }
+//        }];
+//	} failure:^(AFJSONRequestOperation *operation, NSError *error) {
+//		dispatch_async(dispatch_get_main_queue(), ^{
+//			[SSRateLimit resetLimitForName:@"refresh-products"];
+//		});
+//        
+//        if (block) {
+//            block(NO, error);
+//        }
+//	}];
+//}
+//
+//- (void)createProductWithBlock:(Product *)product block:(YFSyncManagerCompletionBlock)block
+//{
+//    [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+//        Product *newProduct = [Product createInContext:localContext];
+//        newProduct.syncId = product.syncId;
+//        newProduct.identifier = product.identifier;
+//        newProduct.name = product.name;
+//        newProduct.desc = product.desc;
+//        newProduct.quantity = product.quantity;
+//        newProduct.createdAt = product.createdAt;
+//        newProduct.updatedAt = product.updatedAt;
+//        
+//        [[YFRailsSaasApiClient sharedClient] createProduct:newProduct success:nil failure:nil];
+//    }
+//    completion:^(BOOL success, NSError *error) {
+//        if (block) {
+//            block(success, error);
+//        }
+//    }];
+//}
+//
+//- (void)updateProductWithBlock:(Product *)product block:(YFSyncManagerCompletionBlock)block
+//{
+//    [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+//        Product *existingProduct = (Product *)[localContext existingObjectWithID:product.objectID error:nil];
+//        existingProduct.syncId = product.syncId;
+//        existingProduct.identifier = product.identifier;
+//        existingProduct.name = product.name;
+//        existingProduct.desc = product.desc;
+//        existingProduct.quantity = product.quantity;
+//        existingProduct.createdAt = product.createdAt;
+//        existingProduct.updatedAt = product.updatedAt;
+//        
+//        [[YFRailsSaasApiClient sharedClient] updateProduct:existingProduct success:nil failure:nil];
+//    }
+//    completion:^(BOOL success, NSError *error) {
+//        if (block) {
+//            block(success, error);
+//        }
+//    }];
+//}
+//
+//- (void)deleteProductWithBlock:(Product *)product block:(YFSyncManagerCompletionBlock)block
+//{
+//    [[YFRailsSaasApiClient sharedClient] deleteProduct:product success:nil failure:nil];
+//}
 
 - (void)syncCreatedEntities:(id)entities
 {
