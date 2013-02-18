@@ -18,4 +18,6 @@
 @property (nonatomic, retain) NSNumber * productId;
 @property (nonatomic, retain) NSNumber * quantity;
 
+- (NSDictionary *)dictionaryRepresentation;
+
 @end

@@ -21,4 +21,16 @@
 	return @"product";
 }
 
+- (NSDictionary *)dictionaryRepresentation
+{
+    return [NSDictionary dictionaryWithObjectsAndKeys:
+            self.productId, @"id",
+            self.identifier, @"identifier",
+            self.name, @"name",
+            self.desc, @"description",
+            self.quantity, @"quantity",
+            self.syncId, @"sync_id",
+            nil];
+}
+
 @end

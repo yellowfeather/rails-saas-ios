@@ -133,22 +133,20 @@ static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd32095365078
                                  }];
 }
 
-- (void)getSyncChangeSet:(NSDate*)lastSynced success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure
+- (void)sync:(NSDictionary *)params success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure
 {
-    NSLog(@"getSyncChangeSet");
+    NSLog(@"sync");
     
     YFRailsSaasApiClientSuccess nestedSuccess = ^(AFJSONRequestOperation *operation, id responseObject) {
-        NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:lastSynced, @"last_synced", nil];
-        
         [self getPath:@"api/1/sync"
-           parameters:parameters
+           parameters:params
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                  NSLog(@"getSyncChangeSet: success");
+                  NSLog(@"sync: success");
                   if (success) {
                       success((AFJSONRequestOperation *)operation, responseObject);
                   }
               } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                  NSLog(@"getSyncChangeSet: failure");
+                  NSLog(@"sync: failure");
                   if (failure) {
                       failure((AFJSONRequestOperation *)operation, error);
                   }

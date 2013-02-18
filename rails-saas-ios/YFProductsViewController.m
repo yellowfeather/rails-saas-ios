@@ -79,8 +79,11 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 
 - (void)refresh:(id)sender {
 	self.loading = YES;
+    [self.tableView beginUpdates];
     [[YFSyncManager shared] syncWithBlock:^(BOOL success, NSError *error) {
         self.loading = NO;
+        [self.tableView endUpdates];
+        [self.tableView reloadData];
     }];
 }
 
@@ -92,9 +95,7 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 }
 
 - (void)signOut:(id)sender {
-    [self deleteAllProducts];
     [[YFRailsSaasApiClient sharedClient] signOut];
-    [[YFSyncManager shared] setLastSynced:nil];
     [self _checkUser];
 }
 

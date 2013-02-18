@@ -31,7 +31,7 @@ typedef void (^YFRailsSaasApiClientFailure)(AFJSONRequestOperation *operation, N
 - (void)refreshAccessTokenWithSuccess:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure;
 
 // sync
-- (void)getSyncChangeSet:(NSDate*)lastSynced success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure;
+- (void)sync:(NSDictionary*)params success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure;
 
 // products
 - (void)getProductsWithSuccess:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure;

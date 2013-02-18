@@ -12,9 +12,10 @@ typedef void (^YFSyncManagerCompletionBlock)(BOOL success, NSError *error);
 
 @interface YFSyncManager : NSObject
 
-+ (YFSyncManager *)shared;
+@property (atomic, readonly) NSDate *lastSynced;
+@property (atomic, readonly) BOOL syncInProgress;
 
-@property (strong) NSDate *lastSynced;
++ (YFSyncManager *)shared;
 
 -(void)syncWithBlock:(YFSyncManagerCompletionBlock)block;
 

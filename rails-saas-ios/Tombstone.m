@@ -14,4 +14,14 @@
 @dynamic syncId;
 @dynamic createdAt;
 
+- (NSDictionary *)dictionaryRepresentation
+{
+    return [NSDictionary dictionaryWithObjectsAndKeys:
+            self.klass, @"klass",
+            self.syncId, @"sync_id",
+            self.createdAt, @"created_at",
+            nil];
+}
+
+
 @end

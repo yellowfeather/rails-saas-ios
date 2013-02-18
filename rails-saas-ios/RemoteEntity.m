@@ -10,6 +10,7 @@
 
 #import "RemoteEntity.h"
 #import "Tombstone.h"
+#import "YFSyncManager.h"
 
 @implementation RemoteEntity
 
@@ -21,12 +22,23 @@
 - (void) awakeFromInsert
 {
     [super awakeFromInsert];
-    [self setSyncId:[NSString stringWithUUID]];
+    
+    YFSyncManager *syncManager = [YFSyncManager shared];
+    if ([syncManager syncInProgress]) {
+        return;
+    }
+
+    [self setSyncId:[[NSString stringWithUUID] lowercaseString]];
 }
 
 - (void) prepareForDeletion
 {
     [super prepareForDeletion];
+    
+    YFSyncManager *syncManager = [YFSyncManager shared];
+    if ([syncManager syncInProgress]) {
+        return;
+    }
     
     [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
         Tombstone *tombstone = [Tombstone findFirstByAttribute:@"syncId" withValue:self.syncId inContext:localContext];

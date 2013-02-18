@@ -14,4 +14,6 @@
 @property (nonatomic, retain) NSString * syncId;
 @property (nonatomic, retain) NSDate * createdAt;
 
+- (NSDictionary *)dictionaryRepresentation;
+
 @end
