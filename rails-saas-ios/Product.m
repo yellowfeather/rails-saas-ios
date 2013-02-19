@@ -8,7 +8,6 @@
 
 #import "Product.h"
 
-
 @implementation Product
 
 @dynamic desc;
@@ -31,6 +30,18 @@
             self.quantity, @"quantity",
             self.syncId, @"sync_id",
             nil];
+}
+
+- (void)updateWithDictionaryRepresentation:(NSDictionary *)dictionary
+{
+    self.productId = [dictionary objectForKey:@"id"];
+    self.syncId = [dictionary objectForKey:@"sync_id"];
+    self.name = [dictionary objectForKey:@"name"];
+    self.desc = [dictionary objectForKey:@"description"];
+    self.identifier = [dictionary objectForKey:@"identifier"];
+    self.quantity = [dictionary objectForKey:@"quantity"];
+    self.createdAt = [NSDate dateFromISO8601String:[dictionary objectForKey:@"created_at"]];
+    self.updatedAt = [NSDate dateFromISO8601String:[dictionary objectForKey:@"updated_at"]];
 }
 
 @end

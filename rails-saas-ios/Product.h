@@ -19,5 +19,6 @@
 @property (nonatomic, retain) NSNumber * quantity;
 
 - (NSDictionary *)dictionaryRepresentation;
+- (void)updateWithDictionaryRepresentation:(NSDictionary *)dictionary;
 
 @end
