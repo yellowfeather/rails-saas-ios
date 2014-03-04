@@ -1,10 +1,10 @@
-platform :ios, '6.0'
+platform :ios, '7.0'
 
 xcodeproj 'rails-saas-ios.xcodeproj'
 
-pod 'AFNetworking'
-pod 'AFOAuth2Client'
-pod 'MagicalRecord'
+pod 'AFNetworking', '~> 2.2'
+pod 'AFOAuth2Client', git: 'https://github.com/yellowfeather/AFOAuth2Client.git'
+pod 'MagicalRecord/Shorthand'
 pod 'Reachability'
 pod 'SSToolkit'
 pod 'SSPullToRefresh'

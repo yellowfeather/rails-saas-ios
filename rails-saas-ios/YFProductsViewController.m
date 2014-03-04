@@ -11,6 +11,7 @@
 #import "YFProductsViewController.h"
 #import "YFProductTableViewCell.h"
 #import "YFRailsSaasApiClient.h"
+#import "YFRailsSaasAuthApiClient.h"
 #import "YFSignInViewController.h"
 #import "YFSyncManager.h"
 
@@ -95,14 +96,14 @@ __strong UIActivityIndicatorView *_activityIndicatorView;
 }
 
 - (void)signOut:(id)sender {
-    [[YFRailsSaasApiClient sharedClient] signOut];
+    [[YFRailsSaasAuthApiClient sharedClient] signOut];
     [self _checkUser];
 }
 
 #pragma - private
 
 - (void)_checkUser {
-	if ([[YFRailsSaasApiClient sharedClient] isSignInRequired]) {
+	if ([[YFRailsSaasAuthApiClient sharedClient] isSignInRequired]) {
 		UIViewController *viewController = [[YFSignInViewController alloc] init];
 		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 		navigationController.modalPresentationStyle = UIModalPresentationFormSheet;

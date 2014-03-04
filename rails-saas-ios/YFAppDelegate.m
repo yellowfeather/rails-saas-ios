@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Yellow Feather Ltd. All rights reserved.
 //
 
+#import "AFNetworkActivityIndicatorManager.h"
 #import "UIFont+RailsSaasiOSAdditions.h"
 #import "YFAppDelegate.h"
 #import "YFProductsViewController.h"

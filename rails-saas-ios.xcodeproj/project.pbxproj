@@ -19,6 +19,7 @@
 		A138C53D16CD3DCA00F72731 /* Product.m in Sources */ = {isa = PBXBuildFile; fileRef = A138C53C16CD3DCA00F72731 /* Product.m */; };
 		A138C54016D1938800F72731 /* RemoteEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = A138C53F16D1938800F72731 /* RemoteEntity.m */; };
 		A138C54316D229E100F72731 /* Tombstone.m in Sources */ = {isa = PBXBuildFile; fileRef = A138C54216D229E100F72731 /* Tombstone.m */; };
+		A13DF15D18C51D8E005626E1 /* YFRailsSaasAuthApiClient.m in Sources */ = {isa = PBXBuildFile; fileRef = A13DF15C18C51D8E005626E1 /* YFRailsSaasAuthApiClient.m */; };
 		A175840316C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A175840216C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.m */; };
 		A175840616C05FAF006B3787 /* YFHUDView.m in Sources */ = {isa = PBXBuildFile; fileRef = A175840516C05FAF006B3787 /* YFHUDView.m */; };
 		A175840916C06035006B3787 /* UIFont+RailsSaasiOSAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A175840816C06035006B3787 /* UIFont+RailsSaasiOSAdditions.m */; };
@@ -69,6 +70,8 @@
 		A138C53F16D1938800F72731 /* RemoteEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteEntity.m; sourceTree = "<group>"; };
 		A138C54116D229E000F72731 /* Tombstone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tombstone.h; sourceTree = "<group>"; };
 		A138C54216D229E100F72731 /* Tombstone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tombstone.m; sourceTree = "<group>"; };
+		A13DF15B18C51D8E005626E1 /* YFRailsSaasAuthApiClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFRailsSaasAuthApiClient.h; sourceTree = "<group>"; };
+		A13DF15C18C51D8E005626E1 /* YFRailsSaasAuthApiClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFRailsSaasAuthApiClient.m; sourceTree = "<group>"; };
 		A175840116C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+RailsSaasiOSAdditions.h"; sourceTree = "<group>"; };
 		A175840216C05DF7006B3787 /* UIColor+RailsSaasiOSAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+RailsSaasiOSAdditions.m"; sourceTree = "<group>"; };
 		A175840416C05FAF006B3787 /* YFHUDView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFHUDView.h; sourceTree = "<group>"; };
@@ -214,6 +217,8 @@
 			children = (
 				A1DB6502169AECA60004C8BF /* YFRailsSaasApiClient.h */,
 				A1DB6503169AECA60004C8BF /* YFRailsSaasApiClient.m */,
+				A13DF15B18C51D8E005626E1 /* YFRailsSaasAuthApiClient.h */,
+				A13DF15C18C51D8E005626E1 /* YFRailsSaasAuthApiClient.m */,
 				A130B5F916C56D8000E2AAEF /* YFSyncManager.h */,
 				A130B5FA16C56D8000E2AAEF /* YFSyncManager.m */,
 			);
@@ -460,6 +465,7 @@
 				A175842316C079F0006B3787 /* YFManagedTableViewController.m in Sources */,
 				A175842616C07B5C006B3787 /* YFPullToRefreshView.m in Sources */,
 				A175842916C07BD5006B3787 /* YFPullToRefreshContentView.m in Sources */,
+				A13DF15D18C51D8E005626E1 /* YFRailsSaasAuthApiClient.m in Sources */,
 				A175842C16C07C90006B3787 /* YFLoadingView.m in Sources */,
 				A175842F16C07E2C006B3787 /* YFTableViewCell.m in Sources */,
 				A117F27116C1434A002DE8E4 /* YFEditProductViewController.m in Sources */,
@@ -506,7 +512,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -528,7 +534,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -543,7 +549,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "rails-saas-ios/rails-saas-ios-Prefix.pch";
 				INFOPLIST_FILE = "rails-saas-ios/rails-saas-ios-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -556,7 +562,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "rails-saas-ios/rails-saas-ios-Prefix.pch";
 				INFOPLIST_FILE = "rails-saas-ios/rails-saas-ios-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

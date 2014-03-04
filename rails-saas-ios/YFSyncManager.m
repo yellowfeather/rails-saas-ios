@@ -8,6 +8,7 @@
 //
 
 #import "YFRailsSaasApiClient.h"
+#import "YFRailsSaasAuthApiClient.h"
 #import "YFSyncManager.h"
 #import "Product.h"
 #import "Tombstone.h"
@@ -45,8 +46,10 @@
 {
     syncInProgress = YES;
     
+//    YFRailsSaasAuthApiClient *authClient = [YFRailsSaasAuthApiClient sharedClient];
+//    [authClient refreshTokenWithSuccess:nil failure:nil];
+
     YFRailsSaasApiClient *client = [YFRailsSaasApiClient sharedClient];
-    [client refreshAccessTokenWithSuccess:nil failure:nil];
 
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     if (self.lastSynced != nil) {
@@ -61,7 +64,7 @@
     params[@"updated"] = [self getUpdatedEntities];
     params[@"deleted"] = [self getDeletedEntities];
     
-	[client sync:params success:^(AFJSONRequestOperation *operation, id responseObject) {
+	[client sync:params success:^(NSURLSessionDataTask *task, id responseObject) {
         NSArray *changes = [responseObject valueForKeyPath:@"response"];
         self.lastSynced = [NSDate dateFromISO8601String:[changes valueForKeyPath:@"last_synced"]];
 
@@ -91,7 +94,7 @@
             }
             
         }];
-    } failure:^(AFJSONRequestOperation *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
         syncInProgress = NO;
         
         if (error) {

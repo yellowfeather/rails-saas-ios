@@ -6,29 +6,22 @@
 //  Copyright (c) 2013 Yellow Feather Ltd. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "AFNetworking.h"
-#import "AFOAuth2Client.h"
 
 @class Product;
 
-typedef void (^YFRailsSaasApiClientSuccess)(AFJSONRequestOperation *operation, id responseObject);
-typedef void (^YFRailsSaasApiClientFailure)(AFJSONRequestOperation *operation, NSError *error);
+typedef void (^YFRailsSaasApiClientSuccess)(NSURLSessionDataTask *task, id responseObject);
+typedef void (^YFRailsSaasApiClientFailure)(NSURLSessionDataTask *task, NSError *error);
 
-@interface YFRailsSaasApiClient : AFOAuth2Client
+
+@interface YFRailsSaasApiClient : AFHTTPSessionManager
 
 + (YFRailsSaasApiClient *)sharedClient;
 
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+- (id)initWithBaseURL:(NSURL *)url;
 
-// authentication
-- (void)signInWithUsernameAndPassword:(NSString *)username
-                             password:(NSString *)password
-                              success:(void (^)(AFOAuthCredential *credential))success
-                              failure:(void (^)(NSError *error))failure;
-- (void)signOut;
-- (bool)isSignInRequired;
-- (void)refreshAccessTokenWithSuccess:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure;
+
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 // sync
 - (void)sync:(NSDictionary*)params success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure;

@@ -10,7 +10,7 @@
 #import "UIColor+RailsSaasiOSAdditions.h"
 #import "UIFont+RailsSaasiOSAdditions.h"
 #import "YFSignInViewController.h"
-#import "YFRailsSaasApiClient.h"
+#import "YFRailsSaasAuthApiClient.h"
 
 @interface YFSignInViewController ()
 - (void)_toggleMode:(id)sender;
@@ -128,7 +128,7 @@
 	YFHUDView *hud = [[YFHUDView alloc] initWithTitle:@"Signing in..." loading:YES];
 	[hud show];
     
-    YFRailsSaasApiClient *client = [YFRailsSaasApiClient sharedClient];
+    YFRailsSaasAuthApiClient *client = [YFRailsSaasAuthApiClient sharedClient];
     [client signInWithUsernameAndPassword:self.emailTextField.text
                                        password:self.passwordTextField.text
                                         success:^(AFOAuthCredential *credential) {
