@@ -1,4 +1,6 @@
 PODS:
+  - AFNetworkActivityLogger (2.0.1):
+    - AFNetworking (~> 2.0)
   - AFNetworking (2.2.0):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
@@ -26,6 +28,7 @@ PODS:
   - SSToolkit (1.0.2)
 
 DEPENDENCIES:
+  - AFNetworkActivityLogger (~> 2.0)
   - AFNetworking (~> 2.2)
   - AFOAuth2Client (from `https://github.com/yellowfeather/AFOAuth2Client.git`)
   - MagicalRecord/Shorthand
@@ -38,6 +41,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/yellowfeather/AFOAuth2Client.git
 
 SPEC CHECKSUMS:
+  AFNetworkActivityLogger: c2e99aec5d965a3ee33f0954a20c5ddab18934fe
   AFNetworking: e8cfd8f3fe3bfe19124a0cc63f4d45752d892a56
   AFOAuth2Client: 3886c2ba2c27026fda60bb0fe100851629d4bdf0
   MagicalRecord: 95d49d74ef752cd52f6ad87bcb474817fc3978cf

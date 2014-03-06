@@ -7,6 +7,7 @@
 //
 
 #import "AFNetworkActivityIndicatorManager.h"
+#import "AFNetworkActivityLogger.h"
 #import "UIFont+RailsSaasiOSAdditions.h"
 #import "YFAppDelegate.h"
 #import "YFProductsViewController.h"
@@ -51,12 +52,10 @@
     
 	[self.window makeKeyAndVisible];
 	
-	// Defer some stuff to make launching faster
-	dispatch_async(dispatch_get_main_queue(), ^{
-		// Setup status bar network indicator
-		[AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
-	});
-    
+    // Setup status bar network indicator
+    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+    [[AFNetworkActivityLogger sharedLogger] startLogging];
+
 	return YES;
 }
 
