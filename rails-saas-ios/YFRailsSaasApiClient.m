@@ -35,10 +35,8 @@ static NSString * const kCredentialIdentifier = @"YFCredentialIdentifier";
         return nil;
     }
     
-    AFOAuth2RequestSerializer *serializer = [AFOAuth2RequestSerializer serializer];
     AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:kCredentialIdentifier];
-    serializer.credential = credential;
-    self.requestSerializer = serializer;
+    self.requestSerializer = [AFOAuth2RequestSerializer serializerWithCredential:credential];
     
     return self;
 }

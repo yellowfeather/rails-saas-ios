@@ -23,9 +23,9 @@ PODS:
   - AFOAuth2Client (0.1.2):
     - AFNetworking (~> 2.2)
   - MagicalRecord/Shorthand (2.2)
-  - Reachability (3.1.0)
-  - SSPullToRefresh (1.1.1)
-  - SSToolkit (1.0.2)
+  - Reachability (3.1.1)
+  - SSPullToRefresh (1.2.0)
+  - SSToolkit (1.0.4)
 
 DEPENDENCIES:
   - AFNetworkActivityLogger (~> 2.0)
@@ -45,8 +45,8 @@ SPEC CHECKSUMS:
   AFNetworking: e8cfd8f3fe3bfe19124a0cc63f4d45752d892a56
   AFOAuth2Client: 3886c2ba2c27026fda60bb0fe100851629d4bdf0
   MagicalRecord: 95d49d74ef752cd52f6ad87bcb474817fc3978cf
-  Reachability: ba94ecd4eaa037be3d0588b38956672588530c5b
-  SSPullToRefresh: a0ff1db3adb47b8ad60c2e71ed4d60f4199224b1
-  SSToolkit: eaa02ea1dce63eb9575292465e9939b83ffbabe0
+  Reachability: be4883bb93f31e38266ae3365e5600a317aae735
+  SSPullToRefresh: ecdc6efdee5322bba8b57dc77c1263ef6b4170bf
+  SSToolkit: 689acaedac79c2079e492e528a55bcb5db9d98c4
 
 COCOAPODS: 0.29.0
