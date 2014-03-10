@@ -54,15 +54,15 @@ static NSString * const kCredentialIdentifier = @"YFCredentialIdentifier";
 }
 
 - (void)signOut {
-    self.credential = nil;
     [AFOAuthCredential deleteCredentialWithIdentifier:self.serviceProviderIdentifier];
 }
 
 - (bool)isSignInRequired {
-    if (self.credential == nil) {
+    AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:kCredentialIdentifier];
+    if (credential == nil) {
         return true;
     }
-    
+
     return false;
 }
 
