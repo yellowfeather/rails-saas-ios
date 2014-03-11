@@ -17,8 +17,6 @@ static const int kRetryCount = 3;
 
 @implementation YFRailsSaasApiClient
 
-@synthesize managedObjectContext;
-
 + (YFRailsSaasApiClient *)sharedClient {
     static YFRailsSaasApiClient *_sharedClient = nil;
     static dispatch_once_t onceToken;

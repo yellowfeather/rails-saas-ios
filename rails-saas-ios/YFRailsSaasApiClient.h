@@ -20,9 +20,6 @@ typedef NSURLSessionDataTask *(^YFRailsSaasApiClientCreateTask)(void (^retryBloc
 
 - (id)initWithBaseURL:(NSURL *)url;
 
-
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-
 // sync
 - (void)sync:(NSDictionary*)params success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure;
 
