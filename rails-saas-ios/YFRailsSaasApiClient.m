@@ -12,6 +12,9 @@
 #import "YFRailsSaasApiClient.h"
 #import "YFRailsSaasAuthApiClient.h"
 
+typedef void (^YFRailsSaasApiClientRetryBlock)(NSURLSessionDataTask *task, NSError *error);
+typedef NSURLSessionDataTask *(^YFRailsSaasApiClientCreateTask)(YFRailsSaasApiClientRetryBlock retryBlock);
+
 static NSString * const kClientBaseURL  = @"http://cheese.rails-saas.com/";
 static const int kRetryCount = 3;
 
@@ -99,7 +102,7 @@ static const int kRetryCount = 3;
 {
     NSLog(@"[YFRailsSaasApiClient sync]");
     
-    YFRailsSaasApiClientCreateTask createTaskBlock = ^NSURLSessionDataTask *(void (^retryBlock)(NSURLSessionDataTask *task, NSError *error)) {
+    YFRailsSaasApiClientCreateTask createTaskBlock = ^NSURLSessionDataTask *(YFRailsSaasApiClientRetryBlock retryBlock) {
         NSURLSessionDataTask *createdTask = [self GET:@"api/1/sync" parameters:params
                                               success:^(NSURLSessionDataTask *task, id responseObject) {
                                                   NSLog(@"[YFRailsSaasApiClient sync]: success");
