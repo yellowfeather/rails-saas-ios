@@ -12,7 +12,7 @@
 
 typedef void (^YFRailsSaasApiClientSuccess)(NSURLSessionDataTask *task, id responseObject);
 typedef void (^YFRailsSaasApiClientFailure)(NSURLSessionDataTask *task, NSError *error);
-
+typedef NSURLSessionDataTask *(^YFRailsSaasApiClientCreateTask)(void (^retryBlock)(NSURLSessionDataTask *task, NSError *error));
 
 @interface YFRailsSaasApiClient : AFHTTPSessionManager
 
