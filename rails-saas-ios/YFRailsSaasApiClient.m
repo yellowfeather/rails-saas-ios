@@ -99,7 +99,7 @@ static const int kRetryCount = 3;
 
 - (void)sync:(NSDictionary *)params success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure
 {
-    NSLog(@"sync");
+    NSLog(@"[YFRailsSaasApiClient sync]");
     
     YFRailsSaasApiClientCreateTask createTaskBlock = ^NSURLSessionDataTask *(void (^retryBlock)(NSURLSessionDataTask *task, NSError *error)) {
         NSURLSessionDataTask *createdTask = [self GET:@"api/1/sync" parameters:params
@@ -124,7 +124,7 @@ static const int kRetryCount = 3;
 }
 
 - (void)getProductsWithSuccess:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure {
-    NSLog(@"getProductsWithSuccess");
+    NSLog(@"[YFRailsSaasApiClient getProductsWithSuccess]");
 
     YFRailsSaasApiClientCreateTask createTaskBlock = ^NSURLSessionDataTask *(void (^retryBlock)(NSURLSessionDataTask *task, NSError *error)) {
         NSURLSessionDataTask *createdTask = [self GET:@"api/1/products" parameters:nil
@@ -150,6 +150,8 @@ static const int kRetryCount = 3;
 
 - (void)createProduct:(Product *)product success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure
 {
+    NSLog(@"[YFRailsSaasApiClient createProduct]");
+    
 	NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
 							product.identifier, @"product[identifier]",
 							product.name, @"product[name]",
@@ -188,6 +190,8 @@ static const int kRetryCount = 3;
 
 - (void)updateProduct:(Product *)product success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure
 {
+    NSLog(@"[YFRailsSaasApiClient updateProduct]");
+
 	NSString *path = [NSString stringWithFormat:@"api/1/products/%@", product.productId];
 	NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:
 							product.identifier, @"product[identifier]",
@@ -227,6 +231,8 @@ static const int kRetryCount = 3;
 
 - (void)deleteProduct:(Product *)product success:(YFRailsSaasApiClientSuccess)success failure:(YFRailsSaasApiClientFailure)failure
 {
+    NSLog(@"[YFRailsSaasApiClient deleteProduct]");
+
 	NSString *path = [NSString stringWithFormat:@"api/1/products/%@", product.productId];
 
     YFRailsSaasApiClientCreateTask createTaskBlock = ^NSURLSessionDataTask *(void (^retryBlock)(NSURLSessionDataTask *task, NSError *error)) {
