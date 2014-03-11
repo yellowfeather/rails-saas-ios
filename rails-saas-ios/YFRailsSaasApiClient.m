@@ -13,7 +13,6 @@
 #import "YFRailsSaasAuthApiClient.h"
 
 static NSString * const kClientBaseURL  = @"http://cheese.rails-saas.com/";
-static NSString * const kCredentialIdentifier = @"YFCredentialIdentifier";
 static const int kRetryCount = 3;
 
 @implementation YFRailsSaasApiClient
@@ -37,16 +36,14 @@ static const int kRetryCount = 3;
         return nil;
     }
     
-    AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:kCredentialIdentifier];
+    AFOAuthCredential *credential = [[YFRailsSaasAuthApiClient sharedClient] retrieveCredential];
     self.requestSerializer = [AFOAuth2RequestSerializer serializerWithCredential:credential];
     
     return self;
 }
 
 - (void)updateCredential:(AFOAuthCredential *)credential
-{
-    [AFOAuthCredential storeCredential:credential withIdentifier:kCredentialIdentifier];
-    
+{    
     AFOAuth2RequestSerializer *serializer = (AFOAuth2RequestSerializer *)self.requestSerializer;
     serializer.credential = credential;
 }

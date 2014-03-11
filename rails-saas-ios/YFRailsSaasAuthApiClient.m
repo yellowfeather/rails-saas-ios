@@ -12,6 +12,7 @@
 static NSString * const kClientBaseURL  = @"http://rails-saas.com/";
 static NSString * const kClientID       = @"eb6250c28c0a691aab3828b79e4b63c65fa16e5f16ae754cde2cf8aacca5bac0";
 static NSString * const kClientSecret   = @"74434359b3f676f1807fc50cd320953650780e47bb8e3e9e14a951992962c406";
+
 static NSString * const kCredentialIdentifier = @"YFCredentialIdentifier";
 
 @implementation YFRailsSaasAuthApiClient
@@ -53,25 +54,12 @@ static NSString * const kCredentialIdentifier = @"YFCredentialIdentifier";
                                  }];
 }
 
-- (void)signOut {
-    [AFOAuthCredential deleteCredentialWithIdentifier:self.serviceProviderIdentifier];
-}
-
-- (bool)isSignInRequired {
-    AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:kCredentialIdentifier];
-    if (credential == nil) {
-        return true;
-    }
-
-    return false;
-}
-
 - (void)refreshTokenWithSuccess:(void (^)(AFOAuthCredential *newCredential))success
                         failure:(void (^)(NSError *error))failure
 {
     NSLog(@"[YFRailsSaasAuthApiClient refreshTokenWithSuccess]");
     
-    AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:kCredentialIdentifier];
+    AFOAuthCredential *credential = [self retrieveCredential];
     if (credential == nil) {
 		NSLog(@"[YFRailsSaasAuthApiClient refreshTokenWithSuccess]: credential is nil");
         if (failure) {
@@ -89,6 +77,8 @@ static NSString * const kCredentialIdentifier = @"YFCredentialIdentifier";
                             refreshToken:credential.refreshToken
                                  success:^(AFOAuthCredential *newCredential) {
                                      NSLog(@"[YFRailsSaasAuthApiClient refreshTokenWithSuccess]: refreshed access token %@", newCredential.accessToken);
+                                     [AFOAuthCredential storeCredential:newCredential withIdentifier:kCredentialIdentifier];
+
                                      if (success) {
                                          success(newCredential);
                                      }
@@ -101,5 +91,22 @@ static NSString * const kCredentialIdentifier = @"YFCredentialIdentifier";
                                  }];
 }
 
+- (void)signOut {
+    [AFOAuthCredential deleteCredentialWithIdentifier:kCredentialIdentifier];
+}
+
+- (bool)isSignInRequired {
+    AFOAuthCredential *credential = [self retrieveCredential];
+    if (credential == nil) {
+        return true;
+    }
+    
+    return false;
+}
+
+- (AFOAuthCredential *)retrieveCredential
+{
+    return [AFOAuthCredential retrieveCredentialWithIdentifier:kCredentialIdentifier];
+}
 
 @end

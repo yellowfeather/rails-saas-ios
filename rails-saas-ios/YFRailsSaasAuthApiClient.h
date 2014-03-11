@@ -24,4 +24,6 @@
 
 - (bool)isSignInRequired;
 
+- (AFOAuthCredential *)retrieveCredential;
+
 @end
