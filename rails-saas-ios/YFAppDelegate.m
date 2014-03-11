@@ -54,6 +54,7 @@
 	
     // Setup status bar network indicator
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+    [[AFNetworkActivityLogger sharedLogger] setLevel:AFLoggerLevelError];
     [[AFNetworkActivityLogger sharedLogger] startLogging];
 
 	return YES;
